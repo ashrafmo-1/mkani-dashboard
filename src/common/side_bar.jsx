@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import icovAvatarMyProfile from "../assets/myProfileIcon.svg";
 // import { PermissionsContext } from "../context/PermissionsContext";
 import { checkPermission } from "../helpers/checkPermission";
+import { UserOutlined, TeamOutlined, ShoppingOutlined, AppstoreOutlined, HomeOutlined } from '@ant-design/icons';
 
 export const Side_bar = () => {
   const [profileModal, setProfileModal] = useState(false);
@@ -24,29 +25,22 @@ export const Side_bar = () => {
   };
 
   const links = [
-    { title: "users", path: `all_users` },
-    { title: "roles", path: `all_roles` },
-    { title: "customers", path: `all_customers` },
-    { title: "products", path: `all_products` },
+    { title: "users", path: `all_users`, icon: <UserOutlined /> },
+    { title: "roles", path: `all_roles`, icon: <TeamOutlined /> },
+    { title: "customers", path: `all_customers`, icon: <ShoppingOutlined /> },
+    { title: "products", path: `all_products`, icon: <AppstoreOutlined /> },
   ];
   
   return (
     <section
-      className={`side-bar h-[100vh] text-white relative py-4 pb-20 transition-all left-0 w-[300px] px-4 overflow-y-scroll`}
-      style={{
-        backgroundColor: "var(--dark-color)",
-        overflowY: "auto",
-        scrollbarWidth: "thin",
-        scrollbarColor: "#888 #333",
-      }}>
+      className={`side-bar bg-[var(--dark-color)] h-[100vh] text-white sticky top-0 py-4 pb-20 transition-all left-0 w-[300px] px-4 overflow-y-scroll`}
+      style={{ scrollbarWidth: "thin", scrollbarColor: "#888 #333" }}>
       <h2 className="text-2xl text-white mb-10">MBO Dashboard</h2>
 
       <div className="mb-3 text-[#888]">{t("Main Links")}</div>
-      <div className="side-links px-3 mb-10 flex flex-col gap-2">
-        <Link
-          to={`/${MAINPATH}/Dashboard`}
-          className="capitalize side-link hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
+      <div className="side-links px-1 mb-10 flex flex-col gap-2">
+        <Link to={`/${MAINPATH}/${i18n.language}/Dashboard`} className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md">
+          <HomeOutlined />
           {t("dashboard.title")}
         </Link>
 
@@ -56,9 +50,10 @@ export const Side_bar = () => {
           return hasPermission ? (
             <Link
               key={index}
-              to={`/${MAINPATH}/${link.path}`}
-              className="capitalize side-link hover:bg-[#1b1c22] py-1 px-4 rounded-md"
+              to={`/${MAINPATH}/${i18n.language}/${link.path}`}
+              className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
             >
+              {link.icon}
               {link.title}
             </Link>
           ) : null;

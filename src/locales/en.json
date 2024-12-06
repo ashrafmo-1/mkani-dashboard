@@ -5,6 +5,7 @@
     "productsCount": "Number of Products"
   },
   "users": {
+    "title": "users management",
     "name": "Name",
     "email": "Email",
     "role": "Role"
