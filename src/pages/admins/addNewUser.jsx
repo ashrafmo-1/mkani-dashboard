@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import plusIcon from "../../assets/plusIcon.svg";
 import { checkPermission } from "../../helpers/checkPermission";
 import { Modal, Button, Form, Input, Col, Select, Row, message } from "antd";
 import { useUsersHook } from "./Hooks/useUsersHook";
 import { useSelectsHook } from "../../Hooks/useSelectsHook";
+import { PlusSquareFilled } from "@ant-design/icons";
 
 export const AddNewUser = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -20,18 +20,22 @@ export const AddNewUser = () => {
     setIsModalVisible(false);
     form.resetFields(); // إعادة تعيين الحقول عند إغلاق المودال
   };
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (formData) => {
+    setLoading(true);
     try {
-      await addUser(formData); // إرسال البيانات إلى الـ API
+      await addUser(formData);
       setIsModalVisible(false);
-      form.resetFields(); // إعادة تعيين الحقول بعد الإرسال الناجح
+      form.resetFields();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.status) {
         message.error("The selected status is invalid.");
       } else {
         console.error("Error adding user:", error);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,20 +43,12 @@ export const AddNewUser = () => {
     <div>
       {hasCreateUserPermission ? (
         <>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
-            onClick={showModal}
-          >
-            <img src={plusIcon} width={30} alt="" />
+          <Button className="" onClick={showModal}>
+            <PlusSquareFilled />
             {"Add New Admin"}
-          </button>
+          </Button>
 
-          <Modal
-            title="Add New Admin"
-            visible={isModalVisible}
-            onCancel={handleCancel}
-            footer={null}
-          >
+          <Modal title="Add New Admin" visible={isModalVisible} onCancel={handleCancel} footer={null}>
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
               <Row gutter={[16, 16]}>
                 {/* Name */}
@@ -141,7 +137,7 @@ export const AddNewUser = () => {
               </Form.Item>
 
               {/* Submit Button */}
-              <Button type="primary" htmlType="submit" className="w-full">
+              <Button type="primary" htmlType="submit" className="w-full" loading={loading}>
                 Add New User
               </Button>
             </Form>

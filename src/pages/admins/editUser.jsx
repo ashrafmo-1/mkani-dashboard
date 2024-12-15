@@ -1,6 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import React, { useState } from "react";
 import { useUsersHook } from "./Hooks/useUsersHook";
+import { EditOutlined } from "@ant-design/icons";
 
 export const EditUser = ({ userId, initialValues }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -27,7 +28,10 @@ export const EditUser = ({ userId, initialValues }) => {
 
     return (
         <div>
-            <Button type="primary" className="edit" outline onClick={showModal}>{"edit"}</Button>
+            <Button 
+            className="edit border-green-900" outline="true" onClick={showModal}>
+                <EditOutlined />
+            </Button>
             <Modal title="Edit Admin" visible={isModalVisible} onCancel={handleCancel} footer={null}>
                 <Form
                     form={form}

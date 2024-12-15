@@ -6,14 +6,17 @@ import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import { PermissionsProvider } from "./context/PermissionsContext";
 import "./i18n";
-
+import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <BrowserRouter>
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
       <UserProvider>
         <PermissionsProvider>
           <App />
         </PermissionsProvider>
       </UserProvider>
-    </BrowserRouter>
+    </QueryClientProvider>
+  </BrowserRouter>
 );

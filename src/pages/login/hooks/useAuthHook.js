@@ -19,8 +19,7 @@ const useAuthHook = () => {
       setUser(response.data);
       const access_token = response.data.token;
       Cookies.set("MPO-TOKEN-DASHBOARD", access_token, { expires: 0.4167 });
-      
-      navigate(`/${MAINPATH}/dashboard`);
+      navigate("/");
 
     } catch (error) {
       if (error.response && error.response.status === 422) {

@@ -8,31 +8,46 @@ import { MAINPATH } from "./constant/MAINPATH";
 import RequireAuth from "./auth/RequireAuth";
 import LoginProdect from "./auth/LoginProdect";
 import Cookies from "js-cookie";
-import { useContext } from "react";
-import { PermissionsContext } from "./context/PermissionsContext";
+// import { useContext } from "react";
+// import { PermissionsContext } from "./context/PermissionsContext";
 import { NotFound } from "./common/NotFound";
 import { useTranslation } from "react-i18next";
+import { Roles } from "./pages/Roles/Roles";
+import { Customers } from "./pages/Customers/Customer";
+import { Blog_categories } from "./pages/blog_categories/Blog_categories";
+import { Events } from "./pages/Events/Events";
+import { Blogs } from "./pages/blogs/Blogs";
+import { Faqs } from "./pages/Faqs/Faqs";
+import { NewsLetter } from "./pages/news-letter/NewsLetter";
+import { Subscribers } from "./pages/subscribers/Subscribers";
 
 function App() {
-
-  const permissions = useContext(PermissionsContext);
+  // const permissions = useContext(PermissionsContext);
   const token = Cookies.get("MPO-TOKEN-DASHBOARD");
   const { i18n } = useTranslation();
 
   return (
     <div className="MPO_DASHBOARD flex w-full">
-      {token && <Side_bar />}
+      { token && <Side_bar /> }
       <Routes>
-        <Route path={`/`} element={<Navigate to={`/${MAINPATH}/${i18n.language}/Dashboard`} />} />
+        <Route path="/" element={<Navigate to={`/${MAINPATH}/${i18n.language}/Dashboard`} />} />
+
         <Route element={<RequireAuth />}>
           <Route path={`/${MAINPATH}/authentication`} element={<LOGIN_PAGE />} />
         </Route>
-        
+
         <Route element={<LoginProdect />}>
           <Route path={`/${MAINPATH}/${i18n.language}`}>
             <Route path="Dashboard" element={<Home />} />
             <Route path="all_users" element={<Admins />} />
-            <Route path="all_customers" element={<Admins />} />
+            <Route path="all_roles" element={<Roles />} />
+            <Route path="all_customers" element={<Customers />} />
+            <Route path="blog_categories" element={<Blog_categories />} />
+            <Route path="blogs" element={<Blogs />} />
+            <Route path="events" element={<Events />} />
+            <Route path="faq" element={<Faqs />} />
+            <Route path="Newsletter" element={<NewsLetter />} />
+            <Route path="subscribers" element={<Subscribers />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

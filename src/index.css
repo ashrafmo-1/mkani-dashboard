@@ -3,9 +3,20 @@
 @tailwind utilities;
 
 
-:root {
-    --dark-color: #111217;
-    --var {
-        display: none;
-    }
-}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .bg-pharma {
+    background: linear-gradient(to bottom, #003049, rgb(57, 57, 129)); 
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .ant-form-item-label {
+    text-align: start !important;
+  }

@@ -4,7 +4,7 @@ import { MAINPATH } from "../constant/MAINPATH";
 
 const RequireAuth = () => {
   const token = Cookies.get('MPO-TOKEN-DASHBOARD');
-  return !token ? <Outlet /> : <Navigate to={`/${MAINPATH}/Dashboard`} />
+  return token ? <Navigate to={"/"} /> : <Outlet />
 };
 
 export default RequireAuth;
