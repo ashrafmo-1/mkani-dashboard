@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MAINPATH } from "../constant/MAINPATH";
 import avatar from "../assets/300-2.png";
@@ -19,6 +19,7 @@ import {
   QuestionCircleOutlined,
   MailOutlined,
 } from "@ant-design/icons";
+import SideBarLink from "../components/SideBarLink";
 
 export const Side_bar = () => {
   const [profileModal, setProfileModal] = useState(false);
@@ -46,7 +47,7 @@ export const Side_bar = () => {
 
   return (
     <section
-      className={`side-bar bg-slate-900 h-[100vh] text-white sticky top-0 py-4 pb-20 transition-all left-0 w-[300px] px-4 overflow-y-scroll`}
+      className={`side-bar bg-[#09121b] h-[100vh] text-white sticky top-0 py-4 pb-20 transition-all left-0 w-[300px] px-4 overflow-y-scroll`}
       style={{ scrollbarWidth: "thin", scrollbarColor: "#888 #333" }}
     >
       <h2 className="text-2xl text-white mb-10">MBO Dashboard</h2>
@@ -75,13 +76,8 @@ export const Side_bar = () => {
           ) : null;
         })}
 
-        <Link
-          to={`/${MAINPATH}/${i18n.language}/blog_categories`}
-          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
-          <AppstoreOutlined />
-          {t("blog_categories")}
-        </Link>
+        <SideBarLink endPoint={"blog_categories"} content={"blog_categories"} iconComp={<AppstoreOutlined />} />
+
         <Link
           to={`/${MAINPATH}/${i18n.language}/blogs`}
           className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
@@ -114,8 +110,22 @@ export const Side_bar = () => {
           to={`/${MAINPATH}/${i18n.language}/subscribers`}
           className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
         >
-          <MailOutlined />
+          <UserOutlined  />
           {t("subscribers")}
+        </Link>
+        <Link
+          to={`/${MAINPATH}/${i18n.language}/careers`}
+          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
+        >
+          <AppstoreOutlined />
+          {t("Careers")}
+        </Link>
+        <Link
+          to={`/${MAINPATH}/${i18n.language}/candidates`}
+          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
+        >
+          <AppstoreOutlined />
+          {t("Candidates")}
         </Link>
       </div>
 

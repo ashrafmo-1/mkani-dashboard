@@ -15,9 +15,7 @@ export const useFaqsHook = () => {
     const combinedFilters = { search, ...customFilters };
     const queryString = qs.stringify({ filter: combinedFilters }, { encode: false });
 
-    const response = await axiosInstance.get(
-      `/${language}/admin/faqs?page=${page}&pageSize=10&${queryString}`
-    );
+    const response = await axiosInstance.get(`/${language}/admin/faqs?page=${page}&pageSize=10&${queryString}`);
     return response.data;
   };
 

@@ -20,6 +20,9 @@ import { Blogs } from "./pages/blogs/Blogs";
 import { Faqs } from "./pages/Faqs/Faqs";
 import { NewsLetter } from "./pages/news-letter/NewsLetter";
 import { Subscribers } from "./pages/subscribers/Subscribers";
+import AllCareers from "./pages/all-careers/AllCareers";
+import Candidates from "./pages/candidates/Candidates";
+import Products from "./pages/product/Products";
 
 function App() {
   // const permissions = useContext(PermissionsContext);
@@ -42,12 +45,15 @@ function App() {
             <Route path="all_users" element={<Admins />} />
             <Route path="all_roles" element={<Roles />} />
             <Route path="all_customers" element={<Customers />} />
+            <Route path="all_products" element={<Products />} />
             <Route path="blog_categories" element={<Blog_categories />} />
             <Route path="blogs" element={<Blogs />} />
             <Route path="events" element={<Events />} />
             <Route path="faq" element={<Faqs />} />
             <Route path="Newsletter" element={<NewsLetter />} />
             <Route path="subscribers" element={<Subscribers />} />
+            <Route path="careers" element={<AllCareers />} />
+            <Route path="candidates" element={<Candidates />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

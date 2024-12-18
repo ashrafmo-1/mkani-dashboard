@@ -1,16 +1,19 @@
-import { Pagination } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useFaqsHook } from "./hooks/useFaqsHook";
-import { AddFaq } from "./AddFaq";
-import { DeleteFaqs } from "./DeleteFaqs";
-import { EditFaq } from "./EditFaq";
 import { Status } from "../../components/Status";
+import { Pagination } from "antd";
+import { useProductsHook } from "./hook/useProductsHook";
+import DeleteProduct from "./DeleteProduct";
+import AddProduct from "./AddProduct";
 
-export const Faqs = () => {
+const Products = () => {
   const { t } = useTranslation();
-  const { faqs, setSearchTerm, pageCount, setCurrentPage } =
-    useFaqsHook();
+  const {
+    products,
+    pageCount,
+    setSearchTerm,
+    setCurrentPage,
+  } = useProductsHook();
 
   const onChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -19,8 +22,10 @@ export const Faqs = () => {
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
       <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">{t("faqs")}</h1>
-        <AddFaq />
+        <h1 className="text-4xl font-bold text-gray-800 capitalize">
+          {t("products")}
+        </h1>
+        <AddProduct />
       </div>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
@@ -41,24 +46,30 @@ export const Faqs = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3">{"question"}</th>
-              <th scope="col" className="px-6 py-3">{"order"}</th>
-              <th scope="col" className="px-6 py-3">{"is published"}</th>
-              <th scope="col" className="px-6 py-3">{"actions"}</th>
+              <th scope="col" className="px-6 py-3">
+                {"name"}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {"isActive"}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {"actions"}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {faqs &&
-              faqs.map((faq, index) => (
+            {products &&
+              products.map((product, index) => (
                 <tr className="bg-white border-b" key={index}>
-                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{faq.question}</th>
-                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{faq.order}</th>
                   <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <Status value={faq.isPublished} activeText={"done"} inactiveText={"no"} />
+                    {product.name}
+                  </th>
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <Status value={product.isActive} activeText={"done"} inactiveText={"no"} />
                   </th>
                   <td className="px-6 py-4 flex gap-3">
-                    <DeleteFaqs faqId={faq.faqId} />
-                    <EditFaq faqId={faq.faqId} initialValues={faq} />
+                    <DeleteProduct productId={product.productId} />
+                    {/* <EditFaq faqId={faq.faqId} initialValues={faq} /> */}
                   </td>
                 </tr>
               ))}
@@ -76,3 +87,5 @@ export const Faqs = () => {
     </div>
   );
 };
+
+export default Products;

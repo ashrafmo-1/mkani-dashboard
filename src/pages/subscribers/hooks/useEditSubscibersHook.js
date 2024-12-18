@@ -8,7 +8,7 @@ const useEditSubscibersHook = () => {
     const editSubsciber = async (subscriberId, values) => {
       try {
         await axiosInstance.put(
-          `${i18n.language}/admin/faqs/subscribers?subscriberId=${subscriberId}`,
+          `${i18n.language}/admin/subscribers?subscriberId=${subscriberId}`,
           values
         );
         queryClient.invalidateQueries('subscribers');

@@ -1,22 +1,15 @@
 import { Pagination } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import AddNewsLetter from "./AddNewsLetter";
-import EditNewsLetter from "./EditNewsLetter";
-import DeleteNewsLetter from "./DeleteNewsLetter";
-import useNewsLetterHook from "./hooks/useNewsLetterHook";
-import { Status } from "../../components/Status";
-export const NewsLetter = () => {
+import { useCandidatesHook } from "./hooks/useCandidatesHook";
+import { DeleteCandidate } from "./DeleteCandidate";
+import CandidateRow from "./components/CandidateRowPdf";
+import { ShowCandidates } from "./ShowCandidates";
+
+const Candidates = () => {
   const { t } = useTranslation();
-  const {
-    pageCount,
-    setSearchTerm,
-    error,
-    isLoading,
-    currentPage,
-    newsletters,
-    setCurrentPage,
-  } = useNewsLetterHook();
+  const { pageCount, setSearchTerm, candidates, setCurrentPage } =
+    useCandidatesHook();
 
   const onChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -25,8 +18,7 @@ export const NewsLetter = () => {
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
       <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">{t("News letter")}</h1>
-        <AddNewsLetter />
+        <h1 className="text-4xl font-bold text-gray-800">{t("Candidates")}</h1>
       </div>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
@@ -48,42 +40,66 @@ export const NewsLetter = () => {
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
-                {"subject"}
+                {"name"}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"is Sent"}
+                {"email"}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"action"}
+                {"phone"}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {"cover Letter"}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {"career Name"}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {"cv"}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {"actions"}
               </th>
             </tr>
           </thead>
           <tbody>
-            {newsletters &&
-              newsletters.map((newsletter, index) => (
+            {candidates &&
+              candidates.map((candidate, index) => (
                 <tr className="bg-white border-b" key={index}>
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    {newsletter.subject}
+                    {candidate.name}
                   </th>
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    <Status
-                      value={newsletter.isSent}
-                      activeText={"yes"}
-                      inactiveText={"no"}
-                    />
+                    {candidate.email}
                   </th>
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {candidate.phone}
+                  </th>
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {candidate.coverLetter}
+                  </th>
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {candidate.careerName}
+                  </th>
+                  <CandidateRow candidate={candidate} />
                   <td className="px-6 py-4 flex gap-3">
-                    <DeleteNewsLetter newsletterId={newsletter.newsletterId} />
-                    <EditNewsLetter
-                      newsletterId={newsletter.newsletterId}
-                      initialValues={newsletter}
-                    />
+                    <DeleteCandidate candidateId={candidate.candidateId} />
+                    <ShowCandidates candidateId={candidate.candidateId} />
                   </td>
                 </tr>
               ))}
@@ -101,3 +117,5 @@ export const NewsLetter = () => {
     </div>
   );
 };
+
+export default Candidates;

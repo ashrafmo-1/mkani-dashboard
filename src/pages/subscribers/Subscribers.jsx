@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import useSubscribersHook from "./hooks/useSubscribersHook";
 import { DelereSebscriper } from "./DelereSebscriper";
 import { EditSubscriper } from "./EditSubscriper";
+import { Status } from "../../components/Status";
 
 export const Subscribers = () => {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ export const Subscribers = () => {
 
       <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
                 {"email"}
@@ -59,41 +60,22 @@ export const Subscribers = () => {
             </tr>
           </thead>
           <tbody>
-            {subscribers &&
-            subscribers.map((subscriber, index) => (
-            <tr className="bg-white border-b" key={index}>
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                {subscriber.email}
-              </th>
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                {subscriber.isSubscribed}
-              </th>
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                {/* <Status value={faq.isPublished} activeText={"done"} inactiveText={"no"} /> */}
-              </th>
-              <td className="px-6 py-4 flex gap-3">
-                <DelereSebscriper subscriberId={subscriber.subscriberId} />
-                <EditSubscriper subscriberId={subscriber.faqId} initialValues={subscriber} />
-              </td>
-            </tr>
+            {subscribers && subscribers.map((subscriber, index) => (
+                <tr className="bg-white border-b" key={index}>
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{subscriber.email}</th>
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <Status value={subscriber.isSubscribed} activeText={"done"} inactiveText={"no"} />
+                </th>
+                <td className="px-6 py-4 flex gap-3">
+                    <DelereSebscriper subscriberId={subscriber.subscriberId} />
+                    <EditSubscriper subscriberId={subscriber.faqId} initialValues={subscriber} />
+                </td>
+                </tr>
             ))}
           </tbody>
         </table>
 
-        <Pagination
-          showQuickJumper
-            current={pageCount.current_page}
-            total={pageCount.total}
-            onChange={onChange}
+        <Pagination showQuickJumper current={pageCount.current_page} total={pageCount.total} onChange={onChange}
           className="mb-4 mt-10 flex justify-center items-center"
         />
       </div>
