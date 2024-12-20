@@ -1,9 +1,13 @@
-import React from 'react'
+import { DeleteOutlined } from "@ant-design/icons";
+import { Button } from "antd";
+import React from "react";
 
 const EditProduct = () => {
   return (
-    <div>EditProduct</div>
-  )
-}
+    <div>
 
-export default EditProduct
+    </div>
+  );
+};
+
+export default EditProduct;

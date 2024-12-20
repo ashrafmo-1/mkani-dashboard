@@ -44,7 +44,7 @@ const AddNewsLetter = () => {
         <Button onClick={showModal}>add new News letter</Button>
       )}
       <Modal
-        title="Add New FAQ"
+        title="Add New News letter"
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}

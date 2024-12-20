@@ -1,13 +1,14 @@
 import { Button, Col, Form, Input, message, Modal, Row } from "antd";
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
-import { useCustomerHook } from "./Hooks/useCustomerHook";
+import { useAddCustomerHook } from "./Hooks/useAddCustomerHook";
+import { PlusSquareFilled } from "@ant-design/icons";
 
 export const AddNewCustomer = () => {
   const hasCreateUserPermission = checkPermission("create_customer");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const { addCustomer } = useCustomerHook()
+  const { addNewCustomer } = useAddCustomerHook()
   const [isPending, setIsPending] = useState(false);
   
   const showModal = () => {
@@ -22,7 +23,7 @@ export const AddNewCustomer = () => {
   const handleSubmit = async (formData) => {
     try {
       setIsPending(true);
-      await addCustomer(formData);
+      await addNewCustomer(formData);
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
@@ -38,7 +39,11 @@ export const AddNewCustomer = () => {
 
   return (
     <div>
-      {hasCreateUserPermission && ( <Button onClick={showModal}>add new customers</Button> )}
+      {hasCreateUserPermission && (
+        <Button onClick={showModal}>
+          <PlusSquareFilled />
+          {"add new customers"}
+        </Button> )}
       <Modal title="Add New Admin" visible={isModalVisible} onCancel={handleCancel} footer={null}>
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>

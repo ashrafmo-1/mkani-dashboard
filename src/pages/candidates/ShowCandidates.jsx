@@ -1,26 +1,57 @@
 import { EyeFilled } from "@ant-design/icons";
 import { Button, Col, Form, Input, Modal, Row } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import { useShowCandidatesHook } from "./hooks/useShowCandidatesHook";
 
 export const ShowCandidates = ({ candidateId }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const { candidates } = useShowCandidatesHook(candidateId);
+  const [form] = Form.useForm();
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    form.resetFields();
+  };
+
   return (
     <div>
-      <Button>
+      <Button onClick={showModal}>
         <EyeFilled />
       </Button>
-      {/* visible={isModalVisible} onCancel={handleCancel} */}
-      <Modal title="Add New product" footer={null}>
-        <Form>
+
+      <Modal
+        title="Candidate Details"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form form={form} layout="vertical">
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item label="name english" name="nameEn" rules={[{ required: true, message: "name english is required." }]}>
-                <Input placeholder="Enter name english" />
+              <Form.Item
+                label="Name (English)"
+                name="name"
+                rules={[
+                  { required: true, message: "Name in English is required." },
+                ]}
+              >
+                <Input placeholder="Enter name in English" />
               </Form.Item>
             </Col>
 
             <Col span={12}>
-              <Form.Item label="name arabic" name="nameAr" rules={[{ required: true, message: "name arabic is required."}]}>
-                <Input placeholder="Enter name arabic" />
+              <Form.Item
+                label="Name (Arabic)"
+                name="nameAr"
+                rules={[
+                  { required: true, message: "Name in Arabic is required." },
+                ]}
+              >
+                <Input placeholder="Enter name in Arabic" />
               </Form.Item>
             </Col>
           </Row>

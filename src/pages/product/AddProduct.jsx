@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
-import { Button, Col, Form, Input, message, Modal, Row, Select, Space, Upload } from "antd";
+import { Button, Form, message, Modal, Row } from "antd";
 import { useAddProductHook } from "./hook/useAddProductHook";
-import TextArea from "antd/es/input/TextArea";
-import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { PlusSquareFilled } from "@ant-design/icons";
+import { InputName } from "./components/create/InputName";
+import { InputDescription } from "./components/create/InputDescription";
+import { InputContent } from "./components/create/InputContent";
+import { InputSlug } from "./components/create/InputSlug";
+import { InputmetaDataAr } from "./components/create/InputmetaDataAr";
+import { InputmetaDataEn } from "./components/create/InputmetaDataEn";
+import { UploadImages } from "./components/create/UploadImages";
+import { SelectisActive } from "./components/create/SelectisActive";
 
 const AddProduct = () => {
   const { addProduct } = useAddProductHook();
@@ -21,289 +28,84 @@ const AddProduct = () => {
     form.resetFields();
   };
 
-  const handleSubmit = async (formData) => {
+  const handleSubmit = async (form_data) => {
+    const formData = new FormData();
+  
+
+    if (form_data.images && form_data.images.length > 0) {
+      form_data.images.forEach((image, index) => {
+        formData.append(`images[${index}][path]`, image.file || image);
+      });
+    } else {
+      formData.append("images", "");
+    }
+
+    formData.append('nameEn', form_data.nameEn || "");
+    formData.append('nameAr', form_data.nameAr || "");
+    formData.append('descriptionEn', form_data.descriptionEn || "");
+    formData.append('descriptionAr', form_data.descriptionAr || "");
+    formData.append('slugEn', form_data.slugEn || "");
+    formData.append('slugAr', form_data.slugAr || "");
+    formData.append('contentEn', form_data.contentEn || "");
+    formData.append('contentAr', form_data.contentAr || "");
+    formData.append('metaDataEn[]', JSON.stringify(form_data.metaDataEn || []));
+    formData.append('metaDataAr[]', JSON.stringify(form_data.metaDataAr || []));
+    formData.append('isActive', form_data.isActive ? 1 : 0);
+  
     try {
       setIsPending(true);
       await addProduct(formData);
-      message.success("FAQ added successfully.");
+      message.success("Product added successfully.");
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.status) {
-        message.error("The selected status is invalid.");
+      if (error.response?.data?.message) {
+        message.error(error.response.data.message);
       } else {
         message.error("Failed to send form. Please try again.");
-        console.error("Error adding FAQ:", error);
       }
     } finally {
       setIsPending(false);
     }
   };
+  
 
   return (
     <div className="">
       {hasCreateUserPermission && (
-        <Button onClick={showModal}>add new product</Button>
+        <Button onClick={showModal}>
+          <PlusSquareFilled />
+          {"add new product"}
+        </Button>
       )}
 
-      <Modal title="Add New product" footer={null} visible={isModalVisible} onCancel={handleCancel}>
+      <Modal
+        title="Add New product"
+        footer={null}
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        width={1440}
+      >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label="name english"
-                name="nameEn"
-                rules={[
-                  { required: true, message: "name english is required." },
-                ]}
-              >
-                <Input placeholder="Enter name english" />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label="name arabic"
-                name="nameAr"
-                rules={[
-                  { required: true, message: "name arabic is required." },
-                ]}
-              >
-                <Input placeholder="Enter name arabic" />
-              </Form.Item>
-            </Col>
-          </Row>
+          <InputName />
+          <InputDescription />
+          <InputContent />
+          <InputSlug />
 
           <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label="description english"
-                name="descriptionEn"
-                rules={[
-                  {
-                    required: true,
-                    message: "description english is required.",
-                  },
-                ]}
-              >
-                <TextArea placeholder="Enter description english" />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label="description arabic"
-                name="descriptionAr"
-                rules={[
-                  {
-                    required: true,
-                    message: "description arabic is required.",
-                  },
-                ]}
-              >
-                <TextArea placeholder="Enter description arabic" />
-              </Form.Item>
-            </Col>
+            <InputmetaDataEn />
+            <InputmetaDataAr />
           </Row>
 
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label="content english"
-                name="contentEn"
-                rules={[
-                  { required: true, message: "content english is required." },
-                ]}
-              >
-                <TextArea placeholder="Enter content english" />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label="content arabic"
-                name="contentAr"
-                rules={[
-                  { required: true, message: "content arabic is required." },
-                ]}
-              >
-                <TextArea placeholder="Enter content arabic" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label="slug english"
-                name="slugEn"
-                rules={[
-                  { required: true, message: "slug english is required." },
-                ]}
-              >
-                <TextArea placeholder="Enter slug english" />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label="slug arabic"
-                name="slugAr"
-                rules={[
-                  { required: true, message: "slug arabic is required." },
-                ]}
-              >
-                <TextArea placeholder="Enter slug arabic" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <div>
-            <Form.Item
-              className="form_item_Metadata_career"
-              label="Meta data Value arabic"
-              name={["metaDataAr", 0]}
-              rules={[{ required: true, message: "This field is required" }]}
-            >
-              <Input placeholder="Enter first metadata value" />
-            </Form.Item>
-
-            <Form.List name="metaDataAr">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields
-                    .slice(1)
-                    .map(({ key, name, fieldKey, ...restField }) => (
-                      <Space
-                        key={key}
-                        style={{ display: "flex", marginBottom: 5 }}
-                        align="baseline"
-                      >
-                        <Form.Item
-                          className="form_item_Metadata_career"
-                          {...restField}
-                          name={name}
-                          fieldKey={fieldKey}
-                          rules={[
-                            {
-                              required: true,
-                              message: "This field is required",
-                            },
-                          ]}
-                        >
-                          <Input placeholder="Enter metadata value" />
-                        </Form.Item>
-                        <MinusCircleOutlined onClick={() => remove(name)} />
-                      </Space>
-                    ))}
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      icon={<PlusOutlined />}
-                    >
-                      Add Field
-                    </Button>
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </div>
-
-          <div>
-            <Form.Item
-              className="form_item_Metadata_career"
-              label="Meta data Value english"
-              name={["metaDataEn", 0]}
-              rules={[{ required: true, message: "This field is required" }]}
-            >
-              <Input placeholder="Enter first metadata value" />
-            </Form.Item>
-
-            <Form.List name="metaDataEn">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields
-                    .slice(1)
-                    .map(({ key, name, fieldKey, ...restField }) => (
-                      <Space
-                        key={key}
-                        style={{ display: "flex", marginBottom: 5 }}
-                        align="baseline"
-                      >
-                        <Form.Item
-                          className="form_item_Metadata_career"
-                          {...restField}
-                          name={name}
-                          fieldKey={fieldKey}
-                          rules={[
-                            {
-                              required: true,
-                              message: "This field is required",
-                            },
-                          ]}
-                        >
-                          <Input placeholder="Enter metadata value" />
-                        </Form.Item>
-                        <MinusCircleOutlined onClick={() => remove(name)} />
-                      </Space>
-                    ))}
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      icon={<PlusOutlined />}
-                    >
-                      Add Field
-                    </Button>
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </div>
-
-          <Form.Item
-            label="is active"
-            name="isActive"
-            rules={[{ required: true, message: "is active is required." }]}
-          >
-            <Select placeholder="Select status">
-              <Select.Option value="1">done</Select.Option>
-              <Select.Option value="0">no</Select.Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="Upload Images"
-            name="images"
-            valuePropName="fileList"
-            getValueFromEvent={(e) => {
-              return e?.fileList?.map((file) => ({
-                path: file.response?.url || file.name,
-              }));
-            }}
-            rules={[
-              { required: true, message: "Please upload at least one image." },
-            ]}
-          >
-            <Upload
-              name="file"
-              action="/upload"
-              listType="picture"
-              multiple={true} 
-              maxCount={5}
-            >
-              <Button icon={<UploadOutlined />}>Upload Images</Button>
-            </Upload>
-          </Form.Item>
-
+          <UploadImages />
+          <SelectisActive />
           <Button
             type="primary"
             htmlType="submit"
             className="w-full"
             loading={isPending}
           >
-            Add New Faq
+            {"Add New Product"}
           </Button>
         </Form>
       </Modal>

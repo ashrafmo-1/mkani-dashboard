@@ -1,25 +1,30 @@
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
+import { useQuery } from "react-query";
 
-export const useShowCandidatesHook = () => {
+export const useShowCandidatesHook = (candidateId) => {
   const { i18n } = useTranslation();
 
-  const getCandidateById = async (candidateId) => {
-    try {
-      const response = await axiosInstance.get(
-        `${i18n.language}/admin/candidates/details?candidateId=${candidateId}`
-      );
-      console.log(response.data);
-      return response.data;
-      
-    } catch (error) {
-      console.error(
-        "Error fetching candidate:",
-        error.response ? error.response.data : error.message
-      );
-      throw error;
-    }
+  const fetchCandidates = async ({ queryKey }) => {
+    const [language, id] = queryKey;
+    const response = await axiosInstance.get(`/${language}/admin/candidates/edit?candidateId=${id}`);
+    console.log(response.data);
+    return response;
   };
 
-  return { getCandidateById };
+
+  const { data = { result: { candidates: [] } }, error, isLoading } = useQuery(
+    [i18n.language, candidateId],
+    fetchCandidates,
+    {
+      enabled: !!candidateId,
+      keepPreviousData: true,
+      staleTime: 5000,
+    }
+  );
+
+
+  const candidates = data;
+
+  return { candidates, error, isLoading };
 };

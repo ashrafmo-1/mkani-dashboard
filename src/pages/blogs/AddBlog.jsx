@@ -1,10 +1,10 @@
 import { Button, Modal, Form, Input, Row, Col, Select, Upload } from 'antd';
 import React, { useState } from 'react';
-import { useBlogHook } from './hooks/useBlogHook';
 import { PlusSquareFilled, UploadOutlined } from '@ant-design/icons';
 import { useBlog_categoriesHook } from "../blog_categories/hooks/useBlog_categoriesHook";
+import { useAddNewBlog } from './hooks/useAddNewBlog';
 export const AddBlog = () => {
-  const { addBlog } = useBlogHook();
+  const { addNewBlog } = useAddNewBlog();
   const { blog_category } = useBlog_categoriesHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -17,7 +17,7 @@ export const AddBlog = () => {
 
   const handleSubmit = async (values) => {
     setIsPending(true);
-    await addBlog(values);
+    await addNewBlog(values);
     setIsPending(false);
     setIsModalVisible(false);
     form.resetFields();

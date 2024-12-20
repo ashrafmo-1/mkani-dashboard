@@ -10,7 +10,6 @@ import Cookies from "js-cookie";
 import { checkPermission } from "../helpers/checkPermission";
 import {
   UserOutlined,
-  TeamOutlined,
   ShoppingOutlined,
   AppstoreOutlined,
   HomeOutlined,
@@ -18,6 +17,7 @@ import {
   CalendarOutlined,
   QuestionCircleOutlined,
   MailOutlined,
+  LoginOutlined,
 } from "@ant-design/icons";
 import SideBarLink from "../components/SideBarLink";
 
@@ -26,31 +26,35 @@ export const Side_bar = () => {
   const toggleProfileModal = () => {
     setProfileModal(!profileModal);
   };
-  // const token = 
 
   // const permissions = useContext(PermissionsContext);
+
   const { t, i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
   const handleChangeLanguage = (event) => {
     const newLanguage = event.target.value;
     setCurrentLanguage(newLanguage);
-    i18n.changeLanguage(newLanguage); // تغيير اللغة باستخدام i18n
+    i18n.changeLanguage(newLanguage);
   };
 
   const links = [
     { title: "users", path: `all_users`, icon: <UserOutlined /> },
-    { title: "roles", path: `all_roles`, icon: <TeamOutlined /> },
+    // { title: "roles", path: `all_roles`, icon: <TeamOutlined /> },
     { title: "customers", path: `all_customers`, icon: <ShoppingOutlined /> },
     { title: "products", path: `all_products`, icon: <AppstoreOutlined /> },
+    {
+      title: "product categories",
+      path: `all_product_categories`,
+      icon: <AppstoreOutlined />,
+    },
   ];
 
   return (
     <section
-      className={`side-bar bg-[#09121b] h-[100vh] text-white sticky top-0 py-4 pb-20 transition-all left-0 w-[300px] px-4 overflow-y-scroll`}
-      style={{ scrollbarWidth: "thin", scrollbarColor: "#888 #333" }}
+      className={`side-bar bg-[#09121b] h-[100vh] m-1 rounded-xl text-white sticky top-0 py-4 pb-20 transition-all left-0 w-[350px] px-4`}
     >
-      <h2 className="text-2xl text-white mb-10">MBO Dashboard</h2>
+      <h2 className="text-2xl text-white mb-6">MBO Dashboard</h2>
 
       <div className="mb-3 text-[#888]">{t("Main Links")}</div>
       <div className="side-links px-1 mb-10 flex flex-col gap-2">
@@ -76,71 +80,78 @@ export const Side_bar = () => {
           ) : null;
         })}
 
-        <SideBarLink endPoint={"blog_categories"} content={"blog_categories"} iconComp={<AppstoreOutlined />} />
+        <SideBarLink
+          endPoint={`/${MAINPATH}/${i18n.language}/blogs`}
+          content={t("blogs")}
+          iconComp={<FileTextOutlined />}
+        />
 
-        <Link
-          to={`/${MAINPATH}/${i18n.language}/blogs`}
-          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
-          <FileTextOutlined />
-          {t("blogs")}
-        </Link>
-        <Link
-          to={`/${MAINPATH}/${i18n.language}/events`}
-          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
-          <CalendarOutlined />
-          {t("events")}
-        </Link>
-        <Link
-          to={`/${MAINPATH}/${i18n.language}/faq`}
-          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
-          <QuestionCircleOutlined />
-          {t("Faqs")}
-        </Link>
-        <Link
-          to={`/${MAINPATH}/${i18n.language}/Newsletter`}
-          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
-          <MailOutlined />
-          {t("News letter")}
-        </Link>
-        <Link
-          to={`/${MAINPATH}/${i18n.language}/subscribers`}
-          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
-          <UserOutlined  />
-          {t("subscribers")}
-        </Link>
-        <Link
-          to={`/${MAINPATH}/${i18n.language}/careers`}
-          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
-          <AppstoreOutlined />
-          {t("Careers")}
-        </Link>
-        <Link
-          to={`/${MAINPATH}/${i18n.language}/candidates`}
-          className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
-        >
-          <AppstoreOutlined />
-          {t("Candidates")}
-        </Link>
+        <SideBarLink
+          endPoint={"blog_categories"}
+          content={"blog categories"}
+          iconComp={<AppstoreOutlined />}
+        />
+
+        <SideBarLink
+          endPoint={`/${MAINPATH}/${i18n.language}/events`}
+          content={t("events")}
+          iconComp={<CalendarOutlined />}
+        />
+
+        <SideBarLink
+          endPoint={`/${MAINPATH}/${i18n.language}/faq`}
+          content={t("Faqs")}
+          iconComp={<QuestionCircleOutlined />}
+        />
+
+        <SideBarLink
+          endPoint={`/${MAINPATH}/${i18n.language}/Newsletter`}
+          content={t("News letter")}
+          iconComp={<MailOutlined />}
+        />
+
+        <SideBarLink
+          endPoint={`/${MAINPATH}/${i18n.language}/subscribers`}
+          content={t("subscribers")}
+          iconComp={<UserOutlined />}
+        />
+
+        <SideBarLink
+          endPoint={`/${MAINPATH}/${i18n.language}/careers`}
+          content={t("Careers")}
+          iconComp={<AppstoreOutlined />}
+        />
+
+        <SideBarLink
+          endPoint={`/${MAINPATH}/${i18n.language}/candidates`}
+          content={t("Candidates")}
+          iconComp={<AppstoreOutlined />}
+        />
       </div>
 
-      <div className="fixed bg-[var(--dark-color)] w-fit pr-[150px] bottom-0 left-0">
-        <button onClick={toggleProfileModal}>
-          <img
-            src={avatar}
-            width={50}
-            className="flex justify-center m-2 items-center bottom-[20px] rounded-full border-blue-700 border-[4px] transition-transform duration-500 ease-in-out transform hover:scale-110"
-            alt="avatar"
-          />
-        </button>
+      <div className="border-t border-white">
+        <div className="flex justify-between items-center w-full mb-4">
+          <button onClick={toggleProfileModal}>
+            <img
+              src={avatar}
+              width={50}
+              className="flex justify-center m-2 items-center bottom-[20px] rounded-full border-blue-700 border-[4px] transition-transform duration-500 ease-in-out transform hover:scale-110"
+              alt="avatar"
+            />
+          </button>
+          <button
+            className="flex justify-end bg-red-600 px-3 py-2 rounded-xl"
+            onClick={() => {
+              Cookies.remove("MPO-TOKEN-DASHBOARD");
+              window.location.reload();
+            }}
+          >
+            <LoginOutlined />
+          </button>
+        </div>
 
         <div
-          className={`bg-white absolute -right-20 z-50 shadow-2xl bottom-16 p-2 w-[270px] rounded-md ${
+          className={`bg-white absolute right-2 z-50 shadow-2xl bottom-16 p-2 w-[270px] rounded-md ${
             profileModal ? "flex-col" : "hidden"
           }`}
         >
@@ -182,11 +193,13 @@ export const Side_bar = () => {
           <button className="hover:bg-slate-100 rounded-md text-left w-full px-2 py-2 text-black capitalize font-semibold mb-2">
             {t("theme")}
           </button>
-          <button className="bg-red-500 rounded-md text-left w-full px-2 py-2 text-white capitalize font-semibold"
+          <button
+            className="bg-red-500 rounded-md text-left w-full px-2 py-2 text-white capitalize font-semibold"
             onClick={() => {
               Cookies.remove("MPO-TOKEN-DASHBOARD");
               window.location.reload();
-            }}>
+            }}
+          >
             {t("logout")}
           </button>
         </div>

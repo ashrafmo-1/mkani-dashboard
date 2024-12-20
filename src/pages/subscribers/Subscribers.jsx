@@ -13,11 +13,7 @@ export const Subscribers = () => {
     subscribers,
     pageCount,
     setSearchTerm,
-    error,
-    isLoading,
-    currentPage,
     setCurrentPage,
-    refetch,
   } = useSubscribersHook();
 
   const onChange = (pageNumber) => {

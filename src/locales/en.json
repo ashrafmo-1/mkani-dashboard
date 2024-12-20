@@ -1,6 +1,26 @@
 {
+  "modulesTitle": {
+    "dashboard": "Dashboard",
+    "users": "users",
+    "roles": "roles",
+    "careers": "careers",
+    "bolgs": "bolgs",
+    "bolgsCategory": "bolgs Category",
+    "candidates": "candidates",
+    "custormers": "custormers",
+    "events": "events",
+    "faq": "faqs",
+    "newsLetter": "news letter",
+    "prodcuts": "prodcuts",
+    "productCategory": "productCategory",
+    "subscribers": "subscribers"
+  },
+  "globals": {
+    "filter": "filter",
+    "addNew": "add new"
+  },
+
   "dashboard": {
-    "title": "Dashboard",
     "usersCount": "Number of Users",
     "productsCount": "Number of Products"
   },

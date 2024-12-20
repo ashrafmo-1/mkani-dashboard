@@ -1,10 +1,10 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 import React, { useState } from "react";
-import { useBlogHook } from "./hooks/useBlogHook";
+import { useDeleteBlogHook } from "./hooks/useDeleteBlogHook";
 
 export const DeleteBlog = ({ BlogId }) => {
-  const { deleteBlogs } = useBlogHook();
+  const { deleteBlog } = useDeleteBlogHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
   
@@ -18,7 +18,7 @@ export const DeleteBlog = ({ BlogId }) => {
         visible={isModalVisible === BlogId}
         onOk={async () => {
           setIsPending(true);
-          await deleteBlogs(BlogId);
+          await deleteBlog(BlogId);
           setIsPending(false);
           setIsModalVisible(null);
         }}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useCustomerHook } from "./Hooks/useCustomerHook";
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import { useEditCustomerHook } from "./Hooks/useEditCustomerHook";
 
 export const EditCustomer = ({ customerId, initialValues }) => {
-  const { editCustomer } = useCustomerHook();
+  const { editCustomers } = useEditCustomerHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
 
@@ -25,7 +25,7 @@ export const EditCustomer = ({ customerId, initialValues }) => {
 
   const handleSubmit = async (values) => {
     try {
-      await editCustomer(customerId, values);
+      await editCustomers(customerId, values);
       setIsModalVisible(false);
     } catch (error) {
       console.error("Failed to edit user:", error);

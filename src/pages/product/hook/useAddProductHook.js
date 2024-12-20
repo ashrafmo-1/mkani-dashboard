@@ -9,7 +9,11 @@ export const useAddProductHook = () => {
   const queryClient = useQueryClient();
 
   const addProduct = async (productData) => {
-    await axiosInstance.post(`/${i18n.language}/admin/products/create`, productData);
+    await axiosInstance.post(`/${i18n.language}/admin/products/create`, productData, {
+      config: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
   };
   
   const mutation = useMutation(addProduct, {

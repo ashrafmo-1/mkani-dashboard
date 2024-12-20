@@ -1,45 +1,54 @@
-import axios from "axios";
-import { token } from "../../../helpers/token";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useGetUsersHook } from "./getUsersHook";
 import axiosInstance from "../../../utils/axiosConfig";
+import qs from "qs";
+import { useQuery } from "react-query";
 
 export const useUsersHook = () => {
   const { i18n } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusTerm, setStatusTerm] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // add new user ------------------------------------------------------------------------------------------
-  const addUser = async (userData) => {
-    try {
-      await axiosInstance.post(`/${i18n.language}/admin/users/create`, userData);
-    } catch (error) {
-      console.error(
-        "Error adding user:",
-        error.response ? error.response.data : error.message
-      );
-    }
+  const fetchFaqs = async ({ queryKey }) => {
+    const [, { search, page, language }] = queryKey;
+    const customFilters = {
+      status: statusTerm,
+    };
+    const combinedFilters = { search, ...customFilters };
+
+    const queryString = qs.stringify(
+      { filter: combinedFilters },
+      { encode: false }
+    );
+
+    const response = await axiosInstance.get(
+      `/${language}/admin/users?page=${page}&pageSize=10&${queryString}`
+    );
+    return response.data;
   };
 
-  // delete admin -----------------------------------------------------------------------------------------
-  const deleteUser = async (userId) => {
-    try {
-      await axiosInstance.delete(`/${i18n.language}/admin/users/delete?userId=${userId}`);
-    } catch (error) {
-      console.log(error);
+  const { data, error, isLoading } = useQuery(
+    ["users", { search: searchTerm, page: currentPage, language: i18n.language, status: statusTerm }],
+    fetchFaqs,
+    {
+      keepPreviousData: true,
+      staleTime: 5000,
     }
-  };
+  );
 
-  // edit admin ----------------------------------------------------------------------------------------
-  const editUser = async (userId, userData) => {
-    try {
-      await axiosInstance.put(`/${i18n.language}/admin/users/update?userId=${userId}`, userData);
-      // AllUsers();
-    } catch (error) {
-      console.error(
-        "Error editing user:",
-        error.response ? error.response.data : error.message
-      );
-    }
-  };
+  const users = data?.result?.users || [];
+  const pageCount = data?.pagination || {};
 
-  return { addUser, deleteUser, editUser };
-};
+
+  return {
+    pageCount,
+    setSearchTerm,
+    setStatusTerm,
+    error,
+    isLoading,
+    currentPage,
+    users,
+    setCurrentPage,
+  }
+}

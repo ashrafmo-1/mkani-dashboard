@@ -1,11 +1,13 @@
 import { EditOutlined, UploadOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, message, Modal, Row, Select, Upload } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { useBlogHook } from './hooks/useBlogHook';
+import { useEditBlogHook } from './hooks/useEditBlogHook';
+import { useBlog_categoriesHook } from '../blog_categories/hooks/useBlog_categoriesHook';
 
 export const EditBlog = ({ blogId, initialValues }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { editBlog } = useBlogHook();
+  const { editBlog } = useEditBlogHook();
+  const { blog_category } = useBlog_categoriesHook();
   const [isPending, setIsPending] = useState(false);
   const [form] = Form.useForm();
 
@@ -44,7 +46,8 @@ export const EditBlog = ({ blogId, initialValues }) => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item label="Title Arabic" name="titleAr" rules={[{ required: true, message: "Title is required." }]}>
-                <Input placeholder="Enter title Arabic" />
+                <Input placeholder="Enter title Arabic"  />
+                {/* value={values.titleAr} */}
               </Form.Item>
             </Col>
 
@@ -116,9 +119,9 @@ export const EditBlog = ({ blogId, initialValues }) => {
           
           <Form.Item label="Category" name="categoryId" rules={[{ required: true, message: "Category is required." }]}>
             <Select placeholder="Select category">
-              <Select.Option value="1">Category 1</Select.Option>
-              <Select.Option value="2">Category 2</Select.Option>
-              <Select.Option value="5">Category 3</Select.Option>
+            {blog_category.map((category, index) => (
+                <Select.Option value={category.blogCategoryId}  key={index}>{category.name}</Select.Option>
+              ))}
             </Select>
           </Form.Item>
 

@@ -4,12 +4,14 @@ import { Modal, Button, Form, Input, Col, Select, Row, message } from "antd";
 import { useUsersHook } from "./Hooks/useUsersHook";
 import { useSelectsHook } from "../../Hooks/useSelectsHook";
 import { PlusSquareFilled } from "@ant-design/icons";
+import { useAddUserHook } from "./Hooks/useAddUserHook";
 
 export const AddNewUser = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm(); // استخدم Form instance لإدارة الحقول
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
   const hasCreateUserPermission = checkPermission("create_user");
-  const { addUser } = useUsersHook();
+  const { addNewUser } = useAddUserHook();
   const { type } = useSelectsHook();
 
   const showModal = () => {
@@ -20,12 +22,11 @@ export const AddNewUser = () => {
     setIsModalVisible(false);
     form.resetFields(); // إعادة تعيين الحقول عند إغلاق المودال
   };
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (formData) => {
     setLoading(true);
     try {
-      await addUser(formData);
+      await addNewUser(formData);
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {

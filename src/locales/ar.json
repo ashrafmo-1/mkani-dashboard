@@ -1,12 +1,38 @@
 {
+  "modulesTitle": {
+    "dashboard": "لوحة التحكم",
+    "users": "المستخدمين",
+    "roles": "الأدوار",
+    "careers": "الوظائف",
+    "bolgs": "المدونات",
+    "bolgsCategory": "فئة المدونات",
+    "candidates": "المرشحين",
+    "custormers": "العملاء",
+    "events": "الفعاليات",
+    "faq": "الأسئلة الشائعة",
+    "newsLetter": "النشرة الإخبارية",
+    "prodcuts": "المنتجات",
+    "productCategory": "فئة المنتجات",
+    "subscribers": "المشتركين"
+  },
+  "globals": {
+    "filter": "تصفية",
+    "addNew": "إضافة جديد"
+  },
+  
   "dashboard": {
-    "title": "لوحة القيادة",
     "usersCount": "عدد المستخدمين",
     "productsCount": "عدد المنتجات"
   },
+  
   "users": {
+    "title": "إدارة المستخدمين",
     "name": "الاسم",
     "email": "البريد الإلكتروني",
     "role": "الدور"
+  },
+  
+  "roles": {
+    "title": "إدارة الأدوار"
   }
 }

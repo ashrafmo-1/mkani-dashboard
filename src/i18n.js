@@ -12,7 +12,7 @@ i18n.use(LanguageDetector)
       ar: { translation: arJSON },
     },
     fallbackLng: "en",
-    lng: localStorage.getItem("i18nextLng") || "en", // اللغة الافتراضية
+    lng: localStorage.getItem("i18nextLng") || "en",
     detection: {
       order: ["localStorage", "path", "navigator"],
       lookupFromPathIndex: 1,
@@ -29,7 +29,7 @@ i18n.on("languageChanged", (lng) => {
   } else {
     document.documentElement.setAttribute("dir", "ltr");
   }
-  localStorage.setItem("i18nextLng", lng); // حفظ اللغة المختارة في LocalStorage
+  localStorage.setItem("i18nextLng", lng);
 });
 
 export default i18n;

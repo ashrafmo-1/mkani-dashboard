@@ -10,11 +10,8 @@ export const NewsLetter = () => {
   const { t } = useTranslation();
   const {
     pageCount,
-    setSearchTerm,
-    error,
-    isLoading,
-    currentPage,
     newsletters,
+    setSearchTerm,
     setCurrentPage,
   } = useNewsLetterHook();
 

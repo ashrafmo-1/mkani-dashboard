@@ -4,12 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useCandidatesHook } from "./hooks/useCandidatesHook";
 import { DeleteCandidate } from "./DeleteCandidate";
 import CandidateRow from "./components/CandidateRowPdf";
-import { ShowCandidates } from "./ShowCandidates";
 
 const Candidates = () => {
   const { t } = useTranslation();
-  const { pageCount, setSearchTerm, candidates, setCurrentPage } =
-    useCandidatesHook();
+  const { pageCount, setSearchTerm, candidates, setCurrentPage } = useCandidatesHook();
 
   const onChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -99,7 +97,7 @@ const Candidates = () => {
                   <CandidateRow candidate={candidate} />
                   <td className="px-6 py-4 flex gap-3">
                     <DeleteCandidate candidateId={candidate.candidateId} />
-                    <ShowCandidates candidateId={candidate.candidateId} />
+                    {/* <ShowCandidates candidateId={candidate.candidateId} /> */}
                   </td>
                 </tr>
               ))}

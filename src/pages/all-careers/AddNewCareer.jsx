@@ -36,8 +36,7 @@ const AddNewCareer = () => {
       if (error.response && error.response.data && error.response.data.status) {
         message.error("The selected status is invalid.");
       } else {
-        message.error("Failed to send form. Please try again.");
-        console.error("Error adding Career:", error);
+        message.error("Failed to send form. Please try again.", error);
       }
     } finally {
       setIsPending(false);
@@ -47,7 +46,7 @@ const AddNewCareer = () => {
   return (
     <div>
       {hasCreateUserPermission && (<Button onClick={showModal}>add new faq</Button>)}
-      <Modal title="Add New career" footer={null} visible={isModalVisible} onCancel={handleCancel} >
+      <Modal title="Add New career" footer={null} visible={isModalVisible} onCancel={handleCancel} width={850}>
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <CareerTitle />
           <CareerDescription />

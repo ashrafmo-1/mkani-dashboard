@@ -8,8 +8,6 @@ import { MAINPATH } from "./constant/MAINPATH";
 import RequireAuth from "./auth/RequireAuth";
 import LoginProdect from "./auth/LoginProdect";
 import Cookies from "js-cookie";
-// import { useContext } from "react";
-// import { PermissionsContext } from "./context/PermissionsContext";
 import { NotFound } from "./common/NotFound";
 import { useTranslation } from "react-i18next";
 import { Roles } from "./pages/Roles/Roles";
@@ -23,6 +21,7 @@ import { Subscribers } from "./pages/subscribers/Subscribers";
 import AllCareers from "./pages/all-careers/AllCareers";
 import Candidates from "./pages/candidates/Candidates";
 import Products from "./pages/product/Products";
+import { ProductCategory } from "./pages/product-category/ProductCategory";
 
 function App() {
   // const permissions = useContext(PermissionsContext);
@@ -46,6 +45,7 @@ function App() {
             <Route path="all_roles" element={<Roles />} />
             <Route path="all_customers" element={<Customers />} />
             <Route path="all_products" element={<Products />} />
+            <Route path="all_product_categories" element={<ProductCategory />} />
             <Route path="blog_categories" element={<Blog_categories />} />
             <Route path="blogs" element={<Blogs />} />
             <Route path="events" element={<Events />} />
