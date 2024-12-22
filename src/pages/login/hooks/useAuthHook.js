@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useFormik } from "formik";
-// import { MAINPATH } from "../../../constant/MAINPATH";
 import { UserContext } from "../../../context/UserContext";
 import { api } from "../../../constant/APIS";
 

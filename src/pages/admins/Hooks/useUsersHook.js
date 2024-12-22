@@ -10,7 +10,7 @@ export const useUsersHook = () => {
   const [statusTerm, setStatusTerm] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchFaqs = async ({ queryKey }) => {
+  const fetchUsers = async ({ queryKey }) => {
     const [, { search, page, language }] = queryKey;
     const customFilters = {
       status: statusTerm,
@@ -30,7 +30,7 @@ export const useUsersHook = () => {
 
   const { data, error, isLoading } = useQuery(
     ["users", { search: searchTerm, page: currentPage, language: i18n.language, status: statusTerm }],
-    fetchFaqs,
+    fetchUsers,
     {
       keepPreviousData: true,
       staleTime: 5000,

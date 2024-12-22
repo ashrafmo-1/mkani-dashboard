@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
-import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
+import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import { useAddFaqHook } from "./hooks/useAddFaqHook";
 
 export const AddFaq = () => {
@@ -23,14 +23,12 @@ export const AddFaq = () => {
     try {
       setIsPending(true);
       await addFaq(formData);
-      message.success("FAQ added successfully.");
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.status) {
-        message.error("The selected status is invalid.");
+        console.error("The selected status is invalid.");
       } else {
-        message.error("Failed to send form. Please try again.");
         console.error("Error adding FAQ:", error);
       }
     } finally {

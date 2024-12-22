@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
 import { Modal, Button, Form, Input, Col, Select, Row, message } from "antd";
-import { useUsersHook } from "./Hooks/useUsersHook";
 import { useSelectsHook } from "../../Hooks/useSelectsHook";
 import { PlusSquareFilled } from "@ant-design/icons";
 import { useAddUserHook } from "./Hooks/useAddUserHook";
+import { useTranslation } from "react-i18next";
 
 export const AddNewUser = () => {
+  const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -20,7 +21,7 @@ export const AddNewUser = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    form.resetFields(); // إعادة تعيين الحقول عند إغلاق المودال
+    form.resetFields();
   };
 
   const handleSubmit = async (formData) => {
@@ -46,10 +47,10 @@ export const AddNewUser = () => {
         <>
           <Button className="" onClick={showModal}>
             <PlusSquareFilled />
-            {"Add New Admin"}
+            {t("users.add")}
           </Button>
 
-          <Modal title="Add New Admin" visible={isModalVisible} onCancel={handleCancel} footer={null}>
+          <Modal title={t("users.add")} visible={isModalVisible} onCancel={handleCancel} footer={null}>
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
               <Row gutter={[16, 16]}>
                 {/* Name */}
@@ -139,7 +140,7 @@ export const AddNewUser = () => {
 
               {/* Submit Button */}
               <Button type="primary" htmlType="submit" className="w-full" loading={loading}>
-                Add New User
+                {t("users.add")}
               </Button>
             </Form>
           </Modal>

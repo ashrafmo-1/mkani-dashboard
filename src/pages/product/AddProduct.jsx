@@ -11,8 +11,10 @@ import { InputmetaDataAr } from "./components/create/InputmetaDataAr";
 import { InputmetaDataEn } from "./components/create/InputmetaDataEn";
 import { UploadImages } from "./components/create/UploadImages";
 import { SelectisActive } from "./components/create/SelectisActive";
+import { useTranslation } from "react-i18next";
 
 const AddProduct = () => {
+  const { t } = useTranslation();
   const { addProduct } = useAddProductHook();
   const hasCreateUserPermission = checkPermission("create_customer");
   const [form] = Form.useForm();
@@ -75,12 +77,12 @@ const AddProduct = () => {
       {hasCreateUserPermission && (
         <Button onClick={showModal}>
           <PlusSquareFilled />
-          {"add new product"}
+          {t("products.add.title")}
         </Button>
       )}
 
       <Modal
-        title="Add New product"
+        title={t("products.add.title")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
@@ -105,7 +107,7 @@ const AddProduct = () => {
             className="w-full"
             loading={isPending}
           >
-            {"Add New Product"}
+            {t("products.add.title")}
           </Button>
         </Form>
       </Modal>

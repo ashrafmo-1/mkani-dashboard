@@ -23,15 +23,15 @@ export const Customers = () => {
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
       <div className="flex items-center justify-between mb-10">
         <h1 className="text-4xl font-bold text-gray-800 capitalize">
-          {t("customers")}
+          {t("customers.title")}
         </h1>
         <AddNewCustomer />
       </div>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
-        <h4 className="capitalize mb-2 text-2xl">fillters</h4>
+        <h4 className="capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
-          <input type="search" name="search" id="search" placeholder="search"
+          <input type="search" name="search" id="search" placeholder={t("globals.search")}
             className="border rounded outline-none py-1 px-3 w-[400px]"
             onChange={(e) => setSearchTerm( e.target.value )}
           />
@@ -43,16 +43,16 @@ export const Customers = () => {
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
-                {"name"}
+                {t("customers.name")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"email"}
+                {t("customers.email")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"phone"}
+                {t("customers.phone")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"Action"}
+                {t("globals.action")}
               </th>
             </tr>
           </thead>

@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import { LOGIN_PAGE } from "./pages/login/page";
 import { Side_bar } from "./common/side_bar";
@@ -22,11 +22,27 @@ import AllCareers from "./pages/all-careers/AllCareers";
 import Candidates from "./pages/candidates/Candidates";
 import Products from "./pages/product/Products";
 import { ProductCategory } from "./pages/product-category/ProductCategory";
+import { useEffect } from "react";
 
 function App() {
   // const permissions = useContext(PermissionsContext);
   const token = Cookies.get("MPO-TOKEN-DASHBOARD");
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    const [_, mainPath, currentLang, ...rest] = currentPath.split("/");
+    const newPath = `/${MAINPATH}/${i18n.language}/${rest.join("/")}`;
+
+    if (currentLang !== i18n.language) {
+      navigate(newPath, { replace: true });
+    }
+
+    if (!token) {
+      navigate(`/${MAINPATH}/authentication`, { replace: true });
+    }
+  }, [i18n.language, navigate, token]);
 
   return (
     <div className="MPO_DASHBOARD flex w-full">

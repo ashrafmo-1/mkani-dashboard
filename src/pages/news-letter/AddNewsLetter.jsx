@@ -88,7 +88,7 @@ const AddNewsLetter = () => {
             className="w-full"
             loading={isPending}
           >
-            Add New Faq
+            Add New News letter
           </Button>
         </Form>
       </Modal>

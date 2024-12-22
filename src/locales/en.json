@@ -2,35 +2,92 @@
   "modulesTitle": {
     "dashboard": "Dashboard",
     "users": "users",
+    "customers": "customers",
     "roles": "roles",
     "careers": "careers",
-    "bolgs": "bolgs",
+    "blogs": "blogs",
     "bolgsCategory": "bolgs Category",
     "candidates": "candidates",
     "custormers": "custormers",
     "events": "events",
     "faq": "faqs",
     "newsLetter": "news letter",
-    "prodcuts": "prodcuts",
-    "productCategory": "productCategory",
+    "products": "prodcuts",
+    "productCategory": "product category",
     "subscribers": "subscribers"
   },
   "globals": {
     "filter": "filter",
-    "addNew": "add new"
-  },
+    "search": "search",
+    "action": "action",
+    "addNew": "add new",
 
-  "dashboard": {
-    "usersCount": "Number of Users",
-    "productsCount": "Number of Products"
+    "status": {
+      "title": "status",
+      "all": "all",
+      "active": "active",
+      "inActive": "inActive"
+    }
+  },
+  "Home": {
+    "title": "Dashboard Analyses"
   },
   "users": {
-    "title": "users management",
-    "name": "Name",
-    "email": "Email",
-    "role": "Role"
+    "add": "add new user",
+    "selects": {
+      "role": "Role"
+    },
+    "table": {
+      "name": "name",
+      "phone": "phone",
+      "address": "Address"
+    }
   },
-  "roles": {
-    "title": "roles management"
+  "customers": {
+    "title": "customers",
+    "name": "name",
+    "phone": "phone",
+    "add": "add new customers",
+    "email": "email",
+    "address": "address",
+    "description": "description",
+    "placeholder": {
+      "EnterName": "Enter name",
+      "EnterEmail": "Enter email",
+      "EnterPhone": "Enter phone",
+      "EnterAddress": "Enter address",
+      "EnterDescriptoin": "Enter description"
+    }
+  },
+  "products": {
+    "title": "products",
+    "name": "name",
+    "email": "email",
+    "address": "address",
+    "description": "description",
+    "add": {
+      "title": "add new product",
+      "lables": {
+        "nameEN": "name english",
+        "nameAR": "name arabic",
+        "DescriptoinEN": "description english",
+        "DescriptoinAR": "description arabic",
+        "ContentEN": "content english",
+        "ContentAR": "content arabic",
+        "slugEN": "slug english",
+        "slugAR": "slug arabic"
+      },
+
+      "placeholder": {
+        "EnterEnName": "Enter english name",
+        "EnterArName": "Enter arabic name",
+        "EnterDescriptoinEN": "Enter description english",
+        "EnterDescriptoinAR": "Enter description arabic",
+        "EnterContentEN": "Enter content english",
+        "EnterContentAR": "Enter content arabic",
+        "EnterslugEN": "Enter slug english",
+        "EnterslugAR": "Enter slug arabic"
+      }
+    }
   }
 }

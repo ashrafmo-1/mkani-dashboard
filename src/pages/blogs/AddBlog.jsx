@@ -5,7 +5,7 @@ import { useBlog_categoriesHook } from "../blog_categories/hooks/useBlog_categor
 import { useAddNewBlog } from './hooks/useAddNewBlog';
 export const AddBlog = () => {
   const { addNewBlog } = useAddNewBlog();
-  const { blog_category } = useBlog_categoriesHook();
+  const { blogCategories } = useBlog_categoriesHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [form] = Form.useForm();
@@ -107,7 +107,7 @@ export const AddBlog = () => {
 
           <Form.Item label="Category" name="categoryId" rules={[{ required: true, message: "Category is required." }]}>
               <Select placeholder="Select category">
-              {blog_category.map((category, index) => (
+              {blogCategories.map((category, index) => (
                 <Select.Option value={category.blogCategoryId}  key={index}>{category.name}</Select.Option>
               ))}
               </Select>

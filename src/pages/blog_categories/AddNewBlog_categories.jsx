@@ -1,14 +1,14 @@
 import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
-import { useBlog_categoriesHook } from "./hooks/useBlog_categoriesHook";
+import { useAddNewBlogCategory } from "./hooks/useAddNewBlogCategory";
 
 export const AddNewBlog_categories = () => {
   const hasCreateCategoryPermission = checkPermission("create_blog_category");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [form] = Form.useForm();
-  const { addBlog_categories } = useBlog_categoriesHook();
+  const { addNewBlogCategories } = useAddNewBlogCategory();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -22,7 +22,7 @@ export const AddNewBlog_categories = () => {
   const handleSubmit = async (formData) => {
     try {
       setIsPending(true);
-      await addBlog_categories(formData);
+      await addNewBlogCategories(formData);
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {

@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useEditCustomerHook } from "./Hooks/useEditCustomerHook";
+import { useGetSingleCustomerHook } from "./Hooks/useGetSingleCustomerHook";
 
-export const EditCustomer = ({ customerId, initialValues }) => {
+export const EditCustomer = ({ customerId }) => {
   const { editCustomers } = useEditCustomerHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (isModalVisible) {
-      form.setFieldsValue(initialValues);
-    }
-  }, [isModalVisible, initialValues, form]);
+  const [loading, setLoading] = useState(false);
+  const { data } = useGetSingleCustomerHook(isModalVisible ? customerId : null);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -24,13 +21,28 @@ export const EditCustomer = ({ customerId, initialValues }) => {
   };
 
   const handleSubmit = async (values) => {
+    setLoading(true);
     try {
       await editCustomers(customerId, values);
       setIsModalVisible(false);
     } catch (error) {
-      console.error("Failed to edit user:", error);
+      console.error("Failed to edit customer:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        description: data.description,
+      });
+    }
+  }, [data, form]);
 
   return (
     <div>
@@ -39,16 +51,12 @@ export const EditCustomer = ({ customerId, initialValues }) => {
       </Button>
 
       <Modal
-        title="Edit Admin"
+        title="Edit Customer"
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleSubmit}
-        >
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
@@ -62,16 +70,15 @@ export const EditCustomer = ({ customerId, initialValues }) => {
 
             <Col span={12}>
               <Form.Item
-                label="email"
+                label="Email"
                 name="email"
-                rules={[{ required: true, message: "email is required." }]}
+                rules={[{ required: true, message: "Email is required." }]}
               >
                 <Input placeholder="Enter email" />
               </Form.Item>
             </Col>
           </Row>
 
-          {/* Phone */}
           <Form.Item
             label="Phone"
             name="phone"
@@ -89,22 +96,20 @@ export const EditCustomer = ({ customerId, initialValues }) => {
           </Form.Item>
 
           <Form.Item
-            label="description"
+            label="Description"
             name="description"
-            rules={[
-              { required: true, message: "description is required." },
-              {
-                type: "description",
-                message: "Please enter a valid description.",
-              },
-            ]}
+            rules={[{ required: true, message: "Description is required." }]}
           >
             <Input placeholder="Enter description" />
           </Form.Item>
 
-          {/* Submit Button */}
-          <Button type="primary" htmlType="submit" className="w-full">
-            Edit User
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={loading}
+          >
+            Edit Customer
           </Button>
         </Form>
       </Modal>

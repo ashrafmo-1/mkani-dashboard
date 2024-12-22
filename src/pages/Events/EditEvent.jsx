@@ -14,18 +14,14 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useEditEventHook } from "./Hooks/useEditEventHook";
+import { useGetSingleEventHook } from "./Hooks/useGetSingleEventHook";
 
-export const EditEvent = ({ eventId, initialValues }) => {
+export const EditEvent = ({ eventId }) => {
   const { editEvent } = useEditEventHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
-
-  useEffect(() => {
-    if (isModalVisible) {
-      form.setFieldsValue(initialValues);
-    }
-  }, [isModalVisible, initialValues, form]);
+  const { data } = useGetSingleEventHook(eventId);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -40,15 +36,29 @@ export const EditEvent = ({ eventId, initialValues }) => {
     setIsPending(true);
     try {
       await editEvent(eventId, values);
-      //   message.success("FAQ edited successfully.");
       setIsModalVisible(false);
     } catch (error) {
       message.error("Failed to edit FAQ.");
-      console.error("Failed to edit FAQ:", error);
     } finally {
       setIsPending(false);
     }
   };
+
+  useEffect(() => {
+    if (isModalVisible && data) {
+      form.setFieldsValue({
+        titleEn: data.titleEn,
+        titleAr: data.titleAr,
+        slugAr: data.slugAr,
+        slugEn: data.slugEn,
+        contentAr: data.contentAr,
+        contentEn: data.contentEn,
+        metaDataAr: data.metaDataAr,
+        metaDataEn: data.metaDataEn,
+        isPublished: data.isPublished,
+      });
+    }
+  }, [data, form, isModalVisible]);
 
   return (
     <div>

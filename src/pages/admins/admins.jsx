@@ -20,25 +20,27 @@ export const Admins = () => {
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
       <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">{t("users.title")}</h1>
+        <h1 className="text-4xl font-bold text-gray-800">
+          {t("modulesTitle.users")}
+        </h1>
         <AddNewUser />
       </div>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
-        <h4 className=" capitalize mb-2 text-2xl">fillters</h4>
+        <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
           <input
             type="search"
             name="search"
             className="border rounded outline-none py-1 px-3 w-[400px]"
             id="search"
-            placeholder="search"
+            placeholder={t("globals.search")}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Select
             defaultValue="Select Admin"
             style={{ width: 150 }}
-            // onChange={(e) => setStatusTerm( e.target.value )}
+            onChange={(e) => setStatusTerm( e.target.value )}
           >
             {type.map((item) => (
               <Select.Option value={item.value}>{item.label}</Select.Option>
@@ -56,19 +58,19 @@ export const Admins = () => {
             <Select.Option value="">
               <div className="flex gap-1 items-center">
                 <span className="p-1 bg-blue-500 h-2 w-2 rounded-full inline-block"></span>
-                <span>{t("all")}</span>
+                <span>{t("globals.status.all")}</span>
               </div>
             </Select.Option>
             <Select.Option value="1">
               <div className="flex gap-1 items-center">
                 <span className="p-1 bg-green-500 h-2 w-2 rounded-full inline-block"></span>
-                <span>{t("Active")}</span>
+                <span>{t("globals.status.active")}</span>
               </div>
             </Select.Option>
             <Select.Option value="0">
               <div className="flex gap-1 items-center">
                 <span className="p-1 bg-red-500 h-2 w-2 rounded-full inline-block"></span>
-                <span>{t("Inactive")}</span>
+                <span>{t("globals.status.inActive")}</span>
               </div>
             </Select.Option>
           </Select>
@@ -79,26 +81,15 @@ export const Admins = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3">
-                {"email"}
-              </th>
-              <th scope="col" className="px-6 py-3">
-                {"phone"}
-              </th>
-              <th scope="col" className="px-6 py-3">
-                {"address"}
-              </th>
-              <th scope="col" className="px-6 py-3">
-                {"status"}
-              </th>
-              <th scope="col" className="px-6 py-3">
-                {"Action"}
-              </th>
+              <th scope="col" className="px-6 py-3">{t("users.table.name")}</th>
+              <th scope="col" className="px-6 py-3">{t("users.table.phone")}</th>
+              <th scope="col" className="px-6 py-3">{t("users.table.address")}</th>
+              <th scope="col" className="px-6 py-3">{t("globals.status.title")}</th>
+              <th scope="col" className="px-6 py-3">{t("globals.action")}</th>
             </tr>
           </thead>
           <tbody>
-            {users &&
-              users.map((user, index) => (
+            {users && users.map((user, index) => (
                 <tr className="bg-white border-b" key={index}>
                   <th
                     scope="row"
@@ -111,11 +102,11 @@ export const Admins = () => {
                   <td className="px-6 py-4">
                     {user.status === 1 ? (
                       <span className="p-1 text-white bg-green-500 px-3 rounded-full">
-                        {t("Active")}
+                        {t("globals.status.active")}
                       </span>
                     ) : (
                       <span className="p-1 bg-red-500 text-white px-3 rounded-full">
-                        {t("inActive")}
+                        {t("globals.status.inActive")}
                       </span>
                     )}
                   </td>

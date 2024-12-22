@@ -5,7 +5,7 @@ import axiosInstance from "../../../utils/axiosConfig";
 export const useEditProductCategoryHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
-  const editFaq = async (productCategoryId, values) => {
+  const editProductCategory = async (productCategoryId, values) => {
     try {
       await axiosInstance.put(`${i18n.language}/admin/product-categories/update?productCategoryId=${productCategoryId}`, values);
       queryClient.invalidateQueries('productsCategory');
@@ -17,5 +17,5 @@ export const useEditProductCategoryHook = () => {
     }
   };
 
-  return { editFaq };
+  return { editProductCategory };
 }

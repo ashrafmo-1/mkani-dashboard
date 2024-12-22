@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
-import { Button, Form, message, Modal } from "antd";
+import { Button, Col, Form, message, Modal, Row } from "antd";
 import { useAddNewCareer } from "./hooks/useAddNewCareer";
 import { CareerTitle } from "./components/CareerTitle";
 import { CareerDescription } from "./components/CareerDescription";
@@ -45,19 +45,48 @@ const AddNewCareer = () => {
 
   return (
     <div>
-      {hasCreateUserPermission && (<Button onClick={showModal}>add new faq</Button>)}
-      <Modal title="Add New career" footer={null} visible={isModalVisible} onCancel={handleCancel} width={850}>
+      {hasCreateUserPermission && (
+        <Button onClick={showModal}>add new career</Button>
+      )}
+      <Modal
+        title="Add New career"
+        footer={null}
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        width={850}
+      >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <CareerTitle />
           <CareerDescription />
           <CareerContent />
-          <CareerMetaDataEn />
-          <CareermetaDataAr />
-          <CareerExtraDetailsEn />
-          <CareerExtraDetailsAr />
+
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <CareerMetaDataEn />
+            </Col>
+            <Col span={12}>
+              <CareermetaDataAr />
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <CareerExtraDetailsEn />
+            </Col>
+            <Col span={12}>
+              <CareerExtraDetailsAr />
+            </Col>
+          </Row>
+
           <Slug />
           <CareerIsActive />
-          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
+          
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+          >
             {"Add New career"}
           </Button>
         </Form>

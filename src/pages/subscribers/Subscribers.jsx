@@ -64,7 +64,7 @@ export const Subscribers = () => {
                 </th>
                 <td className="px-6 py-4 flex gap-3">
                     <DelereSebscriper subscriberId={subscriber.subscriberId} />
-                    <EditSubscriper subscriberId={subscriber.faqId} initialValues={subscriber} />
+                    {/* <EditSubscriper subscriberId={subscriber.faqId} /> */}
                 </td>
                 </tr>
             ))}

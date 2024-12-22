@@ -1,38 +1,91 @@
 {
   "modulesTitle": {
     "dashboard": "لوحة التحكم",
-    "users": "المستخدمين",
+    "users": "المستخدمون",
+    "customers": "العملاء",
     "roles": "الأدوار",
     "careers": "الوظائف",
-    "bolgs": "المدونات",
-    "bolgsCategory": "فئة المدونات",
-    "candidates": "المرشحين",
+    "blogs": "المدونات",
+    "bolgsCategory": "تصنيف المدونات",
+    "candidates": "المرشحون",
     "custormers": "العملاء",
     "events": "الفعاليات",
     "faq": "الأسئلة الشائعة",
-    "newsLetter": "النشرة الإخبارية",
-    "prodcuts": "المنتجات",
-    "productCategory": "فئة المنتجات",
-    "subscribers": "المشتركين"
+    "newsLetter": "النشرة البريدية",
+    "products": "المنتجات",
+    "productCategory": "تصنيف المنتجات",
+    "subscribers": "المشتركون"
   },
   "globals": {
     "filter": "تصفية",
-    "addNew": "إضافة جديد"
+    "search": "بحث",
+    "action": "الإجراء",
+    "addNew": "إضافة جديد",
+    "status": {
+      "title": "الحالة",
+      "all": "الكل",
+      "active": "نشط",
+      "inActive": "غير نشط"
+    }
   },
-  
-  "dashboard": {
-    "usersCount": "عدد المستخدمين",
-    "productsCount": "عدد المنتجات"
+  "Home": {
+    "title": "تحليلات لوحة التحكم"
   },
-  
   "users": {
-    "title": "إدارة المستخدمين",
+    "add": "إضافة مستخدم جديد",
+    "selects": {
+      "role": "الدور"
+    },
+    "table": {
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "address": "العنوان"
+    }
+  },
+  "customers": {
+    "title": "العملاء",
+    "name": "الاسم",
+    "phone": "الهاتف",
+    "add": "إضافة عميل جديد",
+    "email": "البريد الإلكتروني",
+    "address": "العنوان",
+    "description": "الوصف",
+    "placeholder": {
+      "EnterName": "أدخل الاسم",
+      "EnterEmail": "أدخل البريد الإلكتروني",
+      "EnterPhone": "أدخل رقم الهاتف",
+      "EnterAddress": "أدخل العنوان",
+      "EnterDescriptoin": "أدخل الوصف"
+    }
+  },
+  "products": {
+    "title": "المنتجات",
     "name": "الاسم",
     "email": "البريد الإلكتروني",
-    "role": "الدور"
-  },
-  
-  "roles": {
-    "title": "إدارة الأدوار"
+    "address": "العنوان",
+    "description": "الوصف",
+    "add": {
+      "title": "إضافة منتج جديد",
+      "lables": {
+        "nameEN": "الاسم بالإنجليزية",
+        "nameAR": "الاسم بالعربية",
+        "DescriptoinEN": "الوصف بالإنجليزية",
+        "DescriptoinAR": "الوصف بالعربية",
+        "ContentEN": "المحتوى بالإنجليزية",
+        "ContentAR": "المحتوى بالعربية",
+        "slugEN": "الروابط بالإنجليزية",
+        "slugAR": "الروابط بالعربية"
+      },
+      "placeholder": {
+        "EnterEnName": "أدخل الاسم بالإنجليزية",
+        "EnterArName": "أدخل الاسم بالعربية",
+        "EnterDescriptoinEN": "أدخل الوصف بالإنجليزية",
+        "EnterDescriptoinAR": "أدخل الوصف بالعربية",
+        "EnterContentEN": "أدخل المحتوى بالإنجليزية",
+        "EnterContentAR": "أدخل المحتوى بالعربية",
+        "EnterslugEN": "أدخل الروابط بالإنجليزية",
+        "EnterslugAR": "أدخل الروابط بالعربية"
+      }
+    }
   }
 }

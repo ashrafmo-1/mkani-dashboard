@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useProductsCategoryHook } from "./hooks/useProductsCategoryHook";
 import { AddNewProductCategeory } from "./AddNewProductCategeory";
 import { DeleteProductCategory } from "./DeleteProductCategory";
+import { EditProductCategory } from "./EditProductCategory";
 
 export const ProductCategory = () => {
   const { t } = useTranslation();
@@ -60,10 +61,7 @@ export const ProductCategory = () => {
               </th>
               <td className="px-6 py-4 flex gap-3">
                 <DeleteProductCategory productCategoryId={productCategory.productCategoryId} />
-                {/* <EditNewsLetter */}
-                {/* newsletterId={newsletter.newsletterId} */}
-                {/* initialValues={newsletter} */}
-                {/* /> */}
+                <EditProductCategory productCategoryId={productCategory.productCategoryId} />
               </td>
             </tr>
             ))}

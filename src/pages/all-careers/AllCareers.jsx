@@ -5,6 +5,7 @@ import { Pagination } from "antd";
 import { useCareers } from "./hooks/useCareers";
 import DeleteCareer from "./DeleteCareer";
 import AddNewCareer from "./AddNewCareer";
+import EditAllCareers from "./EditAllCareers";
 
 const AllCareers = () => {
   const { t } = useTranslation();
@@ -61,7 +62,7 @@ const AllCareers = () => {
                   </th>
                   <td className="px-6 py-4 flex gap-3">
                     <DeleteCareer careerId={career.careerId} />
-                    {/* <EditFaq faqId={faq.faqId} initialValues={faq} /> */}
+                    <EditAllCareers careerId={career.careerId} />
                   </td>
                 </tr>
               ))}

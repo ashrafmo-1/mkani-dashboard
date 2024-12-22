@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 export const useEditProductHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
-  const editFaq = async (faqId, values) => {
+  const editProduct = async (faqId, values) => {
     try {
       await axiosInstance.put(`${i18n.language}/admin/products/update?productId=${faqId}`,  values);
       queryClient.invalidateQueries('products');
@@ -17,5 +17,5 @@ export const useEditProductHook = () => {
     }
   };
 
-  return { editFaq };
+  return { editProduct };
 }

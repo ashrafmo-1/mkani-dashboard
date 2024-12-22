@@ -2,18 +2,14 @@ import { EditOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import useEditNewsLetterHook from "./hooks/useEditNewsLetterHook";
+import { useGetSingleNewsLetter } from "./hooks/useGetSingleNewsLetter";
 
-const EditNewsLetter = ({initialValues, newsletterId}) => {
+const EditNewsLetter = ({ newsletterId }) => {
   const { editNewsletter } = useEditNewsLetterHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
-
-  useEffect(() => {
-    if (isModalVisible) {
-      form.setFieldsValue(initialValues);
-    }
-  }, [isModalVisible, initialValues, form]);
+  const { data } = useGetSingleNewsLetter(newsletterId);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -36,9 +32,20 @@ const EditNewsLetter = ({initialValues, newsletterId}) => {
       setIsPending(false);
     }
   };
+
+  useEffect(() => {
+    if (isModalVisible && data) {
+      form.setFieldsValue({
+        subject: data.subject,
+        content: data.content,
+        isSent: data.isSent,
+      });
+    }
+  }, [data, form, isModalVisible]);
+
   return (
     <div>
-      <Button className="edit" onClick={showModal} >
+      <Button className="edit" onClick={showModal}>
         <EditOutlined />
       </Button>
 
@@ -49,34 +56,24 @@ const EditNewsLetter = ({initialValues, newsletterId}) => {
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Form.Item
-            label="subject"
-            name="subject"
-            rules={[{ required: true, message: "subject is required." }]}
-          >
+          <Form.Item label="subject" name="subject">
             <Input placeholder="Enter subject" />
           </Form.Item>
 
-          <Form.Item
-            label="content"
-            name="content"
-            rules={[{ required: true, message: "content is required." }]}
-          >
+          <Form.Item label="content" name="content">
             <Input placeholder="Enter content" />
           </Form.Item>
 
-          <Form.Item
-            label="is sent"
-            name="isSent"
-            rules={[{ required: true, message: "is isSent is required." }]}
-          >
+          <Form.Item label="is sent" name="isSent">
             <Select placeholder="Select status">
               <Select.Option value="1">Sent</Select.Option>
               <Select.Option value="0">no</Select.Option>
             </Select>
           </Form.Item>
 
-          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>{"edit"}</Button>
+          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
+            {"edit"}
+          </Button>
         </Form>
       </Modal>
     </div>
