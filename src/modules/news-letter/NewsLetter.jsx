@@ -6,14 +6,12 @@ import EditNewsLetter from "./EditNewsLetter";
 import DeleteNewsLetter from "./DeleteNewsLetter";
 import useNewsLetterHook from "./hooks/useNewsLetterHook";
 import { Status } from "../../components/Status";
+import { SearchFilter } from "../../components/SearchFilter";
+
 export const NewsLetter = () => {
   const { t } = useTranslation();
-  const {
-    pageCount,
-    newsletters,
-    setSearchTerm,
-    setCurrentPage,
-  } = useNewsLetterHook();
+  const { pageCount, newsletters, setSearchTerm, setCurrentPage } =
+    useNewsLetterHook();
 
   const onChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -21,37 +19,31 @@ export const NewsLetter = () => {
 
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">{t("News letter")}</h1>
-        <AddNewsLetter />
-      </div>
+      <h1 className="text-4xl font-bold text-gray-800 mb-8">
+        {t("NewsLetter.title")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
-        <h4 className=" capitalize mb-2 text-2xl">fillter</h4>
+        <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
-          <input
-            type="search"
-            name="search"
-            className="border rounded outline-none py-1 px-3 w-[400px]"
-            id="search"
-            placeholder="search"
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <SearchFilter search={setSearchTerm} />
         </div>
       </div>
 
-      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
+      <AddNewsLetter />
+
+      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
-                {"subject"}
+                {t("NewsLetter.table.subject")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"is Sent"}
+                {t("NewsLetter.table.isSent")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"action"}
+                {t("globals.action")}
               </th>
             </tr>
           </thead>

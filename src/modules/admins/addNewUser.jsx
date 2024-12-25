@@ -45,7 +45,7 @@ export const AddNewUser = () => {
     <div>
       {hasCreateUserPermission ? (
         <>
-          <Button className="" onClick={showModal}>
+          <Button type="primary" onClick={showModal}>
             <PlusSquareFilled />
             {t("users.add")}
           </Button>

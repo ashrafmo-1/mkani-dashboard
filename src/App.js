@@ -1,5 +1,5 @@
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { LOGIN_PAGE } from "./modules/login/page";
 import { Side_bar } from "./common/side_bar";
 import { Home } from "./modules/home/page";
@@ -23,6 +23,7 @@ import Candidates from "./modules/candidates/Candidates";
 import Products from "./modules/product/Products";
 import { ProductCategory } from "./modules/product-category/ProductCategory";
 import { useEffect } from "react";
+import { PortfolioSettings } from "./pages/portfolioSettings";
 
 function App() {
   // const permissions = useContext(PermissionsContext);
@@ -70,6 +71,7 @@ function App() {
             <Route path="subscribers" element={<Subscribers />} />
             <Route path="careers" element={<AllCareers />} />
             <Route path="candidates" element={<Candidates />} />
+            <Route path="portfolio-settings" element={<PortfolioSettings />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

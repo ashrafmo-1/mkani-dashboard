@@ -13,8 +13,10 @@ import {
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
 import { useAddProductCategoryHook } from "./hooks/useAddProductCategoryHook";
+import { useTranslation } from "react-i18next";
 
 export const AddNewProductCategeory = () => {
+  const { t } = useTranslation();
   const { addProductCategory } = useAddProductCategoryHook();
   const hasCreateUserPermission = checkPermission("create_customer");
   const [form] = Form.useForm();
@@ -34,14 +36,14 @@ export const AddNewProductCategeory = () => {
     try {
       setIsPending(true);
       await addProductCategory(form_data);
-      message.success("Product added successfully.");
+      message.success(t("productCategory.add.successMessage"));
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
       if (error.response?.data?.message) {
         message.error(error.response.data.message);
       } else {
-        message.error("Failed to send form. Please try again.");
+        message.error(t("productCategory.add.errorMessage"));
       }
     } finally {
       setIsPending(false);
@@ -51,70 +53,99 @@ export const AddNewProductCategeory = () => {
   return (
     <div>
       {hasCreateUserPermission && (
-        <Button onClick={showModal}>
+        <Button onClick={showModal} type="primary">
           <PlusSquareFilled />
-          {"add new product"}
+          {t("productCategory.add.title")}
         </Button>
       )}
 
       <Modal
-        title="Add New product"
+        title={t("productCategory.add.title")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
-        // width={1440}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="name english"
+                label={t("productCategory.add.lables.nameEN")}
                 name="nameEn"
                 rules={[
-                  { required: true, message: "name english is required." },
+                  {
+                    required: true,
+                    message:
+                      t("productCategory.add.lables.nameEN") + " is required.",
+                  },
                 ]}
               >
-                <Input placeholder="Enter name english" />
+                <Input
+                  placeholder={t("productCategory.add.placeholder.EnterName")}
+                />
               </Form.Item>
             </Col>
 
             <Col span={12}>
               <Form.Item
-                label="name arabic"
+                label={t("productCategory.add.lables.nameAR")}
                 name="nameAr"
                 rules={[
-                  { required: true, message: "name arabic is required." },
+                  {
+                    required: true,
+                    message: t("lables.nameAR") + " is required.",
+                  },
                 ]}
               >
-                <Input placeholder="Enter name arabic" />
+                <Input
+                  placeholder={t("productCategory.add.placeholder.EnterName")}
+                />
               </Form.Item>
             </Col>
           </Row>
 
           <Form.Item
-            label="is active"
+            label={t("globals.status.checkActive")}
             name="isActive"
-            rules={[{ required: true, message: "is active is required." }]}
+            rules={[
+              {
+                required: true,
+                message:
+                  t("productCategory.add.lables.isActive") + " is required.",
+              },
+            ]}
           >
-            <Select placeholder="Select status">
-              <Select.Option value="1">done</Select.Option>
-              <Select.Option value="0">no</Select.Option>
+            <Select placeholder={t("globals.status.checkActive")}>
+              <Select.Option value="1">
+                {t("globals.status.active")}
+              </Select.Option>
+              <Select.Option value="0">
+                {t("globals.status.inActive")}
+              </Select.Option>
             </Select>
           </Form.Item>
 
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Thumbnail"
+                label={t("productCategory.add.lables.thumbnail")}
                 name="image"
                 valuePropName="fileList"
                 getValueFromEvent={(e) =>
                   Array.isArray(e) ? e : e && e.fileList
                 }
-                rules={[{ required: true, message: "Thumbnail is required." }]}
+                rules={[
+                  {
+                    required: true,
+                    message:
+                      t("productCategory.add.placeholder.thumbnail") +
+                      " is required.",
+                  },
+                ]}
               >
                 <Upload listType="picture" beforeUpload={() => false}>
-                  <Button icon={<UploadOutlined />}>Upload Thumbnail</Button>
+                  <Button icon={<UploadOutlined />}>
+                    {t("productCategory.add.placeholder.thumbnail")}
+                  </Button>
                 </Upload>
               </Form.Item>
             </Col>
@@ -126,7 +157,7 @@ export const AddNewProductCategeory = () => {
             className="w-full"
             loading={isPending}
           >
-            {"Add New Product"}
+            {t("productCategory.add.title")}
           </Button>
         </Form>
       </Modal>

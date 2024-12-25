@@ -8,6 +8,7 @@ import axiosInstance from '../../../utils/axiosConfig';
 export const useEventHook = () => {
   const { i18n } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const queryClient = useQueryClient();
 
   const fetchEvents = async ({ queryKey }) => {
@@ -25,7 +26,7 @@ export const useEventHook = () => {
   };
 
   const { data, error, isLoading } = useQuery(
-    ['Events', { customFilters: {}, page: 1, search: searchTerm }],
+    ['Events', { customFilters: {}, page: currentPage, search: searchTerm }],
     fetchEvents,
     {
       keepPreviousData: true,
@@ -39,5 +40,5 @@ export const useEventHook = () => {
   const events = data?.result?.events || [];
   const pageCount = data?.pagination || {};
 
-  return { events, pageCount, setSearchTerm, error, isLoading };
+  return { events, pageCount, setSearchTerm, error, isLoading, setCurrentPage };
 };

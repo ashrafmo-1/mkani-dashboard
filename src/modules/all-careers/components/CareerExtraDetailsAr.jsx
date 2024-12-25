@@ -1,13 +1,15 @@
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Form } from "antd";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export const CareerExtraDetailsAr = () => {
+  const { t } = useTranslation();
   return (
     <Form.Item
       name="extraDetailsAr"
-      label="arabic extra Detail"
-      rules={[{ required: true, message: "This field is required" }]}
+      label={t("careers.labels.extraDetailsAr.title")}
+      rules={[{ required: true, message: t("careers.labels.extraDetailsAr.required.global") }]}
     >
       <Form.List name="extraDetailsAr">
         {(fields, { add, remove }) => (
@@ -22,17 +24,17 @@ export const CareerExtraDetailsAr = () => {
                   {...restField}
                   name={[name, "title"]}
                   fieldKey={[fieldKey, "title"]}
-                  rules={[{ required: true, message: "Title is required" }]}
+                  rules={[{ required: true, message: t("careers.labels.extraDetailsAr.required.title") }]}
                 >
-                  <Input placeholder="Enter title arabic" />
+                  <Input placeholder={t("careers.placeholders.EnterExtraDetailsAr")} />
                 </Form.Item>
                 <Form.Item
                   {...restField}
                   name={[name, "value"]}
                   fieldKey={[fieldKey, "value"]}
-                  rules={[{ required: true, message: "Value is required" }]}
+                  rules={[{ required: true, message: t("careers.labels.extraDetailsAr.required.value") }]}
                 >
-                  <Input placeholder="Enter value arabic" />
+                  <Input placeholder={t("careers.placeholders.EnterExtraDetailsAr")} />
                 </Form.Item>
                 {fields.length > 1 && (
                   <MinusCircleOutlined onClick={() => remove(name)} />
@@ -45,7 +47,7 @@ export const CareerExtraDetailsAr = () => {
                 onClick={() => add()}
                 icon={<PlusOutlined />}
               >
-                Add arabic extra Detail
+                {t("globals.add")}
               </Button>
             </Form.Item>
           </>

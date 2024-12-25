@@ -1,18 +1,18 @@
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form, Button, Input, Space } from "antd";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export const CareermetaDataAr = () => {
+  const { t } = useTranslation();
   return (
     <Form.Item
       name="metaDataAr"
-      label="Meta data Value arabic"
-      rules={[{ required: true, message: "This field is required" }]}
+      label={t("careers.labels.metaDataAr.title")}
+      rules={[{ required: true, message: t("careers.labels.metaDataEn.required.global") }]}
     >
       <Form.List
         name="metaDataAr"
-        label="Meta data Value arabic"
-        rules={[{ required: true, message: "This field is required" }]}
       >
         {(fields, { add, remove }) => (
           <>
@@ -26,17 +26,17 @@ export const CareermetaDataAr = () => {
                   {...restField}
                   name={[name, "title"]}
                   fieldKey={[fieldKey, "title"]}
-                  rules={[{ required: true, message: "Title is required" }]}
+                  rules={[{ required: true, message: t("careers.labels.metaDataEn.required.title") }]}
                 >
-                  <Input placeholder="Enter title English" />
+                  <Input placeholder={t("careers.placeholders.EnterMetaDataAr")} />
                 </Form.Item>
                 <Form.Item
                   {...restField}
                   name={[name, "value"]}
                   fieldKey={[fieldKey, "value"]}
-                  rules={[{ required: true, message: "Value is required" }]}
+                  rules={[{ required: true, message: t("careers.labels.metaDataEn.required.value") }]}
                 >
-                  <Input placeholder="Enter value English" />
+                  <Input placeholder={t("careers.placeholders.EnterMetaDataAr")} />
                 </Form.Item>
                 {fields.length > 1 && (
                   <MinusCircleOutlined onClick={() => remove(name)} />
@@ -49,7 +49,7 @@ export const CareermetaDataAr = () => {
                 onClick={() => add()}
                 icon={<PlusOutlined />}
               >
-                Add English extra Detail
+                {t("globals.add")}
               </Button>
             </Form.Item>
           </>

@@ -2,7 +2,7 @@ import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import { useBlog_categoriesHook } from "./hooks/useBlog_categoriesHook";
 import { AddNewBlog_categories } from "./AddNewBlog_categories";
-import { EditBlog_categories, EditBlogCategories } from "./EditBlog_categories";
+import { EditBlogCategories } from "./EditBlog_categories";
 import { DeleteBlogCategory } from "./DeleteBlogCategory";
 
 export const Blog_categories = () => {
@@ -16,39 +16,38 @@ export const Blog_categories = () => {
 
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800 capitalize">
-          {t("blog_categories")}
-        </h1>
-        <AddNewBlog_categories />
-      </div>
+      <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8">
+        {t("blogCategory.title")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
-        <h4 className=" capitalize mb-2 text-2xl">fillters</h4>
+        <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
           <input
             type="search"
             name="search"
             className="border rounded outline-none py-1 px-3 w-[400px]"
             id="search"
-            placeholder="search"
+            placeholder={t("globals.search")}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
 
-      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
+      <AddNewBlog_categories />
+
+      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
-                {"name"}
+                {t("blogCategory.table.name")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"is active"}
+                {t("blogCategory.table.isActive")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {"Action"}
+                {t("globals.action")}
               </th>
             </tr>
           </thead>
@@ -59,11 +58,11 @@ export const Blog_categories = () => {
                 <td className="px-6 py-4">
                   {blogCategory.isActive === 1 ? (
                     <div className="bg-green-600 py-1 px-3 text-white w-fit rounded-full flex justify-center items-center">
-                      active
+                      {t("globals.status.active")}
                     </div>
                   ) : (
                     <div className="bg-red-600 py-1 px-3 text-white  w-fit rounded-full flex justify-center items-center">
-                      In active
+                      {t("globals.status.inActive")}
                     </div>
                   )}
                 </td>
@@ -71,13 +70,14 @@ export const Blog_categories = () => {
                   <DeleteBlogCategory
                     blogCategoryId={blogCategory.blogCategoryId}
                   />
-                  <EditBlogCategories blogCategoryId={blogCategory.blogCategoryId} />
+                  <EditBlogCategories
+                    blogCategoryId={blogCategory.blogCategoryId}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
         <Pagination
           showQuickJumper
           current={pageCount["current_page"]}

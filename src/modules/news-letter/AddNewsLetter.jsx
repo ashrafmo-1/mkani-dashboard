@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
 import { Button, Form, Input, message, Modal, Select } from "antd";
 import useAddNewNewsLetterHook from "./hooks/useAddNewNewsLetterHook";
+import { useTranslation } from "react-i18next";
+import { PlusSquareFilled } from "@ant-design/icons";
 
 const AddNewsLetter = () => {
+  const { t } = useTranslation();
   const hasCreateUserPermission = checkPermission("create_customer");
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
@@ -41,44 +44,42 @@ const AddNewsLetter = () => {
   return (
     <div>
       {hasCreateUserPermission && (
-        <Button onClick={showModal}>add new News letter</Button>
+        <Button onClick={showModal} type="primary">
+          <PlusSquareFilled />
+          {t("globals.add")}</Button>
       )}
+
       <Modal
-        title="Add New News letter"
+        title={t("globals.add")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
       >
-
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
-            label="subject"
+            label={t("NewsLetter.labels.subject")}
             name="subject"
-            rules={[
-              { required: true, message: "subject is required." },
-            ]}
+            rules={[{ required: true, message: t("validation.titleEnRequired") }]}
           >
-            <Input placeholder="Enter subject" />
+            <Input placeholder={t("NewsLetter.placeholders.EnterSubject")} />
           </Form.Item>
 
           <Form.Item
-            label="content"
+            label={t("NewsLetter.labels.content")}
             name="content"
-            rules={[
-              { required: true, message: "content is required." },
-            ]}
+            rules={[{ required: true, message: t("validation.descriptionEnRequired") }]}
           >
-            <Input placeholder="Enter content" />
+            <Input placeholder={t("NewsLetter.placeholders.EnterContent")} />
           </Form.Item>
 
           <Form.Item
-            label="is sent"
+            label={t("NewsLetter.labels.isSent")}
             name="isSent"
-            rules={[{ required: true, message: "is isSent is required." }]}
+            rules={[{ required: true, message: t("validation.isPublishedRequired") }]}
           >
-            <Select placeholder="Select status">
-              <Select.Option value="1">Sent</Select.Option>
-              <Select.Option value="0">no</Select.Option>
+            <Select placeholder={t("NewsLetter.placeholders.SelectStatus")}>
+              <Select.Option value="1">{t("globals.status.yes")}</Select.Option>
+              <Select.Option value="0">{t("globals.status.no")}</Select.Option>
             </Select>
           </Form.Item>
 
@@ -88,7 +89,7 @@ const AddNewsLetter = () => {
             className="w-full"
             loading={isPending}
           >
-            Add New News letter
+            {t("globals.add")}
           </Button>
         </Form>
       </Modal>

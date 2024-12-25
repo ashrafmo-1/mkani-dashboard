@@ -3,8 +3,10 @@ import { Button, Form, Input, message, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import useEditNewsLetterHook from "./hooks/useEditNewsLetterHook";
 import { useGetSingleNewsLetter } from "./hooks/useGetSingleNewsLetter";
+import { useTranslation } from "react-i18next";
 
 const EditNewsLetter = ({ newsletterId }) => {
+  const { t } = useTranslation();
   const { editNewsletter } = useEditNewsLetterHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
@@ -50,29 +52,29 @@ const EditNewsLetter = ({ newsletterId }) => {
       </Button>
 
       <Modal
-        title="edit New news letter"
+        title={t("globals.edit")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Form.Item label="subject" name="subject">
-            <Input placeholder="Enter subject" />
+          <Form.Item label={t("NewsLetter.labels.subject")} name="subject">
+            <Input placeholder={t("NewsLetter.placeholders.EnterSubject")} />
           </Form.Item>
 
-          <Form.Item label="content" name="content">
-            <Input placeholder="Enter content" />
+          <Form.Item label={t("NewsLetter.labels.content")} name="content">
+            <Input placeholder={t("NewsLetter.placeholders.EnterContent")} />
           </Form.Item>
 
-          <Form.Item label="is sent" name="isSent">
-            <Select placeholder="Select status">
-              <Select.Option value="1">Sent</Select.Option>
-              <Select.Option value="0">no</Select.Option>
+          <Form.Item label={t("NewsLetter.labels.isSent")} name="isSent">
+            <Select placeholder={t("NewsLetter.placeholders.SelectStatus")}>
+              <Select.Option value="1">{t("globals.status.yes")}</Select.Option>
+              <Select.Option value="0">{t("globals.status.no")}</Select.Option>
             </Select>
           </Form.Item>
 
           <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
-            {"edit"}
+            {t("globals.edit")}
           </Button>
         </Form>
       </Modal>

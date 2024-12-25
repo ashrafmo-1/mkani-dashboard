@@ -1,26 +1,29 @@
 import { Input, Form, Row, Col } from "antd";
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 export const Slug = () => {
+  const { t } = useTranslation();
+
   return (
     <Row gutter={[16, 16]}>
       <Col span={12}>
         <Form.Item
-          label="slug english"
+          label={t("globals.slugEn")}
           name="slugEn"
-          rules={[{ required: true, message: "slug english is required." }]}
+          rules={[{ required: true, message: t("globals.slugEn") }]}
         >
-          <Input placeholder="Enter slug english" />
+          <Input placeholder={t("globals.slugEn")} />
         </Form.Item>
       </Col>
 
       <Col span={12}>
         <Form.Item
-          label="slug arabic"
+          label={t("globals.slugAr")}
           name="slugAr"
-          rules={[{ required: true, message: "slug arabic is required." }]}
+          rules={[{ required: true, message: t("globals.slugAr") }]}
         >
-          <Input placeholder="Enter slug arabic" />
+          <Input placeholder={t("globals.slugAr")} />
         </Form.Item>
       </Col>
     </Row>

@@ -19,12 +19,9 @@ export const Admins = () => {
 
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">
-          {t("modulesTitle.users")}
-        </h1>
-        <AddNewUser />
-      </div>
+      <h1 className="text-4xl font-bold text-gray-800 mb-8">
+        {t("modulesTitle.users")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
@@ -40,7 +37,7 @@ export const Admins = () => {
           <Select
             defaultValue="Select Admin"
             style={{ width: 150 }}
-            onChange={(e) => setStatusTerm( e.target.value )}
+            onChange={(e) => setStatusTerm(e.target.value)}
           >
             {type.map((item) => (
               <Select.Option value={item.value}>{item.label}</Select.Option>
@@ -77,19 +74,32 @@ export const Admins = () => {
         </div>
       </div>
 
-      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
+      <AddNewUser />
+
+      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3">{t("users.table.name")}</th>
-              <th scope="col" className="px-6 py-3">{t("users.table.phone")}</th>
-              <th scope="col" className="px-6 py-3">{t("users.table.address")}</th>
-              <th scope="col" className="px-6 py-3">{t("globals.status.title")}</th>
-              <th scope="col" className="px-6 py-3">{t("globals.action")}</th>
+              <th scope="col" className="px-6 py-3">
+                {t("users.table.name")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("users.table.phone")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("users.table.address")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("globals.status.title")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("globals.action")}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {users && users.map((user, index) => (
+            {users &&
+              users.map((user, index) => (
                 <tr className="bg-white border-b" key={index}>
                   <th
                     scope="row"

@@ -9,15 +9,7 @@ import { AddBlog } from "./AddBlog";
 
 export const Blogs = () => {
   const { t } = useTranslation();
-  const {
-    pageCount,
-    setSearchTerm,
-    setCurrentPage,
-    error,
-    isLoading,
-    currentPage,
-    blogs,
-  } = useBlogHook();
+  const { pageCount, setSearchTerm, setCurrentPage, blogs } = useBlogHook();
 
   const onChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -25,55 +17,50 @@ export const Blogs = () => {
 
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      {/* header titles */}
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">{t("blogs")}</h1>
-        <AddBlog />
-      </div>
+      <h1 className="text-4xl font-bold text-gray-800 mb-8">
+        {t("blogs.title")}
+      </h1>
 
-      {/* fillter as you like */}
       <div className="filter mb-6 shadow p-4 rounded-lg">
-        <h4 className=" capitalize mb-2 text-2xl">fillters</h4>
+        <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
           <input
             type="search"
             name="search"
             className="border rounded outline-none py-1 px-3 w-[400px]"
             id="search"
-            placeholder="search"
-            onChange={(e) => setSearchTerm( e.target.value )}
+            placeholder={t("globals.search")}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
 
-      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
+      <AddBlog />
+
+      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
-                {" "}
-                {"thumbnail"}{" "}
+                {t("blogs.add.TableThumbnail")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {" "}
-                {"title"}{" "}
+                {t("blogs.add.TableTitle")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {" "}
-                {"category name"}{" "}
+                {t("blogs.add.TableCategoryName")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {" "}
-                {"is published"}{" "}
+                {t("blogs.add.TableIsPublished")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {" "}
-                {"Action"}{" "}
+                {t("blogs.add.TableAction")}
               </th>
             </tr>
           </thead>
           <tbody>
-            {blogs && blogs.map((blog, index) => (
+            {blogs &&
+              blogs.map((blog, index) => (
                 <tr className="bg-white border-b" key={index}>
                   <th
                     scope="row"

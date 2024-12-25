@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
 import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import { useAddFaqHook } from "./hooks/useAddFaqHook";
+import { PlusSquareFilled } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 export const AddFaq = () => {
+  const { t } = useTranslation();
   const hasCreateUserPermission = checkPermission("create_customer");
   const { addFaq } = useAddFaqHook();
   const [form] = Form.useForm();
@@ -39,11 +42,14 @@ export const AddFaq = () => {
   return (
     <div>
       {hasCreateUserPermission && (
-        <Button onClick={showModal}>add new faq</Button>
+        <Button onClick={showModal} type="primary">
+          {t("globals.add")}
+          <PlusSquareFilled />
+        </Button>
       )}
 
       <Modal
-        title="Add New FAQ"
+        title={t("globals.add")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
@@ -52,25 +58,31 @@ export const AddFaq = () => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="question english"
+                label={t("faqs.labels.questionEn")}
                 name="questionEn"
                 rules={[
-                  { required: true, message: "question english is required." },
+                  {
+                    required: true,
+                    message: t("faqs.placeholders.EnterQuestionEn"),
+                  },
                 ]}
               >
-                <Input placeholder="Enter question english" />
+                <Input placeholder={t("faqs.placeholders.EnterQuestionEn")} />
               </Form.Item>
             </Col>
 
             <Col span={12}>
               <Form.Item
-                label="question arabic"
+                label={t("faqs.labels.questionAr")}
                 name="questionAr"
                 rules={[
-                  { required: true, message: "question arabic is required." },
+                  {
+                    required: true,
+                    message: t("faqs.placeholders.EnterQuestionAr"),
+                  },
                 ]}
               >
-                <Input placeholder="Enter question arabic" />
+                <Input placeholder={t("faqs.placeholders.EnterQuestionAr")} />
               </Form.Item>
             </Col>
           </Row>
@@ -78,49 +90,61 @@ export const AddFaq = () => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="answer english"
+                label={t("faqs.labels.answerEn")}
                 name="answerEn"
                 rules={[
-                  { required: true, message: "answer english is required." },
+                  {
+                    required: true,
+                    message: t("faqs.placeholders.EnterAnswerEn"),
+                  },
                 ]}
               >
-                <Input placeholder="Enter answer english" />
+                <Input placeholder={t("faqs.placeholders.EnterAnswerEn")} />
               </Form.Item>
             </Col>
 
             <Col span={12}>
               <Form.Item
-                label="answer arabic"
+                label={t("faqs.labels.answerAr")}
                 name="answerAr"
                 rules={[
-                  { required: true, message: "answer arabic is required." },
+                  {
+                    required: true,
+                    message: t("faqs.placeholders.EnterAnswerAr"),
+                  },
                 ]}
               >
-                <Input placeholder="Enter answer arabic" />
+                <Input placeholder={t("faqs.placeholders.EnterAnswerAr")} />
               </Form.Item>
             </Col>
           </Row>
 
           <Form.Item
-            label="is published"
+            label={t("globals.status.checlkPublished")}
             name="isPublished"
-            rules={[{ required: true, message: "is published is required." }]}
+            rules={[
+              { required: true, message: t("globals.status.checlkPublished") },
+            ]}
           >
-            <Select placeholder="Select status">
-              <Select.Option value="1">Published</Select.Option>
-              <Select.Option value="0">Draft</Select.Option>
+            <Select placeholder={t("globals.status.checlkPublished")}>
+              <Select.Option value="1">
+                {t("globals.status.published")}
+              </Select.Option>
+              <Select.Option value="0">
+                {t("globals.status.draft")}
+              </Select.Option>
             </Select>
           </Form.Item>
 
           <Col span={12}>
             <Form.Item
-              label="order"
+              label={t("faqs.labels.order")}
               name="order"
               rules={[
-                { required: true, message: "order is required." },
+                { required: true, message: t("placeholders.EnterOrder") },
               ]}
             >
-              <Input placeholder="Enter order" />
+              <Input placeholder={t("faqs.placeholders.EnterOrder")} />
             </Form.Item>
           </Col>
 
@@ -130,7 +154,7 @@ export const AddFaq = () => {
             className="w-full"
             loading={isPending}
           >
-            Add New Faq
+            {t("globals.add")}
           </Button>
         </Form>
       </Modal>

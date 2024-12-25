@@ -7,13 +7,8 @@ import DeleteCustomer from "./DeleteCustomer";
 
 export const Customers = () => {
   const { t } = useTranslation();
-  const {
-    pageCount,
-    setSearchTerm,
-    customers,
-    setCurrentPage,
-  } = useCustomerHook();
-
+  const { pageCount, setSearchTerm, customers, setCurrentPage } =
+    useCustomerHook();
 
   const onChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -21,24 +16,27 @@ export const Customers = () => {
 
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800 capitalize">
-          {t("customers.title")}
-        </h1>
-        <AddNewCustomer />
-      </div>
+      <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8">
+        {t("customers.title")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className="capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
-          <input type="search" name="search" id="search" placeholder={t("globals.search")}
+          <input
+            type="search"
+            name="search"
+            id="search"
+            placeholder={t("globals.search")}
             className="border rounded outline-none py-1 px-3 w-[400px]"
-            onChange={(e) => setSearchTerm( e.target.value )}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
 
-      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
+      <AddNewCustomer />
+
+      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>

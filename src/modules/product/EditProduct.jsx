@@ -72,7 +72,7 @@ const EditProduct = ({ productId }) => {
       )}
 
       <Modal
-        title={t("products.add.title")}
+        title={t("globals.edit")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
@@ -97,7 +97,7 @@ const EditProduct = ({ productId }) => {
             className="w-full"
             loading={isPending}
           >
-            {t("products.add.title")}
+            {t("globals.edit")}
           </Button>
         </Form>
       </Modal>

@@ -19,10 +19,8 @@ i18n.use(LanguageDetector)
     react: {
       useSuspense: true,
     },
-  })
-  .then(() => {
-    // تعيين اتجاه النص عند التهيئة
-    const currentLng = i18n.language || "en"; // اللغة الحالية
+  }).then(() => {
+    const currentLng = i18n.language || "en";
     const isRTL = currentLng === "ar";
     document.documentElement.setAttribute("dir", isRTL ? "rtl" : "ltr");
     document.documentElement.setAttribute("lang", currentLng);

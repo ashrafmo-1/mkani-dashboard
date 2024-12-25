@@ -4,8 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useEditBlogHook } from "./hooks/useEditBlogHook";
 import { useBlog_categoriesHook } from "../blog_categories/hooks/useBlog_categoriesHook";
 import { useGetBlogsHook } from "./hooks/useGetBlogsHook";
+import { useTranslation } from "react-i18next";
 
 export const EditBlog = ({ blogId }) => {
+  const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { editBlog } = useEditBlogHook();
   const { blogCategories } = useBlog_categoriesHook();
@@ -28,7 +30,7 @@ export const EditBlog = ({ blogId }) => {
       await editBlog(blogId, values);
       setIsModalVisible(false);
     } catch (error) {
-      console.error("Failed to edit user:", error);
+      console.error("Failed to edit blog:", error);
     } finally {
       setIsPending(false);
     }
@@ -47,7 +49,7 @@ export const EditBlog = ({ blogId }) => {
         metaDataEn: data.metaDataEn,
         thumbnail: data.thumbnail,
         categoryId: data.categoryId,
-        isPublished: data.isPublished
+        isPublished: data.isPublished,
       });
     }
   }, [data, form, isModalVisible]);
@@ -59,7 +61,7 @@ export const EditBlog = ({ blogId }) => {
       </Button>
 
       <Modal
-        title="Add New Blog"
+        title={t("blogs.edit")}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
@@ -67,23 +69,28 @@ export const EditBlog = ({ blogId }) => {
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item
-                label="Title Arabic"
-                name="titleAr"
-                rules={[{ required: true, message: "Title is required." }]}
-              >
-                <Input placeholder="Enter title Arabic" />
-                {/* value={values.titleAr} */}
+              <Form.Item label={t("blogs.add.lables.titleAr")} name="titleAr">
+                <Input placeholder={t("blogs.add.placeholder.EnterTitleAr")} />
               </Form.Item>
             </Col>
 
             <Col span={12}>
-              <Form.Item
-                label="title English"
-                name="titleEn"
-                rules={[{ required: true, message: "title is required." }]}
-              >
-                <Input placeholder="Enter title English" />
+              <Form.Item label={t("blogs.add.lables.titleEn")} name="titleEn">
+                <Input placeholder={t("blogs.add.placeholder.EnterTitleEn")} />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <Form.Item label={t("blogs.add.lables.slugAr")} name="slugAr">
+                <Input placeholder={t("blogs.add.placeholder.EnterSlugAr")} />
+              </Form.Item>
+            </Col>
+
+            <Col span={12}>
+              <Form.Item label={t("blogs.add.lables.slugEn")} name="slugEn">
+                <Input placeholder={t("blogs.add.placeholder.EnterSlugEn")} />
               </Form.Item>
             </Col>
           </Row>
@@ -91,51 +98,23 @@ export const EditBlog = ({ blogId }) => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Slug Arabic"
-                name="slugAr"
-                rules={[
-                  { required: true, message: "Slug Arabic is required." },
-                ]}
-              >
-                <Input placeholder="Enter Slug Arabic" />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label="Slug English"
-                name="slugEn"
-                rules={[
-                  { required: true, message: "Slug english is required." },
-                ]}
-              >
-                <Input placeholder="Enter Slug English" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label="content Arabic"
+                label={t("blogs.add.lables.contentAr")}
                 name="contentAr"
-                rules={[
-                  { required: true, message: "content Arabic is required." },
-                ]}
               >
-                <Input placeholder="Enter content Arabic" />
+                <Input
+                  placeholder={t("blogs.add.placeholder.EnterContentAr")}
+                />
               </Form.Item>
             </Col>
 
             <Col span={12}>
               <Form.Item
-                label="content English"
+                label={t("blogs.add.lables.contentEn")}
                 name="contentEn"
-                rules={[
-                  { required: true, message: "content english is required." },
-                ]}
               >
-                <Input placeholder="Enter content English" />
+                <Input
+                  placeholder={t("blogs.add.placeholder.EnterContentEn")}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -143,25 +122,23 @@ export const EditBlog = ({ blogId }) => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="meta data Arabic"
+                label={t("blogs.add.lables.metaDataAr")}
                 name="metaDataAr"
-                rules={[
-                  { required: true, message: "meta Data Arabic is required." },
-                ]}
               >
-                <Input placeholder="Enter meta data Arabic" />
+                <Input
+                  placeholder={t("blogs.add.placeholder.EnterMetaDataAr")}
+                />
               </Form.Item>
             </Col>
 
             <Col span={12}>
               <Form.Item
-                label="meta data English"
+                label={t("blogs.add.lables.metaDataEn")}
                 name="metaDataEn"
-                rules={[
-                  { required: true, message: "meta data english is required." },
-                ]}
               >
-                <Input placeholder="Enter meta data English" />
+                <Input
+                  placeholder={t("blogs.add.placeholder.EnterMetaDataEn")}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -169,34 +146,34 @@ export const EditBlog = ({ blogId }) => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Thumbnail"
+                label={t("blogs.add.lables.thumbnail")}
                 name="thumbnail"
-                rules={[{ required: true, message: "Thumbnail is required." }]}
               >
                 <Upload listType="picture" beforeUpload={() => false}>
-                  <Button icon={<UploadOutlined />}>Upload Thumbnail</Button>
+                  <Button icon={<UploadOutlined />}>
+                    {t("blogs.add.placeholder.EnterThumbnail")}
+                  </Button>
                 </Upload>
               </Form.Item>
             </Col>
           </Row>
 
           <Form.Item
-            label="is published"
+            label={t("blogs.add.lables.isPublished")}
             name="isPublished"
-            rules={[{ required: true, message: "is published is required." }]}
           >
-            <Select placeholder="Select status">
-              <Select.Option value="1">Published</Select.Option>
-              <Select.Option value="0">Draft</Select.Option>
+            <Select placeholder={t("blogs.add.placeholder.isPublished")}>
+              <Select.Option value="1">
+                {t("blogs.add.placeholder.isPublished")}
+              </Select.Option>
+              <Select.Option value="0">
+                {t("blogs.add.placeholder.Draft")}
+              </Select.Option>
             </Select>
           </Form.Item>
 
-          <Form.Item
-            label="Category"
-            name="categoryId"
-            rules={[{ required: true, message: "Category is required." }]}
-          >
-            <Select placeholder="Select category">
+          <Form.Item label={t("blogs.add.lables.categoryId")} name="categoryId">
+            <Select placeholder={t("blogs.add.placeholder.SelectCategory")}>
               {blogCategories.map((category, index) => (
                 <Select.Option value={category.blogCategoryId} key={index}>
                   {category.name}
@@ -211,7 +188,7 @@ export const EditBlog = ({ blogId }) => {
             className="w-full"
             loading={isPending}
           >
-            Add New Blog
+            {t("blogs.edit")}
           </Button>
         </Form>
       </Modal>

@@ -41,7 +41,7 @@ export const AddNewCustomer = () => {
 
   return (
     <div>
-      {hasCreateUserPermission && ( <Button onClick={showModal}> <PlusSquareFilled /> {t("customers.add")} </Button> )}
+      {hasCreateUserPermission && ( <Button onClick={showModal} type="primary"> <PlusSquareFilled /> {t("customers.add")} </Button> )}
       <Modal title={t("customers.add")} visible={isModalVisible} onCancel={handleCancel} footer={null}>
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>

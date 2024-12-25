@@ -11,8 +11,11 @@ import { CareerExtraDetailsEn } from "./components/CareerExtraDetailsEn";
 import { CareerExtraDetailsAr } from "./components/CareerExtraDetailsAr";
 import { Slug } from "./components/Slug";
 import { CareerIsActive } from "./components/CareerIsActive";
+import { PlusSquareFilled } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const AddNewCareer = () => {
+  const { t } = useTranslation();
   const hasCreateUserPermission = checkPermission("create_customer");
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
@@ -46,14 +49,17 @@ const AddNewCareer = () => {
   return (
     <div>
       {hasCreateUserPermission && (
-        <Button onClick={showModal}>add new career</Button>
+        <Button onClick={showModal} type="primary">
+          <PlusSquareFilled />
+          {t("globals.add")}
+        </Button>
       )}
       <Modal
-        title="Add New career"
+        title={t("globals.add")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
-        width={850}
+        width={900}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <CareerTitle />
@@ -80,14 +86,14 @@ const AddNewCareer = () => {
 
           <Slug />
           <CareerIsActive />
-          
+
           <Button
             type="primary"
             htmlType="submit"
             className="w-full"
             loading={isPending}
           >
-            {"Add New career"}
+            {t("globals.add")}
           </Button>
         </Form>
       </Modal>

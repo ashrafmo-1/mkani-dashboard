@@ -1,8 +1,4 @@
-import {
-  PlusCircleTwoTone,
-
-  UploadOutlined,
-} from "@ant-design/icons";
+import { PlusSquareFilled, UploadOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -11,7 +7,6 @@ import {
   Input,
   message,
   Modal,
-  Radio,
   Row,
   Select,
   TimePicker,
@@ -19,12 +14,14 @@ import {
 } from "antd";
 import React, { useState } from "react";
 import { useAddEventHook } from "./Hooks/useAddEventHook";
+import { useTranslation } from "react-i18next";
 
 export const AddEvent = () => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const {addEvent} = useAddEventHook();
+  const { addEvent } = useAddEventHook();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -43,9 +40,9 @@ export const AddEvent = () => {
       form.resetFields();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.status) {
-        message.error("The selected status is invalid.");
+        message.error(t("events.error.invalidStatus"));
       } else {
-        message.error("Failed to send form. Please try again.");
+        message.error(t("events.error.submitFailed"));
         console.error("Error adding Event:", error);
       }
     } finally {
@@ -55,34 +52,44 @@ export const AddEvent = () => {
 
   return (
     <div>
-      <Button onClick={() => showModal(true)}>
-        <PlusCircleTwoTone />
-        <span>add new Event</span>
+      <Button onClick={() => showModal(true)} type="primary">
+        <PlusSquareFilled />
+        <span>{t("globals.add")}</span>
       </Button>
-      <Modal title="Add New Event" visible={isModalVisible} onCancel={handleCancel} footer={null}>
-        <Form layout="vertical" className="mt-6" onFinish={handleSubmit} form={form}>
+      <Modal
+        title={t("globals.add")}
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form
+          layout="vertical"
+          className="mt-6"
+          onFinish={handleSubmit}
+          form={form}
+        >
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="title (Arabic)"
+                label={t("events.labels.titleAr")}
                 name="titleAr"
                 rules={[
                   {
                     required: true,
-                    message: "Question in Arabic is required.",
+                    message: t("events.validation.titleArRequired"),
                   },
                 ]}
               >
                 <Input type="text" />
               </Form.Item>
             </Col>
-            
+
             <Col span={12}>
               <Form.Item
-                label="Title (English)"
+                label={t("events.labels.titleEn")}
                 name="titleEn"
                 rules={[
-                  { required: true, message: "Title in English is required." },
+                  { required: true, message: t("events.validation.titleEnRequired") },
                 ]}
               >
                 <Input type="text" />
@@ -93,10 +100,10 @@ export const AddEvent = () => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Slug (Arabic)"
+                label={t("events.labels.slugAr")}
                 name="slugAr"
                 rules={[
-                  { required: true, message: "Slug in Arabic is required." },
+                  { required: true, message: t("events.validation.slugArRequired") },
                 ]}
               >
                 <Input type="text" />
@@ -104,10 +111,10 @@ export const AddEvent = () => {
             </Col>
             <Col span={12}>
               <Form.Item
-                label="Slug (English)"
+                label={t("events.labels.slugEn")}
                 name="slugEn"
                 rules={[
-                  { required: true, message: "Slug in English is required." },
+                  { required: true, message: t("events.validation.slugEnRequired") },
                 ]}
               >
                 <Input type="text" />
@@ -118,12 +125,12 @@ export const AddEvent = () => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Description (Arabic)"
+                label={t("events.labels.descriptionAr")}
                 name="descriptionAr"
                 rules={[
                   {
                     required: true,
-                    message: "Description in Arabic is required.",
+                    message: t("events.validation.descriptionArRequired"),
                   },
                 ]}
               >
@@ -132,12 +139,12 @@ export const AddEvent = () => {
             </Col>
             <Col span={12}>
               <Form.Item
-                label="Description (English)"
+                label={t("events.labels.descriptionEn")}
                 name="descriptionEn"
                 rules={[
                   {
                     required: true,
-                    message: "Description in English is required.",
+                    message: t("events.validation.descriptionEnRequired"),
                   },
                 ]}
               >
@@ -149,12 +156,12 @@ export const AddEvent = () => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Meta Data (Arabic)"
+                label={t("events.labels.metaDataAr")}
                 name="metaDataAr"
                 rules={[
                   {
                     required: true,
-                    message: "Meta Data in Arabic is required.",
+                    message: t("events.validation.metaDataArRequired"),
                   },
                 ]}
               >
@@ -163,12 +170,12 @@ export const AddEvent = () => {
             </Col>
             <Col span={12}>
               <Form.Item
-                label="Meta Data (English)"
+                label={t("events.labels.metaDataEn")}
                 name="metaDataEn"
                 rules={[
                   {
                     required: true,
-                    message: "Meta Data in English is required.",
+                    message: t("events.validation.metaDataEnRequired"),
                   },
                 ]}
               >
@@ -178,30 +185,30 @@ export const AddEvent = () => {
           </Row>
 
           <Form.Item
-            label="Thumbnail"
+            label={t("events.labels.thumbnail")}
             name="thumbnail"
-            rules={[{ required: true, message: "Thumbnail is required." }]}
+            rules={[{ required: true, message: t("events.validation.thumbnailRequired") }]}
           >
             <Upload name="thumbnail" listType="picture">
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              <Button icon={<UploadOutlined />}>{t("events.upload.clickToUpload")}</Button>
             </Upload>
           </Form.Item>
 
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Date"
+                label={t("events.labels.date")}
                 name="date"
-                rules={[{ required: true, message: "Date is required." }]}
+                rules={[{ required: true, message: t("events.validation.dateRequired") }]}
               >
                 <DatePicker format="YYYY-MM-DD" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label="Time"
+                label={t("events.labels.time")}
                 name="time"
-                rules={[{ required: true, message: "Time is required." }]}
+                rules={[{ required: true, message: t("events.validation.timeRequired") }]}
               >
                 <TimePicker format="HH:mm:ss" />
               </Form.Item>
@@ -209,21 +216,21 @@ export const AddEvent = () => {
           </Row>
 
           <Form.Item
-            label="Location"
+            label={t("events.labels.location")}
             name="location"
-            rules={[{ required: true, message: "Location is required." }]}
+            rules={[{ required: true, message: t("events.validation.locationRequired") }]}
           >
             <Input type="text" />
           </Form.Item>
 
           <Form.Item
-            label="is published"
+            label={t("events.labels.isPublished")}
             name="isPublished"
-            rules={[{ required: true, message: "is published is required." }]}
+            rules={[{ required: true, message: t("events.validation.isPublishedRequired") }]}
           >
-            <Select placeholder="Select status">
-              <Select.Option value="1">Published</Select.Option>
-              <Select.Option value="0">Draft</Select.Option>
+            <Select placeholder={t("events.placeholder.selectStatus")}>
+              <Select.Option value="1">{t("events.status.published")}</Select.Option>
+              <Select.Option value="0">{t("events.status.draft")}</Select.Option>
             </Select>
           </Form.Item>
 
@@ -233,7 +240,7 @@ export const AddEvent = () => {
             className="w-full"
             loading={isPending}
           >
-            Add New Faq
+            {t("globals.add")}
           </Button>
         </Form>
       </Modal>

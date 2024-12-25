@@ -75,7 +75,7 @@ const AddProduct = () => {
   return (
     <div className="">
       {hasCreateUserPermission && (
-        <Button onClick={showModal}>
+        <Button onClick={showModal} type="primary">
           <PlusSquareFilled />
           {t("products.add.title")}
         </Button>

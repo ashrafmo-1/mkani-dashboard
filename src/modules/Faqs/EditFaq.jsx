@@ -3,8 +3,10 @@ import { useEditFaqsHook } from "./hooks/useEditFaqsHook";
 import { Button, Col, Form, Input, Row, Select, Modal, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useGetSingleFaqHook } from "./hooks/useGetSingleFaqHook";
+import { useTranslation } from "react-i18next";
 
 export const EditFaq = ({ faqId }) => {
+  const { t } = useTranslation();
   const { editFaq } = useEditFaqsHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
@@ -53,7 +55,7 @@ export const EditFaq = ({ faqId }) => {
       </Button>
 
       <Modal
-        title="Edit FAQ"
+        title={t("globals.edit")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
@@ -61,42 +63,49 @@ export const EditFaq = ({ faqId }) => {
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item label="Question English" name="questionEn">
-                <Input placeholder="Enter question in English" />
+              <Form.Item label={t("faqs.labels.questionEn")} name="questionEn">
+                <Input placeholder={t("faqs.placeholders.EnterQuestionEn")} />
               </Form.Item>
             </Col>
 
             <Col span={12}>
-              <Form.Item label="Question Arabic" name="questionAr">
-                <Input placeholder="Enter question in Arabic" />
+              <Form.Item label={t("faqs.labels.questionAr")} name="questionAr">
+                <Input placeholder={t("faqs.placeholders.EnterQuestionAr")} />
               </Form.Item>
             </Col>
           </Row>
 
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item label="Answer English" name="answerEn">
-                <Input placeholder="Enter answer in English" />
+              <Form.Item label={t("faqs.labels.answerEn")} name="answerEn">
+                <Input placeholder={t("faqs.placeholders.EnterAnswerEn")} />
               </Form.Item>
             </Col>
 
             <Col span={12}>
-              <Form.Item label="Answer Arabic" name="answerAr">
-                <Input placeholder="Enter answer in Arabic" />
+              <Form.Item label={t("faqs.labels.answerAr")} name="answerAr">
+                <Input placeholder={t("faqs.placeholders.EnterAnswerAr")} />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item label="Is Published" name="isPublished">
-            <Select placeholder="Select status">
-              <Select.Option value="1">Published</Select.Option>
-              <Select.Option value="0">Draft</Select.Option>
+          <Form.Item
+            label={t("globals.status.checlkPublished")}
+            name="isPublished"
+          >
+            <Select placeholder={t("globals.status.checlkPublished")}>
+              <Select.Option value="1">
+                {t("globals.status.published")}
+              </Select.Option>
+              <Select.Option value="0">
+                {t("globals.status.draft")}
+              </Select.Option>
             </Select>
           </Form.Item>
 
           <Col span={12}>
-            <Form.Item label="Order" name="order">
-              <Input placeholder="Enter order" />
+            <Form.Item label={t("faqs.labels.order")} name="order">
+              <Input placeholder={t("faqs.placeholders.EnterOrder")} />
             </Form.Item>
           </Col>
 
@@ -106,7 +115,7 @@ export const EditFaq = ({ faqId }) => {
             className="w-full"
             loading={isPending}
           >
-            Edit FAQ
+            {t("globals.edit")}
           </Button>
         </Form>
       </Modal>

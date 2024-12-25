@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Modal, Select, message } from "antd";
+import { Form, Input, Button, Modal, Select, message, Row, Col } from "antd";
 import { EditFilled } from "@ant-design/icons";
 import { useGetBlogCategoryHook } from "./hooks/useGetBlogCategoryHook";
 import { useEditBolgCategoryHook } from "./hooks/useEditBolgCategoryHook";
+import { useTranslation } from "react-i18next";
 
 export const EditBlogCategories = ({ blogCategoryId }) => {
-  const { editUser} = useEditBolgCategoryHook()
+  const { t } = useTranslation();
+  const { editUser } = useEditBolgCategoryHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [form] = Form.useForm();
@@ -21,14 +23,13 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
   };
 
   const handleSubmit = async (formData) => {
-    console.log("Form Data Submitted:", formData); // Debugging log
     try {
       setIsPending(true);
       await editUser(blogCategoryId, formData);
       setIsModalVisible(false);
-      message.success("Blog category updated successfully.");
+      message.success(t("blogCategory.edit.success"));
     } catch (error) {
-      message.error("Error editing blog category.");
+      message.error(t("blogCategory.edit.error"));
       console.error("Error editing blog category:", error);
     } finally {
       setIsPending(false);
@@ -54,60 +55,50 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
       </Button>
 
       <Modal
-        title="Edit Blog Category"
+        title={t("blogCategory.edit")}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Form.Item
-            label="Name English"
-            name="nameEn"
-            rules={[{ required: true, message: "Name English is required." }]}
-          >
-            <Input placeholder="Enter name in English" />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <Form.Item label={t("blogCategory.lables.nameEn")} name="nameEn">
+                <Input placeholder={t("blogCategory.placeholder.EnterNameEn")} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label={t("blogCategory.lables.nameAr")} name="nameAr">
+                <Input placeholder={t("blogCategory.placeholder.EnterNameAr")} />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item
-            label="Name Arabic"
-            name="nameAr"
-            rules={[{ required: true, message: "Name Arabic is required." }]}
-          >
-            <Input placeholder="Enter name in Arabic" />
-          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <Form.Item label={t("blogCategory.lables.slugEn")} name="slugEn">
+                <Input placeholder={t("blogCategory.placeholder.EnterSlugEn")} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label={t("blogCategory.lables.slugAr")} name="slugAr">
+                <Input placeholder={t("blogCategory.placeholder.EnterSlugAr")} />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item
-            label="Slug English"
-            name="slugEn"
-            rules={[{ required: true, message: "Slug English is required." }]}
-          >
-            <Input placeholder="Enter slug in English" />
-          </Form.Item>
-
-          <Form.Item
-            label="Slug Arabic"
-            name="slugAr"
-            rules={[{ required: true, message: "Slug Arabic is required." }]}
-          >
-            <Input placeholder="Enter slug in Arabic" />
-          </Form.Item>
-
-          <Form.Item
-            label="Is Active"
-            name="isActive"
-            rules={[{ required: true, message: "Is Active is required." }]}
-          >
-            <Select placeholder="Select is Active" aria-label="isActive">
+          <Form.Item label={t("blogCategory.lables.isActive")} name="isActive">
+            <Select placeholder={t("blogCategory.placeholder.SelectIsActive")} aria-label="isActive">
               <Select.Option value="1">
                 <div className="flex items-center gap-1">
                   <span className="bg-green-600 p-2 rounded-full"></span>
-                  <span>Active</span>
+                  <span>{t("globals.status.active")}</span>
                 </div>
               </Select.Option>
               <Select.Option value="0">
                 <div className="flex items-center gap-1">
                   <span className="bg-red-600 p-2 rounded-full"></span>
-                  <span>Inactive</span>
+                  <span>{t("globals.status.inActive")}</span>
                 </div>
               </Select.Option>
             </Select>
@@ -119,7 +110,7 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
             className="w-full"
             loading={isPending}
           >
-            Save Changes
+            {t("blogCategory.edit")}
           </Button>
         </Form>
       </Modal>

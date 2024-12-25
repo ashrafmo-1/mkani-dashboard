@@ -14,6 +14,9 @@ import {
   CalendarOutlined,
   QuestionCircleOutlined,
   MailOutlined,
+  UserAddOutlined,
+  WechatWorkOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import SideBarLink from "../components/SideBarLink";
 import { AdminProfile } from "../auth/AdminProfile";
@@ -49,10 +52,10 @@ export const Side_bar = () => {
 
   return (
     <section
-      className={`side-bar bg-[#09121b] h-[100vh] m-1 rounded-xl text-white sticky top-0 py-4 pb-20 transition-all left-0 w-[350px] px-4`}
+      className={`side-bar bg-[#09121b] h-[100vh] m-1 rounded-lg text-white sticky top-0 py-4 pb-20 transition-all left-0 w-[350px] px-4`}
     >
       <img src={logo} alt="logo" width={100} className="mb-8" />
-      <div className="side-links px-1 mb-10 flex flex-col gap-2">
+      <div className="side-links px-1 mb-10 flex flex-col gap-1">
         <Link
           to={`/${MAINPATH}/${i18n.language}/Dashboard`}
           className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
@@ -89,38 +92,44 @@ export const Side_bar = () => {
 
         <SideBarLink
           content={t("modulesTitle.events")}
-          endPoint={`/events`}
+          endPoint={`events`}
           iconComp={<CalendarOutlined />}
         />
 
         <SideBarLink
           content={t("modulesTitle.faq")}
-          endPoint={`/faq`}
+          endPoint={`faq`}
           iconComp={<QuestionCircleOutlined />}
         />
 
         <SideBarLink
           content={t("modulesTitle.newsLetter")}
-          endPoint={`/Newsletter`}
+          endPoint={`Newsletter`}
           iconComp={<MailOutlined />}
         />
 
         <SideBarLink
           content={t("modulesTitle.subscribers")}
-          endPoint={`/subscribers`}
-          iconComp={<UserOutlined />}
+          endPoint={`subscribers`}
+          iconComp={<UserAddOutlined />} // Changed icon to UserAddOutlined
         />
 
         <SideBarLink
           content={t("modulesTitle.careers")}
-          endPoint={`/careers`}
-          iconComp={<AppstoreOutlined />}
+          endPoint={`careers`}
+          iconComp={<WechatWorkOutlined />} // Changed icon to WorkOutlined
         />
 
         <SideBarLink
           content={t("modulesTitle.candidates")}
-          endPoint={`/candidates`}
-          iconComp={<AppstoreOutlined />}
+          endPoint={`candidates`}
+          iconComp={<UserOutlined />}
+        />
+
+        <SideBarLink
+          content={t("modulesTitle.siteSettings")}
+          endPoint={`portfolio-settings`}
+          iconComp={<SettingOutlined />}
         />
       </div>
       <AdminProfile />

@@ -7,59 +7,59 @@ import { DeleteEvent } from "./DeleteEvent";
 import { AddEvent } from "./AddEvent";
 import { Status } from "../../components/Status";
 import { EditEvent } from "./EditEvent";
+import { SearchFilter } from "../../components/SearchFilter";
 
 export const Events = () => {
   const { t } = useTranslation();
-  const { events, setSearchTerm } = useEventHook();
+  const { events, pageCount, setSearchTerm, setCurrentPage } = useEventHook();
 
-  // const onChange = (pageNumber) => {
-  //   setCurrentPage((prevPage) => {
-  //     const newPage =
-  //       pageNumber === "next"
-  //         ? prevPage + 1
-  //         : pageNumber === "prev"
-  //         ? prevPage - 1
-  //         : pageNumber;
-  //     Events(newPage);
-  //     return newPage;
-  //   });
-  // };
+  const onChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  } ;
 
   return (
     <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800 capitalize">
-          {t("events")}
-        </h1>
-        <AddEvent />
-      </div>
+      <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8">
+        {t("events.title")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
-        <h4 className=" capitalize mb-2 text-2xl">fillter</h4>
+        <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
-          <input
-            type="search"
-            name="search"
-            className="border rounded outline-none py-1 px-3 w-[400px]"
-            id="search"
-            placeholder="search"
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <SearchFilter search={setSearchTerm} />
         </div>
       </div>
 
-      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
+      <AddEvent />
+
+      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3">{"thumbnail"}</th>
-              <th scope="col" className="px-6 py-3">{"title"}</th>
-              <th scope="col" className="px-6 py-3">{"date"}</th>
-              <th scope="col" className="px-6 py-3">{"time"}</th>
-              <th scope="col" className="px-6 py-3">{"published At"}</th>
-              <th scope="col" className="px-6 py-3">{"location"}</th>
-              <th scope="col" className="px-6 py-3">{"is Published"}</th>
-              <th scope="col" className="px-6 py-3">{"actions"}</th>
+              <th scope="col" className="px-6 py-3">
+                {t("events.table.thumbnail")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("events.table.title")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("events.table.date")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("events.table.time")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("events.table.publishedAt")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("events.table.location")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("events.table.isPublished")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("events.table.actions")}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -87,7 +87,7 @@ export const Events = () => {
                   </td>
                   <td className="px-6 py-4 flex gap-3">
                     <DeleteEvent eventId={event.eventId} />
-                    <EditEvent eventId={event.eventId}  />
+                    <EditEvent eventId={event.eventId} />
                   </td>
                 </tr>
               ))}
@@ -95,10 +95,9 @@ export const Events = () => {
         </table>
 
         <Pagination
-          showQuickJumper
-          // defaultCurrent={pageCount["current_page"]}
-          // total={pageCount["total"]}
-          // onChange={onChange}
+          defaultCurrent={pageCount["current_page"]}
+          total={pageCount["total"]}
+          onChange={onChange}
           className="mb-4 mt-10 flex justify-center items-center"
         />
       </div>

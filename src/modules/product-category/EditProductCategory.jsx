@@ -66,7 +66,7 @@ export const EditProductCategory = ({ productCategoryId }) => {
       )}
 
       <Modal
-        title={t("products.add.title")}
+        title={t("productCategory.edit.title")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
@@ -74,29 +74,40 @@ export const EditProductCategory = ({ productCategoryId }) => {
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item label="name english" name="nameEn">
-                <Input placeholder="Enter name english" />
+              <Form.Item
+                label={t("productCategory.add.lables.nameEN")}
+                name="nameEn"
+              >
+                <Input
+                  placeholder={t("productCategory.add.placeholder.EnterName")}
+                />
               </Form.Item>
             </Col>
 
             <Col span={12}>
               <Form.Item label="name arabic" name="nameAr">
-                <Input placeholder="Enter name arabic" />
+                <Input
+                  placeholder={t("productCategory.add.placeholder.EnterName")}
+                />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item label="is active" name="isActive">
+          <Form.Item label={t("globals.status.checkActive")} name="isActive">
             <Select placeholder="Select status">
-              <Select.Option value="1">done</Select.Option>
-              <Select.Option value="0">no</Select.Option>
+              <Select.Option value="1">
+                {t("globals.status.active")}
+              </Select.Option>
+              <Select.Option value="0">
+                {t("globals.status.inActive")}
+              </Select.Option>  
             </Select>
           </Form.Item>
 
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Thumbnail"
+                label={t("productCategory.add.lables.thumbnail")}
                 name="image"
                 valuePropName="fileList"
                 getValueFromEvent={(e) =>
@@ -104,7 +115,7 @@ export const EditProductCategory = ({ productCategoryId }) => {
                 }
               >
                 <Upload listType="picture" beforeUpload={() => false}>
-                  <Button icon={<UploadOutlined />}>Upload Thumbnail</Button>
+                  <Button icon={<UploadOutlined />}>{t("productCategory.add.placeholder.thumbnail")}</Button>
                 </Upload>
               </Form.Item>
             </Col>
@@ -116,7 +127,7 @@ export const EditProductCategory = ({ productCategoryId }) => {
             className="w-full"
             loading={isPending}
           >
-            {"Add New Product"}
+            {t("productCategory.edit.title")}
           </Button>
         </Form>
       </Modal>
