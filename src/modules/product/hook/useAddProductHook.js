@@ -3,7 +3,6 @@ import axiosInstance from "../../../utils/axiosConfig";
 import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
 
-
 export const useAddProductHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();

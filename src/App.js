@@ -23,7 +23,8 @@ import Candidates from "./modules/candidates/Candidates";
 import Products from "./modules/product/Products";
 import { ProductCategory } from "./modules/product-category/ProductCategory";
 import { useEffect } from "react";
-import { PortfolioSettings } from "./pages/portfolioSettings";
+import { SettingsPage } from "./portfolioSettings/SettingsPage";
+import ContactUs from "./modules/contact-us/ContactUs";
 
 function App() {
   // const permissions = useContext(PermissionsContext);
@@ -71,7 +72,8 @@ function App() {
             <Route path="subscribers" element={<Subscribers />} />
             <Route path="careers" element={<AllCareers />} />
             <Route path="candidates" element={<Candidates />} />
-            <Route path="portfolio-settings" element={<PortfolioSettings />} />
+            <Route path="contact-us" element={<ContactUs />} />
+            <Route path="portfolio-settings" element={<SettingsPage />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

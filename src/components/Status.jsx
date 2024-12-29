@@ -17,7 +17,6 @@ export const Status = ({ value, activeText, inactiveText, activeClass, inactiveC
   );
 };
 
-// Define default props to ensure flexibility
 Status.defaultProps = {
   value: 0,
   activeText: "Active",
@@ -26,7 +25,6 @@ Status.defaultProps = {
   inactiveClass: "text-white bg-red-500",
 };
 
-// Define prop types for better error checking
 Status.propTypes = {
   value: PropTypes.number.isRequired,
   activeText: PropTypes.string,

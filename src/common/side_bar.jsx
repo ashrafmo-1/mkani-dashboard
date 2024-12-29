@@ -127,6 +127,12 @@ export const Side_bar = () => {
         />
 
         <SideBarLink
+          content={t("modulesTitle.contactUs")}
+          endPoint={`contact-us`}
+          iconComp={<MailOutlined />}
+        />
+
+        <SideBarLink
           content={t("modulesTitle.siteSettings")}
           endPoint={`portfolio-settings`}
           iconComp={<SettingOutlined />}

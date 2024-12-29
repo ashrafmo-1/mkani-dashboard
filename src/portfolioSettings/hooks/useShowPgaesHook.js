@@ -1,15 +1,15 @@
 import { useState } from "react";
-import qs from "qs";
-import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
+import qs from "qs";
+import axiosInstance from "../../utils/axiosConfig";
 import { useQuery } from "react-query";
 
-export const useBlogHook = () => {
+export const useShowPgaesHook = () => {
   const { i18n } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchBlogs = async ({ queryKey }) => {
+  const fetchPortfolioPages = async ({ queryKey }) => {
     const [, { search, page, language }] = queryKey;
     const customFilters = {};
     const combinedFilters = { search, ...customFilters };
@@ -19,38 +19,28 @@ export const useBlogHook = () => {
       { encode: false }
     );
 
-    const response = await axiosInstance.get(
-      `/${language}/admin/blogs?page=${page}&pageSize=10&${queryString}`
-    );
+    const response = await axiosInstance.get(`/${language}/admin/front-pages?page=${page}&pageSize=10&${queryString}`);
     return response.data;
   };
 
   const { data, error, isLoading } = useQuery(
     [
-      "blogs",
+      "PortfolioPages",
       {
         search: searchTerm,
         page: currentPage,
         language: i18n.language,
       },
     ],
-    fetchBlogs,
+    fetchPortfolioPages,
     {
       keepPreviousData: true,
       staleTime: 5000,
     }
   );
 
-  const blogs = data?.result?.blogs || [];
+  const PortfolioPages = data?.result?.frontPages || [];
   const pageCount = data?.pagination || {};
 
-  return {
-    pageCount,
-    setSearchTerm,
-    setCurrentPage,
-    error,
-    isLoading,
-    currentPage,
-    blogs,
-  };
+  return { PortfolioPages, error, isLoading, pageCount, setCurrentPage, setSearchTerm };
 };

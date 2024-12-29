@@ -15,7 +15,8 @@
     "products": "prodcuts",
     "productCategory": "product category",
     "subscribers": "subscribers",
-    "siteSettings": "Site Settings"
+    "siteSettings": "Site Settings",
+    "contactUs": "contact us"
   },
   "globals": {
     "filter": "filter",
@@ -366,5 +367,15 @@
       "careerName": "Career Name",
       "cv": "CV"
     }
+  },
+
+  "siteSettings": {
+    "title": "Site Settings",
+    "home": "home",
+    "generalContent": "Manage your general settings here.",
+    "aboutUs": "about us",
+    "privacyContent": "Adjust your privacy settings.",
+    "notifications": "Notifications",
+    "notificationsContent": "Set your notification preferences."
   }
 }

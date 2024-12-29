@@ -1,4 +1,4 @@
-import { MinusCircleFilled, MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Space } from "antd";
 import React from "react";
 
