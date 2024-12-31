@@ -9,11 +9,7 @@ export const InputContent = () => {
   return (
     <Row gutter={[16, 16]} className="mb-8">
       <Col span={12}>
-        <Form.Item
-          label={t("products.add.lables.ContentEN")}
-          name="contentEn"
-          rules={[{ required: true, message: "content english is required." }]}
-        >
+        <Form.Item label={t("products.add.lables.ContentEN")} name="contentEn">
           <ReactQuill
             className="h-60"
             theme="snow"
@@ -26,11 +22,7 @@ export const InputContent = () => {
       </Col>
 
       <Col span={12}>
-        <Form.Item
-          label={t("products.add.lables.ContentAR")}
-          name="contentAr"
-          rules={[{ required: true, message: "content arabic is required." }]}
-        >
+        <Form.Item label={t("products.add.lables.ContentAR")} name="contentAr">
           <ReactQuill
             className="h-60"
             theme="snow"

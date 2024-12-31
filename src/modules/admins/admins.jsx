@@ -34,7 +34,7 @@ export const Admins = () => {
             placeholder={t("globals.search")}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Select
+          {/* <Select
             defaultValue="Select Admin"
             style={{ width: 150 }}
             onChange={(e) => setStatusTerm(e.target.value)}
@@ -42,7 +42,7 @@ export const Admins = () => {
             {type.map((item) => (
               <Select.Option value={item.value}>{item.label}</Select.Option>
             ))}
-          </Select>
+          </Select> */}
 
           <Select
             defaultValue=""

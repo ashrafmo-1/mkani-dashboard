@@ -13,12 +13,10 @@ export const UploadImages = () => {
           return [];
         }
         return e.fileList.map((file) => ({
-          file: file.originFileObj, // الملف الفعلي الذي سيتم تمريره
-          path: file.response?.url || file.name, // احتفظ بالرابط في حالة الحاجة إليه
+          file: file.originFileObj,
+          path: file.response?.url || file.name,
         }));
       }}
-      
-      rules={[{ required: true, message: "Please upload at least one image." }]}
     >
       <Upload
         name="file"

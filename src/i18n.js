@@ -6,8 +6,7 @@ import arJSON from "./locales/ar.json";
 
 i18n.use(LanguageDetector)
   .use(initReactI18next)
-  .init({
-    resources: {
+  .init({resources: {
       en: { translation: enJSON },
       ar: { translation: arJSON },
     },
@@ -31,7 +30,7 @@ i18n.on("languageChanged", (lng) => {
   document.documentElement.setAttribute("dir", isRTL ? "rtl" : "ltr");
   document.documentElement.setAttribute("lang", lng);
 
-  if (typeof localStorage !== "undefined") {
+  if (typeof localStorage !== "undefined" && (lng === "en" || lng === "ar")) {
     localStorage.setItem("i18nextLng", lng);
   }
 });

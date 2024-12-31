@@ -1,15 +1,16 @@
 import { EditFilled, UploadOutlined } from "@ant-design/icons";
-import { Button,                                                                                                    Form, Input, Modal, Select, Upload } from "antd";
-import React, { useState } from "react";
+import { Button, Form, Input, Modal, Select, Upload } from "antd";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useEditPortfolioSectionHook } from "../hooks/useEditPortfolioSectionHook";
-import ReactQuill from "react-quill";
+// import { useEditPortfolioSectionHook } from "../hooks/useEditPortfolioSectionHook";
+import { useGetSinglePortfolioSectionHook } from "../hooks/useGetSinglePortfolioSectionHook";
 
 export const EditPortfolioSection = ({ frontPageSectionId }) => {
   const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const { editPortfolioSections } = useEditPortfolioSectionHook();
+  // const { editPortfolioSections } = useEditPortfolioSectionHook();
+  const { data } = useGetSinglePortfolioSectionHook(frontPageSectionId);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -20,27 +21,29 @@ export const EditPortfolioSection = ({ frontPageSectionId }) => {
     form.resetFields();
   };
 
-  const handleSubmit = async (values) => {
-    try {
-      await editPortfolioSections(frontPageSectionId, values);
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      console.error("Failed to edit portfolio section:", error);
-    }
+  const getValueFromEvent = (e) => {
+    const isValidFile = (file) =>
+      ["image/png", "image/jpeg"].includes(file.type) && file.size <= 2 * 1024 * 1024;
+    return e && e.fileList
+      ? e.fileList.filter((file) => isValidFile(file.originFileObj)).map((file) => file.originFileObj)
+      : [];
   };
 
-  const getValueFromEvent = (e) => {
-    if (Array.isArray(e)) {
-      return e;
+  useEffect(() => {
+    if (isModalVisible && data) {
+      form.setFieldsValue({
+        name: data?.name || "",
+        isActive: data?.isActive ? "1" : "0",
+        contentEn: data?.contentEn?.[0] || { heading: "", description: "", link: "" },
+        contentAr: data?.contentAr?.[0] || { heading: "", description: "", link: "" },
+      });
     }
-    return e && e.fileList ? e.fileList.map((file) => file.originFileObj) : [];
-  };
+  }, [data, form, isModalVisible]);
 
   return (
     <div>
-      <Button onClick={showModal} color="default" variant="filled">
-        <EditFilled />
+      <Button onClick={showModal} type="default" icon={<EditFilled />}>
+        {t("edit")}
       </Button>
 
       <Modal
@@ -49,43 +52,37 @@ export const EditPortfolioSection = ({ frontPageSectionId }) => {
         visible={isModalVisible}
         onCancel={handleCancel}
       >
-        <Form layout="vertical" form={form} onFinish={handleSubmit}>
+        <Form layout="vertical" form={form}>
           <Form.Item label={t("name")} name="name">
             <Input placeholder={t("NewsLetter.placeholders.EnterContent")} />
           </Form.Item>
 
-          <Form.Item
-            label={t("products.add.lables.ContentEN")}
-            name="contentEn"
-            rules={[
-              { required: true, message: "content english is required." },
-            ]}
-            className="mb-10"
-          >
-            <ReactQuill
-              className="h-60"
-              theme="snow"
-              placeholder={t("products.add.placeholder.EnterContentEN")}
-              onChange={(value) => {
-                form.setFieldValue("contentEn", value);
-              }}
-            />
+          <Form.Item label={t("contentEn")}> 
+            <Input.Group>
+              <Form.Item name={["contentEn", "heading"]} label={t("heading")}> 
+                <Input placeholder={t("Enter heading")}/>
+              </Form.Item>
+              <Form.Item name={["contentEn", "description"]} label={t("description")}> 
+                <Input placeholder={t("Enter description")}/>
+              </Form.Item>
+              <Form.Item name={["contentEn", "link"]} label={t("link")}> 
+                <Input placeholder={t("Enter link")}/>
+              </Form.Item>
+            </Input.Group>
           </Form.Item>
 
-          <Form.Item
-            label={t("products.add.lables.ContentAR")}
-            name="contentAr"
-            rules={[{ required: true, message: "content arabic is required." }]}
-            className="mb-10"
-          >
-            <ReactQuill
-              className="h-60"
-              theme="snow"
-              placeholder={t("products.add.placeholder.EnterContentAR")}
-              onChange={(value) => {
-                form.setFieldValue("contentAr", value);
-              }}
-            />
+          <Form.Item label={t("contentAr")}> 
+            <Input.Group>
+              <Form.Item name={["contentAr", "heading"]} label={t("heading")}> 
+                <Input placeholder={t("Enter heading")}/>
+              </Form.Item>
+              <Form.Item name={["contentAr", "description"]} label={t("description")}> 
+                <Input placeholder={t("Enter description")}/>
+              </Form.Item>
+              <Form.Item name={["contentAr", "link"]} label={t("link")}> 
+                <Input placeholder={t("Enter link")}/>
+              </Form.Item>
+            </Input.Group>
           </Form.Item>
 
           <Form.Item
@@ -105,20 +102,14 @@ export const EditPortfolioSection = ({ frontPageSectionId }) => {
           </Form.Item>
 
           <Form.Item
-            label="is active"
+            label={t("is active")}
             name="isActive"
-            rules={[{ required: true, message: "is active is required." }]}
+            rules={[{ required: true, message: t("is active is required.") }]}
           >
-            <Select placeholder="Select status">
-              <Select.Option value="1">done</Select.Option>
-              <Select.Option value="0">no</Select.Option>
+            <Select placeholder={t("Select status")}>
+              <Select.Option value="1">{t("done")}</Select.Option>
+              <Select.Option value="0">{t("no")}</Select.Option>
             </Select>
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              {t("globals.edit")}
-            </Button>
           </Form.Item>
         </Form>
       </Modal>

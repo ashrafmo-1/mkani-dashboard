@@ -4,14 +4,14 @@ import { Button, Form, message, Modal, Row } from "antd";
 import { useAddProductHook } from "./hook/useAddProductHook";
 import { PlusSquareFilled } from "@ant-design/icons";
 import { InputName } from "./components/create/InputName";
-import { InputDescription } from "./components/create/InputDescription";
 import { InputContent } from "./components/create/InputContent";
-import { InputSlug } from "./components/create/InputSlug";
-import { InputmetaDataAr } from "./components/create/InputmetaDataAr";
-import { InputmetaDataEn } from "./components/create/InputmetaDataEn";
 import { UploadImages } from "./components/create/UploadImages";
 import { SelectisActive } from "./components/create/SelectisActive";
 import { useTranslation } from "react-i18next";
+import { MetaDataEn } from "../../common/modules/create-edit/MetaDataEn";
+import { MetaDataAr } from "../../common/modules/create-edit/MetaDataAr";
+import { Slug } from "../../common/modules/create-edit/Slug";
+import { Description } from "../../common/modules/create-edit/Description";
 
 const AddProduct = () => {
   const { t } = useTranslation();
@@ -81,32 +81,21 @@ const AddProduct = () => {
         </Button>
       )}
 
-      <Modal
-        title={t("products.add.title")}
-        footer={null}
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        width={1440}
-      >
+      <Modal title={t("products.add.title")} footer={null} visible={isModalVisible} onCancel={handleCancel} width={1440}>
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <InputName />
-          <InputDescription />
+          <Description />
           <InputContent />
-          <InputSlug />
+          <Slug />
 
           <Row gutter={[16, 16]}>
-            <InputmetaDataEn />
-            <InputmetaDataAr />
+            <MetaDataEn />
+            <MetaDataAr />
           </Row>
 
           <UploadImages />
           <SelectisActive />
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="w-full"
-            loading={isPending}
-          >
+          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
             {t("products.add.title")}
           </Button>
         </Form>

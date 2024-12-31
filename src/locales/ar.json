@@ -15,7 +15,8 @@
     "products": "المنتجات",
     "productCategory": "فئة المنتج",
     "subscribers": "المشتركين",
-    "siteSettings": "اعدادات الموقع"
+    "siteSettings": "اعدادات الموقع",
+    "contactUs": "اتصل بنا"
   },
   "globals": {
     "filter": "تصفية",
@@ -348,5 +349,46 @@
       "careerName": "اسم المهنة",
       "cv": "السيرة الذاتية"
     }
+  },
+
+  "contactUs": {
+    "title": "اتصل بنا",
+    "table": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "status": "الحالة",
+      "new messages": "رسائل جديدة"
+    },
+    "labels": {
+      "subject": "الموضوع",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "status": "الحالة",
+      "newMessages": "رسائل جديدة"
+    },
+    "messagesTitle": "الرسائل",
+    "messages": {
+      "title": "الرسائل",
+      "description": "هنا يمكنك العثور على جميع الرسائل المرسلة من قبل المستخدمين.",
+      "noMessages": "لا توجد رسائل متاحة.",
+      "from": "من",
+      "message": "رسالة",
+      "sentAt": "أرسلت في"
+    },
+    "replayTitle": "الرد",
+    "replayForm": {
+      "yourMessage": "رسالتك",
+      "pleaseInputMessage": "يرجى إدخال رسالتك!",
+      "typeMessagePlaceholder": "اكتب رسالتك هنا...",
+      "sendReply": "إرسال الرد"
+    }
+  },
+
+  "siteSettings": {
+    "title": "إعدادات الموقع",
+    "portfolioPages": "صفحات الموقع",
+    "showData": "عرض البيانات"
   }
 }

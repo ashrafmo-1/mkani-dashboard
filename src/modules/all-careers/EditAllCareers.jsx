@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Input, Row, Select, Modal, message } from "antd";
+import { Button, Col, Form, Row, Modal, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { CareerTitle } from "./components/CareerTitle";
-import { CareerDescription } from "./components/CareerDescription";
+import { Title } from "../../common/modules/create-edit/Title";
+import { Description } from "../../common/modules/create-edit/Description";
 import { CareerContent } from "./components/CareerContent";
 import { CareerMetaDataEn } from "./components/CareerMetaDataEn";
 import { CareermetaDataAr } from "./components/CareermetaDataAr";
@@ -33,10 +33,10 @@ const EditAllCareers = ({ careerId }) => {
     setIsPending(true);
     try {
       await editCareer(careerId, values);
-      message.success("FAQ edited successfully.");
+      message.success("career edited successfully.");
       setIsModalVisible(false);
     } catch (error) {
-      message.error("Failed to edit FAQ.", error);
+      message.error("Failed to edit career.", error);
     } finally {
       setIsPending(false);
     }
@@ -76,8 +76,8 @@ const EditAllCareers = ({ careerId }) => {
         width={850}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <CareerTitle />
-          <CareerDescription />
+          <Title />
+          <Description />
           <CareerContent />
 
           <Row gutter={[16, 16]}>

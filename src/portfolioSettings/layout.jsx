@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Tabs } from "antd";
 import { PortfolioPages } from "./pages/PortfolioPages";
-const { TabPane } = Tabs;
 
 export const Layout = () => {
   const { t } = useTranslation();
@@ -13,11 +12,16 @@ export const Layout = () => {
         {t("siteSettings.title")}
       </h1>
 
-      <Tabs defaultActiveKey="1">
-        <TabPane tab={t("Portfolio pages")} key="1">
-          <PortfolioPages />
-        </TabPane>
-      </Tabs>
+      <Tabs
+        defaultActiveKey="1"
+        items={[
+          {
+            label: t("siteSettings.portfolioPages"),
+            key: "1",
+            children: <PortfolioPages />,
+          }
+        ]}
+      />
     </>
   );
 };

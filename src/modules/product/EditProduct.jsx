@@ -2,17 +2,17 @@ import { EditOutlined } from "@ant-design/icons";
 import { Button, Form, message, Modal, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { InputName } from "./components/create/InputName";
-import { InputDescription } from "./components/create/InputDescription";
 import { InputContent } from "./components/create/InputContent";
-import { InputSlug } from "./components/create/InputSlug";
-import { InputmetaDataEn } from "./components/create/InputmetaDataEn";
-import { InputmetaDataAr } from "./components/create/InputmetaDataAr";
 import { UploadImages } from "./components/create/UploadImages";
 import { SelectisActive } from "./components/create/SelectisActive";
 import { checkPermission } from "../../helpers/checkPermission";
 import { useTranslation } from "react-i18next";
 import { useEditProductHook } from "./hook/useEditProductHook";
 import { useGetSingleProduct } from "./hook/useGetSingleProduct";
+import { MetaDataEn } from "../../common/modules/create-edit/MetaDataEn";
+import { MetaDataAr } from "../../common/modules/create-edit/MetaDataAr";
+import { Slug } from "../../common/modules/create-edit/Slug";
+import { Description } from "../../common/modules/create-edit/Description";
 
 const EditProduct = ({ productId }) => {
   const { t } = useTranslation();
@@ -71,32 +71,21 @@ const EditProduct = ({ productId }) => {
         </Button>
       )}
 
-      <Modal
-        title={t("globals.edit")}
-        footer={null}
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        width={1440}
-      >
+      <Modal title={t("globals.edit")} footer={null} visible={isModalVisible} onCancel={handleCancel} width={1440}>
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <InputName />
-          <InputDescription />
+          <Description />
           <InputContent />
-          <InputSlug />
+          <Slug />
 
           <Row gutter={[16, 16]}>
-            <InputmetaDataEn />
-            <InputmetaDataAr />
+            <MetaDataEn />
+            <MetaDataAr />
           </Row>
 
           <UploadImages />
           <SelectisActive />
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="w-full"
-            loading={isPending}
-          >
+          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
             {t("globals.edit")}
           </Button>
         </Form>

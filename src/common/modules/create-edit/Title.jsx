@@ -1,17 +1,21 @@
-import { Col, Input, Row, Form } from "antd";
+import { Col, Form, Input, Row } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export const CareerTitle = () => {
+export const Title = () => {
   const { t } = useTranslation();
-
   return (
     <Row gutter={[16, 16]}>
       <Col span={12}>
         <Form.Item
           label={t("careers.labels.jobTitleEn")}
           name="titleEn"
-          rules={[{ required: true, message: t("careers.placeholders.EnterJobTitleEn") }]}
+          rules={[
+            {
+              required: true,
+              message: t("careers.placeholders.EnterJobTitleEn"),
+            },
+          ]}
         >
           <Input placeholder={t("careers.placeholders.EnterJobTitleEn")} />
         </Form.Item>
@@ -21,7 +25,12 @@ export const CareerTitle = () => {
         <Form.Item
           label={t("careers.labels.jobTitleAr")}
           name="titleAr"
-          rules={[{ required: true, message: t("careers.placeholders.EnterJobTitleAr") }]}
+          rules={[
+            {
+              required: true,
+              message: t("careers.placeholders.EnterJobTitleAr"),
+            },
+          ]}
         >
           <Input placeholder={t("careers.placeholders.EnterJobTitleAr")} />
         </Form.Item>

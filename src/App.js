@@ -1,14 +1,12 @@
 import "./App.css";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { LOGIN_PAGE } from "./modules/login/page";
-import { Side_bar } from "./common/side_bar";
 import { Home } from "./modules/home/page";
 import { Admins } from "./modules/admins/admins";
 import { MAINPATH } from "./constant/MAINPATH";
 import RequireAuth from "./auth/RequireAuth";
 import LoginProdect from "./auth/LoginProdect";
 import Cookies from "js-cookie";
-import { NotFound } from "./common/NotFound";
 import { useTranslation } from "react-i18next";
 import { Roles } from "./modules/Roles/Roles";
 import { Customers } from "./modules/Customers/Customer";
@@ -25,6 +23,7 @@ import { ProductCategory } from "./modules/product-category/ProductCategory";
 import { useEffect } from "react";
 import { SettingsPage } from "./portfolioSettings/SettingsPage";
 import ContactUs from "./modules/contact-us/ContactUs";
+import { NotFound, Side_bar } from "./common";
 
 function App() {
   // const permissions = useContext(PermissionsContext);

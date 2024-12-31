@@ -26,6 +26,7 @@
     "edit": "edit",
     "slugAr": "slug arabic",
     "slugEn": "slug english",
+    "isPublished": "isPublished",
 
     "status": {
       "title": "status",
@@ -369,13 +370,44 @@
     }
   },
 
+  "contactUs": {
+    "title": "contact us",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "new messages": "New Messages"
+    },
+    "labels": {
+      "subject": "subject",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "newMessages": "New Messages"
+    },
+    "messagesTitle": "messages",
+    "messages": {
+      "title": "Messages",
+      "description": "Here you can find all the messages sent by users.",
+      "noMessages": "No messages available.",
+      "from": "From",
+      "message": "Message",
+      "sentAt": "Sent At"
+    },
+    "replayTitle": "Replay",
+    "replayForm": {
+      "yourMessage": "Your Message",
+      "pleaseInputMessage": "Please input your message!",
+      "typeMessagePlaceholder": "Type your message here...",
+      "sendReply": "Send Reply"
+    }
+  },
+
   "siteSettings": {
     "title": "Site Settings",
-    "home": "home",
-    "generalContent": "Manage your general settings here.",
-    "aboutUs": "about us",
-    "privacyContent": "Adjust your privacy settings.",
-    "notifications": "Notifications",
-    "notificationsContent": "Set your notification preferences."
+    "portfolioPages": "Portfolio pages",
+    "showData": "show data"
   }
 }

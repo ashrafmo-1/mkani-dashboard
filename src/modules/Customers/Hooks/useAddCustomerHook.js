@@ -16,8 +16,17 @@ export const useAddCustomerHook = () => {
       queryClient.invalidateQueries("customers");
       message.success("add customer successfully.");
     },
-    onError: () => {
-      message.error("Failed to add customer.");
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message;
+      if (typeof errorMessage === "object") { 
+        for (const [field, messages] of Object.entries(errorMessage)) {
+          messages.forEach((msg) => {
+            message.error(`${field}: ${msg}`);
+          });
+        }
+      } else {
+        message.error(errorMessage || "Failed to add customer.");
+      }
     },
   });
 

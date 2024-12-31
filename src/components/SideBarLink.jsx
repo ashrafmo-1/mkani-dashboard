@@ -11,7 +11,7 @@ const SideBarLink = ({ endPoint, content, iconComp }) => {
       className="capitalize side-link flex gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
     >
       {iconComp}
-      {content}
+      <span className="hidden sm:block">{content}</span>
     </Link>
   );
 };

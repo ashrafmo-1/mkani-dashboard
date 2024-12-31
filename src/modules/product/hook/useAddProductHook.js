@@ -20,9 +20,18 @@ export const useAddProductHook = () => {
       queryClient.invalidateQueries('products');
       message.success("product added successfully.");
     },
-    onError: () => {
-      message.error("Failed to add product.");
-    }
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message;
+      if (typeof errorMessage === "object") { 
+        for (const [field, messages] of Object.entries(errorMessage)) {
+          messages.forEach((msg) => {
+            message.error(`${field}: ${msg}`);
+          });
+        }
+      } else {
+        message.error(errorMessage || "Failed to add user.");
+      }
+    },
   });
   
   return {addProduct: mutation.mutate};

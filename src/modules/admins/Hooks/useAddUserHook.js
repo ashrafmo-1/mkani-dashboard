@@ -8,19 +8,28 @@ export const useAddUserHook = () => {
   const queryClient = useQueryClient();
 
   const addNewUser = async (userData) => {
-    await axiosInstance.post(
-      `/${i18n.language}/admin/users/create`,
-      userData
-    );
+      await axiosInstance.post(`/${i18n.language}/admin/users/create`, userData);
   };
 
   const mutation = useMutation(addNewUser, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("users");
-      message.success("add user successfully.");
+    onSuccess: (data) => {
+      if (data.success) {
+        queryClient.invalidateQueries("users");
+        message.success("add user successfully.");
+      }
     },
-    onError: () => {
-      message.error("Failed to add user.");
+
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message;
+      if (typeof errorMessage === "object") { 
+        for (const [field, messages] of Object.entries(errorMessage)) {
+          messages.forEach((msg) => {
+            message.error(`${field}: ${msg}`);
+          });
+        }
+      } else {
+        message.error(errorMessage || "Failed to add user.");
+      }
     },
   });
 

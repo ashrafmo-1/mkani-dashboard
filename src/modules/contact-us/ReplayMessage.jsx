@@ -6,10 +6,11 @@ import { useGetSingleMessageHook } from "./hooks/useGetSingleMessageHook";
 // import { useReadMessage } from "./hooks/useReadMessage";
 import { Status } from "../../components/Status";
 import { ReplayForm } from "./components/ReplayForm";
-
+import { useTranslation } from "react-i18next";
 const { Text } = Typography;
 
 export const ReplayMessage = ({ contactUsId, contactUsMessageId }) => {
+  const { t } = useTranslation();
   const { data } = useGetSingleMessageHook(contactUsId);
   // const { markMessageAsRead } = useReadMessage();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -37,29 +38,26 @@ export const ReplayMessage = ({ contactUsId, contactUsMessageId }) => {
         {data ? (
           <div>
             <Descriptions bordered column={1} size="small">
-              <Descriptions.Item label="Subject"> {data.subject}
-              </Descriptions.Item>
-              <Descriptions.Item label="Name">{data.name}</Descriptions.Item>
-              <Descriptions.Item label="Email">{data.email}</Descriptions.Item>
-              <Descriptions.Item label="Phone">{data.phone}</Descriptions.Item>
-              <Descriptions.Item label="Status">
-                <Status value={data.status} activeText={"active"} inactiveText={"in active"} />
+              <Descriptions.Item label={t("contactUs.labels.subject")}>{data.subject}</Descriptions.Item>
+              <Descriptions.Item label={t("contactUs.labels.name")}>{data.name}</Descriptions.Item>
+              <Descriptions.Item label={t("contactUs.labels.email")}>{data.email}</Descriptions.Item>
+              <Descriptions.Item label={t("contactUs.labels.phone")}>{data.phone}</Descriptions.Item>
+              <Descriptions.Item label={t("contactUs.labels.status")}>
+                <Status value={data.status} activeText={t("globals.status.active")} inactiveText={t("globals.status.inActive")} />
               </Descriptions.Item>
             </Descriptions>
 
-            <Divider>Messages</Divider>
-
+            <Divider>{t("contactUs.messagesTitle")}</Divider>
             {data.messages.length > 0 ? (data.messages.map((msg) => (
                 <div key={msg.contactUsMessageId} style={{ marginBottom: "10px" }}>
-                  {/* <Text strong>{msg.isAdmin ? "Admin" : "User"}: </Text> */}
-                  <div><Text strong> from: </Text> <Text>{data.name}</Text></div>
-                  <div><Text strong> message: </Text> <Text>{msg.message}</Text></div>
-                  <Text type="secondary" style={{ fontSize: "12px" }}>Sent At: {msg.sentAt}</Text>
+                  <div><Text strong>{t("contactUs.messages.from")}: </Text> <Text>{data.name}</Text></div>
+                  <div><Text strong>{t("contactUs.messages.message")}: </Text> <Text>{msg.message}</Text></div>
+                  <Text type="secondary" style={{ fontSize: "12px" }}>{t("contactUs.messages.sentAt")}: {msg.sentAt}</Text>
                 </div>
               ))
             ) : (
               <p className="text-center text-gray-500">
-                No messages available.
+                {t("contactUs.messages.noMessages")}
               </p>
             )}
           </div>

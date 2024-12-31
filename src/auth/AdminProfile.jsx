@@ -24,7 +24,7 @@ export const AdminProfile = () => {
 
   return (
     <div className="border-t border-white">
-      <div className="flex justify-between items-center w-full mb-4">
+      <div className="flex justify-between items-center w-full mb-4 flex-col sm:flex-row">
         <button onClick={toggleProfileModal}>
           <img src={avatar} width={50} alt="avatar"
             className="flex justify-center m-2 items-center bottom-[20px] rounded-full border-blue-700 border-[4px] transition-transform duration-500 ease-in-out transform hover:scale-110"
@@ -39,18 +39,9 @@ export const AdminProfile = () => {
         </button>
       </div>
 
-      <div
-        className={`bg-white absolute right-2 z-50 shadow-2xl bottom-16 p-2 w-[270px] rounded-md ${
-          profileModal ? "flex-col" : "hidden"
-        }`}
-      >
+      <div className={`bg-white absolute right-2 z-50 shadow-2xl bottom-16 p-2 w-[270px] rounded-md ${ profileModal ? "flex-col" : "hidden" }`} >
         <div className="profile mb-2 bg-slate-100 rounded-md px-2 py-1 flex items-center justify-between">
-          <img
-            src={avatar}
-            alt="avatar"
-            width={40}
-            className="rounded-full border-blue-700 border-[2px]"
-          />
+          <img src={avatar} alt="avatar" width={40} className="rounded-full border-blue-700 border-[2px]" />
           <div>
             <h4 className="font-bold text-black">{profile.name}</h4>
             <p className="text-gray-700 font-semibold text-end">

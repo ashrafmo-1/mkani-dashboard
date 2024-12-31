@@ -124,33 +124,6 @@ export const AddNewProductCategeory = () => {
             </Select>
           </Form.Item>
 
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label={t("productCategory.add.lables.thumbnail")}
-                name="image"
-                valuePropName="fileList"
-                getValueFromEvent={(e) =>
-                  Array.isArray(e) ? e : e && e.fileList
-                }
-                rules={[
-                  {
-                    required: true,
-                    message:
-                      t("productCategory.add.placeholder.thumbnail") +
-                      " is required.",
-                  },
-                ]}
-              >
-                <Upload listType="picture" beforeUpload={() => false}>
-                  <Button icon={<UploadOutlined />}>
-                    {t("productCategory.add.placeholder.thumbnail")}
-                  </Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-          </Row>
-
           <Button
             type="primary"
             htmlType="submit"

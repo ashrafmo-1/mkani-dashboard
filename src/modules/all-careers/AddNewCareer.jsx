@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
 import { Button, Col, Form, message, Modal, Row } from "antd";
 import { useAddNewCareer } from "./hooks/useAddNewCareer";
-import { CareerTitle } from "./components/CareerTitle";
-import { CareerDescription } from "./components/CareerDescription";
 import { CareerContent } from "./components/CareerContent";
 import { CareerMetaDataEn } from "./components/CareerMetaDataEn";
 import { CareermetaDataAr } from "./components/CareermetaDataAr";
@@ -13,6 +11,8 @@ import { Slug } from "./components/Slug";
 import { CareerIsActive } from "./components/CareerIsActive";
 import { PlusSquareFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { Description } from "../../common/modules/create-edit/Description";
+import { Title } from "../../common/modules/create-edit/Title";
 
 const AddNewCareer = () => {
   const { t } = useTranslation();
@@ -62,8 +62,8 @@ const AddNewCareer = () => {
         width={900}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <CareerTitle />
-          <CareerDescription />
+          <Title />
+          <Description />
           <CareerContent />
 
           <Row gutter={[16, 16]}>
