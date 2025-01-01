@@ -1,4 +1,5 @@
 import "./App.css";
+import { useTranslation } from "react-i18next";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { LOGIN_PAGE } from "./modules/login/page";
 import { Home } from "./modules/home/page";
@@ -7,7 +8,6 @@ import { MAINPATH } from "./constant/MAINPATH";
 import RequireAuth from "./auth/RequireAuth";
 import LoginProdect from "./auth/LoginProdect";
 import Cookies from "js-cookie";
-import { useTranslation } from "react-i18next";
 import { Roles } from "./modules/Roles/Roles";
 import { Customers } from "./modules/Customers/Customer";
 import { Blog_categories } from "./modules/blog_categories/Blog_categories";
@@ -31,6 +31,8 @@ function App() {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
 
+  console.log(i18n.language);
+
   useEffect(() => {
     const currentPath = window.location.pathname;
     const [_, mainPath, currentLang, ...rest] = currentPath.split("/");
@@ -49,7 +51,7 @@ function App() {
     <div className="MPO_DASHBOARD flex w-full">
       { token && <Side_bar /> }
       <Routes>
-        <Route path="/" element={<Navigate to={`/${MAINPATH}/${i18n.language}/Dashboard`} />} />
+        <Route path="/" element={<Navigate to={`/${MAINPATH}/en/Dashboard`} />} />
 
         <Route element={<RequireAuth />}>
           <Route path={`/${MAINPATH}/authentication`} element={<LOGIN_PAGE />} />

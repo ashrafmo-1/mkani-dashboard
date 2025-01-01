@@ -57,7 +57,7 @@ export const AdminProfile = () => {
             onChange={handleChangeLanguage}
             value={currentLanguage}
           >
-            <option value="en">🇺🇸 English</option>
+            <option value="en">🇬🇧 English</option>
             <option value="ar">🇸🇦 Arabic</option>
           </select>
         </div>

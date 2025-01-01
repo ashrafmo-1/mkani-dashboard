@@ -10,6 +10,7 @@ i18n.use(LanguageDetector)
       en: { translation: enJSON },
       ar: { translation: arJSON },
     },
+    lng: "en",
     fallbackLng: "en",
     detection: {
       order: ["localStorage", "navigator"],
@@ -26,6 +27,7 @@ i18n.use(LanguageDetector)
   });
 
 i18n.on("languageChanged", (lng) => {
+  console.log("on file", lng);
   const isRTL = lng === "ar";
   document.documentElement.setAttribute("dir", isRTL ? "rtl" : "ltr");
   document.documentElement.setAttribute("lang", lng);
