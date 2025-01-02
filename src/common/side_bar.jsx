@@ -19,7 +19,7 @@ import {
 import SideBarLink from "../components/SideBarLink";
 import { AdminProfile } from "../auth/AdminProfile";
 
-export const Side_bar = () => {
+export const SideBar = () => {
   const { t, i18n } = useTranslation();
 
   const links = [
@@ -59,11 +59,11 @@ export const Side_bar = () => {
           <span className="hidden sm:block">{t("modulesTitle.dashboard")}</span>
         </Link>
 
-        {links.map((link, index) => {
+        {links.map((link) => {
           const hasPermission = checkPermission(link.path);
           return hasPermission ? (
             <Link
-              key={index}
+              key={link.path}
               to={`/${MAINPATH}/${i18n.language}/${link.path}`}
               className="capitalize side-link flex items-center gap-2 hover:bg-[#1b1c22] py-1 px-4 rounded-md"
             >

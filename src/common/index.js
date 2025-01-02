@@ -1,4 +1,4 @@
 import { NotFound } from "./NotFound";
-import { Side_bar } from "./side_bar";
+import { SideBar } from "./side_bar";
 
-export { NotFound, Side_bar };
+export { NotFound, SideBar };

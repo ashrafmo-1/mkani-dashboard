@@ -23,10 +23,9 @@ import { ProductCategory } from "./modules/product-category/ProductCategory";
 import { useEffect } from "react";
 import { SettingsPage } from "./portfolioSettings/SettingsPage";
 import ContactUs from "./modules/contact-us/ContactUs";
-import { NotFound, Side_bar } from "./common";
+import { NotFound, SideBar } from "./common";
 
 function App() {
-  // const permissions = useContext(PermissionsContext);
   const token = Cookies.get("MPO-TOKEN-DASHBOARD");
   const { i18n } = useTranslation();
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ function App() {
 
   useEffect(() => {
     const currentPath = window.location.pathname;
-    const [_, mainPath, currentLang, ...rest] = currentPath.split("/");
+    const [, mainPath, currentLang, ...rest] = currentPath.split("/");
     const newPath = `/${MAINPATH}/${i18n.language}/${rest.join("/")}`;
 
     if (currentLang !== i18n.language) {
@@ -49,7 +48,7 @@ function App() {
 
   return (
     <div className="MPO_DASHBOARD flex w-full">
-      { token && <Side_bar /> }
+      { token && <SideBar /> }
       <Routes>
         <Route path="/" element={<Navigate to={`/${MAINPATH}/en/Dashboard`} />} />
 

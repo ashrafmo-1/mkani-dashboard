@@ -50,76 +50,40 @@ export const EditUser = ({ userId }) => {
 
   return (
     <div>
-      <Button
-        className="edit border-green-900"
-        outline="true"
-        onClick={showModal}
-      >
+      <Button className="edit border-green-900" outline="true" onClick={showModal}>
         <EditOutlined />
       </Button>
-      <Modal
-        title="Edit Admin"
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
+      <Modal title="Edit Admin" visible={isModalVisible} onCancel={handleCancel} footer={null}>
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: "Name is required." }]}
-              >
+              <Form.Item label="Name" name="name">
                 <Input placeholder="Enter name" />
               </Form.Item>
             </Col>
 
             <Col span={12}>
-              <Form.Item
-                label="Username"
-                name="username"
-                rules={[{ required: true, message: "Username is required." }]}
-              >
+              <Form.Item label="Username" name="username">
                 <Input placeholder="Enter username" />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              { required: true, message: "Email is required." },
-              { type: "email", message: "Please enter a valid email." },
-            ]}
-          >
+          <Form.Item label="Email" name="email">
             <Input placeholder="Enter email" />
           </Form.Item>
 
-          <Form.Item
-            label="Phone"
-            name="phone"
-            rules={[{ required: true, message: "Phone is required." }]}
-          >
+          <Form.Item label="Phone" name="phone">
             <Input placeholder="Enter phone number" />
           </Form.Item>
 
-          <Form.Item
-            label="Address"
-            name="address"
-            rules={[{ required: true, message: "Address is required." }]}
-          >
+          <Form.Item label="Address" name="address">
             <Input placeholder="Enter address" />
           </Form.Item>
 
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item
-                label="Status"
-                name="status"
-                rules={[{ required: true, message: "Status is required." }]}
-              >
+              <Form.Item label="Status" name="status">
                 <Select placeholder="Select status">
                   <Select.Option value="1">Active</Select.Option>
                   <Select.Option value="0">Inactive</Select.Option>
@@ -128,11 +92,7 @@ export const EditUser = ({ userId }) => {
             </Col>
 
             <Col span={12}>
-              <Form.Item
-                label="Role"
-                name="roleId"
-                rules={[{ required: true, message: "Role is required." }]}
-              >
+              <Form.Item label="Role" name="roleId">
                 <Select placeholder="Select role">
                   <Select.Option value={1}>Admin</Select.Option>
                   <Select.Option value={2}>User</Select.Option>
@@ -141,20 +101,7 @@ export const EditUser = ({ userId }) => {
             </Col>
           </Row>
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Password is required." }]}
-          >
-            <Input.Password placeholder="Enter password" />
-          </Form.Item>
-
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="w-full"
-            loading={loading}
-          >
+          <Button type="primary" htmlType="submit" className="w-full" loading={loading}>
             Edit User
           </Button>
         </Form>
