@@ -2,24 +2,22 @@ import { useTranslation } from "react-i18next";
 import { Pagination, Select } from "antd";
 import { AddNewUser } from "./addNewUser";
 import { EditUser } from "./editUser";
-
-import { useSelectsHook } from "../../Hooks/useSelectsHook";
 import { DeleteUser } from "./DeleteUser";
 import { useUsersHook } from "./Hooks/useUsersHook";
+import { UserOutlined } from "@ant-design/icons";
+
 export const Admins = () => {
   const { t } = useTranslation();
-  const { pageCount, setSearchTerm, setStatusTerm, users, setCurrentPage } =
-    useUsersHook();
+  const { pageCount, setSearchTerm, setStatusTerm, users, setCurrentPage } = useUsersHook();
 
   const onChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const { type } = useSelectsHook();
-
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8">
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 mb-8 flex gap-2 items-center">
+        <UserOutlined />
         {t("modulesTitle.users")}
       </h1>
 

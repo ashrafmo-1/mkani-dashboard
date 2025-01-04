@@ -10,9 +10,9 @@ export const AddNewCustomer = () => {
   const hasCreateUserPermission = checkPermission("create_customer");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const { addNewCustomer } = useAddCustomerHook()
+  const { addNewCustomer } = useAddCustomerHook();
   const [isPending, setIsPending] = useState(false);
-  
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -41,38 +41,83 @@ export const AddNewCustomer = () => {
 
   return (
     <div>
-      {hasCreateUserPermission && ( <Button onClick={showModal} type="primary"> <PlusSquareFilled /> {t("customers.add")} </Button> )}
-      <Modal title={t("customers.add")} visible={isModalVisible} onCancel={handleCancel} footer={null}>
+      {hasCreateUserPermission && (
+        <Button onClick={showModal} type="primary">
+          {" "}
+          <PlusSquareFilled /> {t("customers.add")}{" "}
+        </Button>
+      )}
+      <Modal
+        title={t("customers.add")}
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item label={t("customers.name")} name="name" rules={[{ required: true, message: "Name is required." }]}>
+              <Form.Item
+                label={t("customers.name")}
+                name="name"
+                rules={[{ required: true, message: "Name is required." }]}
+              >
                 <Input placeholder={t("customers.placeholder.EnterName")} />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label={t("customers.email")} name="email" rules={[{ required: true, message: "email is required." }]}>
+              <Form.Item
+                label={t("customers.email")}
+                name="email"
+                rules={[
+                  { required: true, message: "Email is required." },
+                  { type: "email", message: "Please enter a valid email address." }
+                ]}
+              >
                 <Input placeholder={t("customers.placeholder.EnterEmail")} />
               </Form.Item>
             </Col>
           </Row>
-          <Form.Item label={t("customers.phone")} name="phone" rules={[{ required: true, message: "Phone is required." }]}>
+          <Form.Item
+            label={t("customers.phone")}
+            name="phone"
+            rules={[
+              { required: true, message: "Phone is required." },
+              {
+                pattern: /^[0-9]+$/,
+                message: "Phone number must contain only numbers.",
+              },
+            ]}
+          >
             <Input placeholder={t("customers.placeholder.EnterPhone")} />
           </Form.Item>
-          <Form.Item label={t("customers.address")} name="address" rules={[{ required: true, message: "Address is required." }]}>
+          <Form.Item
+            label={t("customers.address")}
+            name="address"
+            rules={[{ required: true, message: "Address is required." }]}
+          >
             <Input placeholder={t("customers.placeholder.EnterAddress")} />
           </Form.Item>
-          <Form.Item label={t("customers.description")} name="description"
-            rules={[ 
+          <Form.Item
+            label={t("customers.description")}
+            name="description"
+            rules={[
               { required: true, message: "description is required." },
               { type: "description", message: "Please enter description" },
             ]}
           >
-            <Input placeholder={t("customers.placeholder.EnterDescriptoin")} aria-label="description" />
+            <Input
+              placeholder={t("customers.placeholder.EnterDescriptoin")}
+              aria-label="description"
+            />
           </Form.Item>
 
           {/* Submit Button */}
-          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+          >
             {t("customers.add")}
           </Button>
         </Form>

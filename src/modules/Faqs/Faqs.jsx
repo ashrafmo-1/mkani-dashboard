@@ -7,6 +7,7 @@ import { DeleteFaqs } from "./DeleteFaqs";
 import { EditFaq } from "./EditFaq";
 import { Status } from "../../components/Status";
 import { SearchFilter } from "../../components/SearchFilter";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 export const Faqs = () => {
   const { t } = useTranslation();
@@ -17,8 +18,10 @@ export const Faqs = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8"> {t("faqs.title")} </h1>
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 mb-8">
+        <QuestionCircleOutlined /> {t("faqs.title")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className="capitalize mb-2 text-2xl">{t("globals.filter")}</h4>

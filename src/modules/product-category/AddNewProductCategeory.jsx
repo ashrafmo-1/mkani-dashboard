@@ -36,7 +36,6 @@ export const AddNewProductCategeory = () => {
     try {
       setIsPending(true);
       await addProductCategory(form_data);
-      message.success(t("productCategory.add.successMessage"));
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {

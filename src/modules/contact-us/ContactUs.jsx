@@ -5,8 +5,9 @@ import { Pagination } from "antd";
 import DeleteContactUs from "./DeleteContactUs";
 import { Status } from "../../components/Status";
 import { ReplayMessage } from "./ReplayMessage";
+import { MailOutlined } from "@ant-design/icons";
 
-const ContactUs = () => {
+export const ContactUs = () => {
   const { t } = useTranslation();
   const { contactUs, pageCount, setSearchTerm, setCurrentPage } =
     useContactUs();
@@ -16,8 +17,9 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8">
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 mb-8 flex gap-2 items-center">
+        <MailOutlined />
         {t("modulesTitle.contactUs")}
       </h1>
 
@@ -90,5 +92,3 @@ const ContactUs = () => {
     </div>
   );
 };
-
-export default ContactUs;

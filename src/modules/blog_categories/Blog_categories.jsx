@@ -4,6 +4,7 @@ import { useBlog_categoriesHook } from "./hooks/useBlog_categoriesHook";
 import { AddNewBlog_categories } from "./AddNewBlog_categories";
 import { EditBlogCategories } from "./EditBlog_categories";
 import { DeleteBlogCategory } from "./DeleteBlogCategory";
+import { AppstoreOutlined } from "@ant-design/icons";
 
 export const Blog_categories = () => {
   const { t } = useTranslation();
@@ -15,8 +16,9 @@ export const Blog_categories = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
       <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8">
+        <AppstoreOutlined />
         {t("blogCategory.title")}
       </h1>
 

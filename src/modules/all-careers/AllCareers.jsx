@@ -7,8 +7,9 @@ import DeleteCareer from "./DeleteCareer";
 import AddNewCareer from "./AddNewCareer";
 import EditAllCareers from "./EditAllCareers";
 import { SearchFilter } from "../../components/SearchFilter";
+import { WechatWorkOutlined } from "@ant-design/icons";
 
-const AllCareers = () => {
+export const AllCareers = () => {
   const { t } = useTranslation();
   const { careers, pageCount, setSearchTerm, setCurrentPage } = useCareers();
 
@@ -17,8 +18,11 @@ const AllCareers = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8">{t("careers.title")}</h1>
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 mb-8 flex gap-2 items-center">
+        <WechatWorkOutlined />
+        {t("careers.title")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
@@ -93,5 +97,3 @@ const AllCareers = () => {
     </div>
   );
 };
-
-export default AllCareers;

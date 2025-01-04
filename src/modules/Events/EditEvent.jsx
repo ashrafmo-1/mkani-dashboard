@@ -3,13 +3,9 @@ import { Button, Col, DatePicker, Form, Input, message, Modal, Row, Select, Time
 import React, { useEffect, useState } from "react";
 import { useEditEventHook } from "./Hooks/useEditEventHook";
 import { useGetSingleEventHook } from "./Hooks/useGetSingleEventHook";
-import { Title } from "../../common/modules/create-edit/Title";
-import { Slug } from "../../common/modules/create-edit/Slug";
-import { Description } from "../../common/modules/create-edit/Description";
-import { MetaDataAr } from "../../common/modules/create-edit/MetaDataAr";
-import { MetaDataEn } from "../../common/modules/create-edit/MetaDataEn";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+import { Title, MetaDataEn, MetaDataAr, Description, Slug } from "../../common";
 
 export const EditEvent = ({ eventId }) => {
   const { t } = useTranslation();
@@ -77,7 +73,7 @@ export const EditEvent = ({ eventId }) => {
             <MetaDataEn />
           </Row>
 
-          <Form.Item label="Thumbnail" name="thumbnail" rules={[{ required: true, message: "Thumbnail is required." }]}>
+          <Form.Item label="Thumbnail" name="thumbnail">
             <Upload name="thumbnail" listType="picture">
               <Button icon={<UploadOutlined />}>{"Click to Upload"}</Button>
             </Upload>
@@ -101,7 +97,7 @@ export const EditEvent = ({ eventId }) => {
             <Input type="text" />
           </Form.Item>
 
-          <Form.Item label="is published" name="isPublished" rules={[{ required: true, message: "is published is required." }]}>
+          <Form.Item label="is published" name="isPublished">
             <Select placeholder="Select status">
               <Select.Option value="1">Published</Select.Option>
               <Select.Option value="0">Draft</Select.Option>
@@ -109,7 +105,7 @@ export const EditEvent = ({ eventId }) => {
           </Form.Item>
 
           <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
-            {t("globals.add")}
+            {t("globals.edit")}
           </Button>
         </Form>
       </Modal>

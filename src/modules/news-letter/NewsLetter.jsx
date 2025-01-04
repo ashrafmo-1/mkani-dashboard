@@ -7,6 +7,7 @@ import DeleteNewsLetter from "./DeleteNewsLetter";
 import useNewsLetterHook from "./hooks/useNewsLetterHook";
 import { Status } from "../../components/Status";
 import { SearchFilter } from "../../components/SearchFilter";
+import { MailOutlined } from "@ant-design/icons";
 
 export const NewsLetter = () => {
   const { t } = useTranslation();
@@ -18,8 +19,9 @@ export const NewsLetter = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8">
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 mb-8 flex gap-2 items-center">
+        <MailOutlined />
         {t("NewsLetter.title")}
       </h1>
 

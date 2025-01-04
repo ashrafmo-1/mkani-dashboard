@@ -1,2 +1,9 @@
 import Cookies from "js-cookie";
-export const token = Cookies.get("MPO-TOKEN-DASHBOARD");
+
+let token = Cookies.get("MPO-TOKEN-DASHBOARD");
+
+if (!token) {
+  token = null;
+}
+
+export { token };

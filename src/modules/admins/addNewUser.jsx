@@ -53,7 +53,6 @@ export const AddNewUser = () => {
           <Modal title={t("users.add")} visible={isModalVisible} onCancel={handleCancel} footer={null}>
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
               <Row gutter={[16, 16]}>
-                {/* Name */}
                 <Col span={12}>
                   <Form.Item
                     label="Name"
@@ -64,7 +63,6 @@ export const AddNewUser = () => {
                   </Form.Item>
                 </Col>
 
-                {/* Username */}
                 <Col span={12}>
                   <Form.Item
                     label="Username"
@@ -75,7 +73,6 @@ export const AddNewUser = () => {
                 </Col>
               </Row>
 
-              {/* Email */}
               <Form.Item
                 label="Email"
                 name="email"
@@ -87,16 +84,17 @@ export const AddNewUser = () => {
                 <Input placeholder="Enter email" />
               </Form.Item>
 
-              {/* Phone */}
               <Form.Item
                 label="Phone"
                 name="phone"
-                rules={[{ required: true, message: "Phone is required." }]}
+                rules={[
+                  { required: true, message: "Phone is required." },
+                  { pattern: /^[0-9]+$/, message: "Phone number must contain only numbers." }
+                ]}
               >
                 <Input placeholder="Enter phone number" />
               </Form.Item>
 
-              {/* Address */}
               <Form.Item
                 label="Address"
                 name="address"
@@ -106,7 +104,6 @@ export const AddNewUser = () => {
               </Form.Item>
 
               <Row gutter={[16, 16]}>
-                {/* Status */}
                 <Col span={12}>
                   <Form.Item label="Status" name="status" rules={[{ required: true, message: "Status is required." }]}>
                     <Select placeholder="Select status">
@@ -116,10 +113,8 @@ export const AddNewUser = () => {
                   </Form.Item>
                 </Col>
 
-                {/* Role */}
                 <Col span={12}>
                   <Form.Item label="Role" name="roleId" rules={[{ required: true, message: "Role is required." }]}>
-                    {/* <Input placeholder="Enter role" /> */}
                     <Select placeholder="Select role">
                       {type.map((item) => (
                         <Select.Option value={item.value}>{item.label}</Select.Option>
@@ -129,16 +124,12 @@ export const AddNewUser = () => {
                 </Col>
               </Row>
 
-              {/* Password */}
-              <Form.Item
-                label="Password"
-                name="password"
+              <Form.Item label="Password" name="password"
                 rules={[{ required: true, message: "Password is required." }]}
               >
                 <Input.Password placeholder="Enter password" />
               </Form.Item>
 
-              {/* Submit Button */}
               <Button type="primary" htmlType="submit" className="w-full" loading={loading}>
                 {t("users.add")}
               </Button>

@@ -1,6 +1,7 @@
 import { useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
+import { message } from "antd";
 
 export const useEditCustomerHook = () => {
   const { i18n } = useTranslation();
@@ -12,6 +13,7 @@ export const useEditCustomerHook = () => {
         values
       );
       queryClient.invalidateQueries("customers");
+      message.success("Customer details have been successfully updated!")
     } catch (error) {
       console.error(
         "Error editing customers:",

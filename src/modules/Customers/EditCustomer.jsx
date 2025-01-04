@@ -82,7 +82,13 @@ export const EditCustomer = ({ customerId }) => {
           <Form.Item
             label="Phone"
             name="phone"
-            rules={[{ required: true, message: "Phone is required." }]}
+            rules={[
+              { required: true, message: "Phone is required." },
+              {
+                pattern: /^[0-9]+$/,
+                message: "Phone number must contain only numbers.",
+              },
+            ]}
           >
             <Input placeholder="Enter phone number" />
           </Form.Item>

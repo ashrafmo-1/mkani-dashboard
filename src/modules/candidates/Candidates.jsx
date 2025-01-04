@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useCandidatesHook } from "./hooks/useCandidatesHook";
 import { DeleteCandidate } from "./DeleteCandidate";
 import CandidateRow from "./components/CandidateRowPdf";
+import { UserOutlined } from "@ant-design/icons";
 
-const Candidates = () => {
+export const Candidates = () => {
   const { t } = useTranslation();
   const { pageCount, setSearchTerm, candidates, setCurrentPage } = useCandidatesHook();
 
@@ -14,10 +15,11 @@ const Candidates = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">{t("candidates.title")}</h1>
-      </div>
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+        <h1 className="text-4xl font-bold text-gray-800 mb-10 flex gap-2 items-center">
+          <UserOutlined />
+          {t("candidates.title")}
+        </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
@@ -97,5 +99,3 @@ const Candidates = () => {
     </div>
   );
 };
-
-export default Candidates;

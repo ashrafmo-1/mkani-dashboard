@@ -3,9 +3,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import useSubscribersHook from "./hooks/useSubscribersHook";
 import { DelereSebscriper } from "./DelereSebscriper";
-// import { EditSubscriper } from "./EditSubscriper";
 import { Status } from "../../components/Status";
 import { SearchFilter } from "../../components/SearchFilter";
+import { UserAddOutlined } from "@ant-design/icons";
 
 export const Subscribers = () => {
   const { t } = useTranslation();
@@ -18,12 +18,11 @@ export const Subscribers = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">
-          {t("subscribers.title")}
-        </h1>
-      </div>
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 mb-10 flex gap-2 items-center">
+        <UserAddOutlined />
+        {t("subscribers.title")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>

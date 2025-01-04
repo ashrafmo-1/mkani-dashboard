@@ -2,17 +2,13 @@ import { EditOutlined } from "@ant-design/icons";
 import { Button, Form, message, Modal, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { InputName } from "./components/create/InputName";
-import { InputContent } from "./components/create/InputContent";
 import { UploadImages } from "./components/create/UploadImages";
 import { SelectisActive } from "./components/create/SelectisActive";
 import { checkPermission } from "../../helpers/checkPermission";
 import { useTranslation } from "react-i18next";
 import { useEditProductHook } from "./hook/useEditProductHook";
 import { useGetSingleProduct } from "./hook/useGetSingleProduct";
-import { MetaDataEn } from "../../common/modules/create-edit/MetaDataEn";
-import { MetaDataAr } from "../../common/modules/create-edit/MetaDataAr";
-import { Slug } from "../../common/modules/create-edit/Slug";
-import { Description } from "../../common/modules/create-edit/Description";
+import { MetaDataEn, MetaDataAr, Slug, Description, TextEditorInput } from "../../common";
 
 const EditProduct = ({ productId }) => {
   const { t } = useTranslation();
@@ -75,7 +71,7 @@ const EditProduct = ({ productId }) => {
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <InputName />
           <Description />
-          <InputContent />
+          <TextEditorInput />
           <Slug />
 
           <Row gutter={[16, 16]}>

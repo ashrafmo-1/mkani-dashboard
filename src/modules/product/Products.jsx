@@ -1,13 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Status } from "../../components/Status";
-import { Pagination } from "antd";
+import { Image, Pagination } from "antd";
 import { useProductsHook } from "./hook/useProductsHook";
 import DeleteProduct from "./DeleteProduct";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
+import { AppstoreOutlined } from "@ant-design/icons";
 
-const Products = () => {
+export const Products = () => {
   const { t } = useTranslation();
   const { products, pageCount, setSearchTerm, setCurrentPage } =
     useProductsHook();
@@ -17,8 +18,9 @@ const Products = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8">
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8 flex gap-2 items-center">
+        <AppstoreOutlined />
         {t("products.title")}
       </h1>
 
@@ -46,6 +48,9 @@ const Products = () => {
                 {t("products.name")}
               </th>
               <th scope="col" className="px-6 py-3">
+                {t("photo")}
+              </th>
+              <th scope="col" className="px-6 py-3">
                 {t("globals.status.title")}
               </th>
               <th scope="col" className="px-6 py-3">
@@ -54,19 +59,15 @@ const Products = () => {
             </tr>
           </thead>
           <tbody>
-            {products &&
-              products.map((product, index) => (
+            {products && products.map((product, index) => (
                 <tr className="bg-white border-b" key={index}>
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <Image src={product.image} width={50} alt="" />
+                  </th>
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {product.name}
                   </th>
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     <Status
                       value={product.isActive}
                       activeText={t("globals.status.active")}
@@ -93,5 +94,3 @@ const Products = () => {
     </div>
   );
 };
-
-export default Products;

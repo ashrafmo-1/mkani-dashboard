@@ -12,11 +12,9 @@ export const useAddUserHook = () => {
   };
 
   const mutation = useMutation(addNewUser, {
-    onSuccess: (data) => {
-      if (data.success) {
-        queryClient.invalidateQueries("users");
-        message.success("add user successfully.");
-      }
+    onSuccess: () => {
+      queryClient.invalidateQueries("users");
+      message.success("User added successfully.");
     },
 
     onError: (error) => {

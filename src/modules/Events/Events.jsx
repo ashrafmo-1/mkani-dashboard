@@ -1,5 +1,5 @@
 import React from "react";
-import { UserOutlined } from "@ant-design/icons";
+import { CalendarOutlined, UserOutlined } from "@ant-design/icons";
 import { Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import { useEventHook } from "./Hooks/useEventHook";
@@ -18,8 +18,9 @@ export const Events = () => {
   } ;
 
   return (
-    <div className="relative overflow-x-auto w-full px-10 my-20 pb-2 sm:rounded-lg">
-      <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8">
+    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8 flex gap-2 items-center">
+        <CalendarOutlined />
         {t("events.title")}
       </h1>
 

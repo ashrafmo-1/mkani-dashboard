@@ -1,9 +1,11 @@
-import { Button, Modal, Form, Input, Row, Col, Select, Upload } from "antd";
+import { Button, Modal, Form, Row, Col, Select, Upload } from "antd";
 import React, { useState } from "react";
 import { PlusSquareFilled, UploadOutlined } from "@ant-design/icons";
 import { useBlog_categoriesHook } from "../blog_categories/hooks/useBlog_categoriesHook";
 import { useAddNewBlog } from "./hooks/useAddNewBlog";
 import { useTranslation } from "react-i18next";
+import { MetaDataAr, MetaDataEn, Slug, TextEditorInput, Title } from "../../common";
+
 export const AddBlog = () => {
   const { t } = useTranslation();
   const { addNewBlog } = useAddNewBlog();
@@ -28,111 +30,23 @@ export const AddBlog = () => {
   return (
     <div>
       <Button type="primary" onClick={() => setIsModalVisible(true)}>
-        <PlusSquareFilled />
-        {t("blogs.add.title")}
+        <PlusSquareFilled /> {t("blogs.add.title")}
       </Button>
 
-      <Modal
-        title={t("blogs.add.title")}
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
+      <Modal title={t("blogs.add.title")} visible={isModalVisible} onCancel={handleCancel} footer={null} width={820}>
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.titleAr")}
-                name="titleAr"
-                rules={[{ required: true, message: t("blogs.add.lables.titleAr") + " is required." }]}
-              >
-                <Input placeholder={t("blogs.add.placeholder.EnterTitleAr")} />
-              </Form.Item>
-            </Col>
+          <Title />
+          <Slug />
+          <TextEditorInput />
 
-            <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.titleEn")}
-                name="titleEn"
-                rules={[{ required: true, message: t("blogs.add.lables.titleEn") + " is required." }]}
-              >
-                <Input placeholder={t("blogs.add.placeholder.EnterTitleEn")} />
-              </Form.Item>
-            </Col>
+          <Row gutter={[16, 16]}>
+            <MetaDataAr />
+            <MetaDataEn />
           </Row>
 
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.slugAr")}
-                name="slugAr"
-                rules={[{ required: true, message: t("blogs.add.lables.slugAr") + " is required." }]}
-              >
-                <Input placeholder={t("blogs.add.placeholder.EnterSlugAr")} />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.slugEn")}
-                name="slugEn"
-                rules={[{ required: true, message: t("blogs.add.lables.slugEn") + " is required." }]}
-              >
-                <Input placeholder={t("blogs.add.placeholder.EnterSlugEn")} />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.contentAr")}
-                name="contentAr"
-                rules={[{ required: true, message: t("blogs.add.lables.contentAr") + " is required." }]}
-              >
-                <Input placeholder={t("blogs.add.placeholder.EnterContentAr")} />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.contentEn")}
-                name="contentEn"
-                rules={[{ required: true, message: t("blogs.add.lables.contentEn") + " is required." }]}
-              >
-                <Input placeholder={t("blogs.add.placeholder.EnterContentEn")} />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.metaDataAr")}
-                name="metaDataAr"
-                rules={[{ required: true, message: t("blogs.add.lables.metaDataAr") + " is required." }]}
-              >
-                <Input placeholder={t("blogs.add.placeholder.EnterMetaDataAr")} />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.metaDataEn")}
-                name="metaDataEn"
-                rules={[{ required: true, message: t("blogs.add.lables.metaDataEn") + " is required." }]}
-              >
-                <Input placeholder={t("blogs.add.placeholder.EnterMetaDataEn")} />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label={t("blogs.add.lables.thumbnail")}
-                name="thumbnail"
-                valuePropName="fileList"
+              <Form.Item label={t("blogs.add.lables.thumbnail")} name="thumbnail" valuePropName="fileList"
                 getValueFromEvent={(e) =>
                   Array.isArray(e) ? e : e && e.fileList
                 }
@@ -145,9 +59,7 @@ export const AddBlog = () => {
             </Col>
           </Row>
 
-          <Form.Item
-            label={t("blogs.add.lables.isPublished")}
-            name="isPublished"
+          <Form.Item label={t("blogs.add.lables.isPublished")} name="isPublished"
             rules={[{ required: true, message: t("blogs.add.lables.isPublished") + " is required." }]}
           >
             <Select placeholder={t("blogs.add.placeholder.isPublished")}>

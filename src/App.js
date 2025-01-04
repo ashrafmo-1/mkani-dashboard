@@ -1,29 +1,31 @@
 import "./App.css";
 import { useTranslation } from "react-i18next";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import { LOGIN_PAGE } from "./modules/login/page";
+import { LoginPage } from "./modules/login/page";
 import { Home } from "./modules/home/page";
-import { Admins } from "./modules/admins/admins";
 import { MAINPATH } from "./constant/MAINPATH";
 import RequireAuth from "./auth/RequireAuth";
 import LoginProdect from "./auth/LoginProdect";
 import Cookies from "js-cookie";
 import { Roles } from "./modules/Roles/Roles";
-import { Customers } from "./modules/Customers/Customer";
-import { Blog_categories } from "./modules/blog_categories/Blog_categories";
-import { Events } from "./modules/Events/Events";
-import { Blogs } from "./modules/blogs/Blogs";
-import { Faqs } from "./modules/Faqs/Faqs";
-import { NewsLetter } from "./modules/news-letter/NewsLetter";
-import { Subscribers } from "./modules/subscribers/Subscribers";
-import AllCareers from "./modules/all-careers/AllCareers";
-import Candidates from "./modules/candidates/Candidates";
-import Products from "./modules/product/Products";
-import { ProductCategory } from "./modules/product-category/ProductCategory";
 import { useEffect } from "react";
 import { SettingsPage } from "./portfolioSettings/SettingsPage";
-import ContactUs from "./modules/contact-us/ContactUs";
 import { NotFound, SideBar } from "./common";
+import {
+  Admins,
+  Faqs,
+  Blogs,
+  Events,
+  Subscribers,
+  ContactUs,
+  ProductCategory,
+  Products,
+  Candidates,
+  AllCareers,
+  NewsLetter,
+  Blog_categories,
+  Customers,
+} from "./modules";
 
 function App() {
   const token = Cookies.get("MPO-TOKEN-DASHBOARD");
@@ -48,22 +50,29 @@ function App() {
 
   return (
     <div className="MPO_DASHBOARD flex w-full">
-      { token && <SideBar /> }
+      {token && (
+        <div className="sticky top-0 w-[80px] sm:w-[300px] h-[99vh]">
+          <SideBar />
+        </div>
+      )}
       <Routes>
-        <Route path="/" element={<Navigate to={`/${MAINPATH}/en/Dashboard`} />} />
+        <Route
+          path="/"
+          element={<Navigate to={`/${MAINPATH}/en/Dashboard`} />}
+        />
 
         <Route element={<RequireAuth />}>
-          <Route path={`/${MAINPATH}/authentication`} element={<LOGIN_PAGE />} />
+          <Route path={`/${MAINPATH}/authentication`} element={<LoginPage />} />
         </Route>
 
         <Route element={<LoginProdect />}>
           <Route path={`/${MAINPATH}/${i18n.language}`}>
             <Route path="Dashboard" element={<Home />} />
-            <Route path="all_users" element={<Admins />} />
-            <Route path="all_roles" element={<Roles />} />
-            <Route path="all_customers" element={<Customers />} />
-            <Route path="all_products" element={<Products />} />
-            <Route path="all_product_categories" element={<ProductCategory />} />
+            <Route path="users" element={<Admins />} />
+            <Route path="roles" element={<Roles />} />
+            <Route path="customers" element={<Customers />} />
+            <Route path="products" element={<Products />} />
+            <Route path="product_categories" element={<ProductCategory />} />
             <Route path="blog_categories" element={<Blog_categories />} />
             <Route path="blogs" element={<Blogs />} />
             <Route path="events" element={<Events />} />

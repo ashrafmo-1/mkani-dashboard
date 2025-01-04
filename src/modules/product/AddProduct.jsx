@@ -4,14 +4,13 @@ import { Button, Form, message, Modal, Row } from "antd";
 import { useAddProductHook } from "./hook/useAddProductHook";
 import { PlusSquareFilled } from "@ant-design/icons";
 import { InputName } from "./components/create/InputName";
-import { InputContent } from "./components/create/InputContent";
 import { UploadImages } from "./components/create/UploadImages";
 import { SelectisActive } from "./components/create/SelectisActive";
 import { useTranslation } from "react-i18next";
 import { MetaDataEn } from "../../common/modules/create-edit/MetaDataEn";
 import { MetaDataAr } from "../../common/modules/create-edit/MetaDataAr";
 import { Slug } from "../../common/modules/create-edit/Slug";
-import { Description } from "../../common/modules/create-edit/Description";
+import { Description, TextEditorInput } from "../../common";
 
 const AddProduct = () => {
   const { t } = useTranslation();
@@ -56,8 +55,7 @@ const AddProduct = () => {
   
     try {
       setIsPending(true);
-      await addProduct(formData);
-      message.success("Product added successfully.");
+      await addProduct(formData);;
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
@@ -85,7 +83,7 @@ const AddProduct = () => {
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <InputName />
           <Description />
-          <InputContent />
+          <TextEditorInput />
           <Slug />
 
           <Row gutter={[16, 16]}>

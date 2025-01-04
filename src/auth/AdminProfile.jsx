@@ -23,7 +23,7 @@ export const AdminProfile = () => {
   const profile = profileString && JSON.parse(profileString);
 
   return (
-    <div className="border-t border-white">
+    <div className="border-t border-black">
       <div className="flex justify-between items-center w-full mb-4 flex-col sm:flex-row">
         <button onClick={toggleProfileModal}>
           <img src={avatar} width={50} alt="avatar"
@@ -61,15 +61,6 @@ export const AdminProfile = () => {
             <option value="ar">🇸🇦 Arabic</option>
           </select>
         </div>
-        <button
-          className="bg-red-500 rounded-md text-left w-full px-2 py-2 text-white capitalize font-semibold"
-          onClick={() => {
-            Cookies.remove("MPO-TOKEN-DASHBOARD");
-            window.location.reload();
-          }}
-        >
-          {t("logout")}
-        </button>
       </div>
     </div>
   );
