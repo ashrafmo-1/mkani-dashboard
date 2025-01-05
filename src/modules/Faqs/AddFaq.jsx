@@ -127,11 +127,17 @@ export const AddFaq = () => {
             ]}
           >
             <Select placeholder={t("globals.status.checlkPublished")}>
-              <Select.Option value="1">
-                {t("globals.status.published")}
+            <Select.Option value="1">
+                <div className="flex items-center gap-1">
+                  <span className="bg-green-600 p-1 rounded-full"></span>
+                  <span>{t("globals.status.active")}</span>
+                </div>
               </Select.Option>
               <Select.Option value="0">
-                {t("globals.status.draft")}
+                <div className="flex items-center gap-1">
+                  <span className="bg-red-600 p-1 rounded-full"></span>
+                  <span>{t("globals.status.inActive")}</span>
+                </div>
               </Select.Option>
             </Select>
           </Form.Item>

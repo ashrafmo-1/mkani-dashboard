@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export const AddNewBlog_categories = () => {
   const { t } = useTranslation();
-  const hasCreateCategoryPermission = checkPermission("create_blog_category");
+  // const hasCreateCategoryPermission = checkPermission("create_blog_category");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [form] = Form.useForm();
@@ -114,13 +114,13 @@ export const AddNewBlog_categories = () => {
             <Select placeholder={t("blogCategory.placeholder.SelectIsActive")} aria-label="isActive">
               <Select.Option value="1">
                 <div className="flex items-center gap-1">
-                  <span className="bg-green-600 p-2 rounded-full"></span>
+                  <span className="bg-green-600 p-1 rounded-full"></span>
                   <span>{t("globals.status.active")}</span>
                 </div>
               </Select.Option>
               <Select.Option value="0">
                 <div className="flex items-center gap-1">
-                  <span className="bg-red-600 p-2 rounded-full"></span>
+                  <span className="bg-red-600 p-1 rounded-full"></span>
                   <span>{t("globals.status.inActive")}</span>
                 </div>
               </Select.Option>

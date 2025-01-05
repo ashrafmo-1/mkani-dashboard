@@ -45,7 +45,7 @@ export const EditUser = ({ userId }) => {
         email: data.email,
         phone: data.phone,
         role: data.role,
-        status: data.status === 1 ? "Active" : "Inactive",
+        status: data.status !== undefined ? String(data.status) : "",
         address: data.address,
         description: data.description,
       });
@@ -128,8 +128,18 @@ export const EditUser = ({ userId }) => {
                 rules={[{ required: true, message: "Status is required." }]}
               >
                 <Select placeholder="Select status">
-                  <Select.Option value="1">Active</Select.Option>
-                  <Select.Option value="0">Inactive</Select.Option>
+                  <Select.Option value="1">
+                    <div className="flex items-center gap-1">
+                      <span className="bg-green-600 p-1 rounded-full"></span>
+                      <span>{t("globals.status.active")}</span>
+                    </div>
+                  </Select.Option>
+                  <Select.Option value="0">
+                    <div className="flex items-center gap-1">
+                      <span className="bg-red-600 p-1 rounded-full"></span>
+                      <span>{t("globals.status.inActive")}</span>
+                    </div>
+                  </Select.Option>
                 </Select>
               </Form.Item>
             </Col>

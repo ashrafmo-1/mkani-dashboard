@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
-import { message } from "antd";
+import { Button, message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
 
 
@@ -17,9 +17,21 @@ export const useAddProductCategoryHook = () => {
       queryClient.invalidateQueries('productsCategory');
       message.success("product categories added successfully.");
     },
-    onError: () => {
-      message.error("Failed to add product categories.");
-    }
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message;
+      if (typeof errorMessage === "object") { 
+        for (const [field, messages] of Object.entries(errorMessage)) {
+          messages.forEach((msg) => {
+            message.error({
+              content: `${field}: ${msg}`,
+              duration: 5,
+            });
+          });
+        }
+      } else {
+        message.error(errorMessage || "Failed to add product category.");
+      }
+    },
   });
   
   return {addProductCategory: mutation.mutate};

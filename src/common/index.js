@@ -6,5 +6,16 @@ import { Slug } from "./modules/create-edit/Slug";
 import { MetaDataAr } from "./modules/create-edit/MetaDataAr";
 import { MetaDataEn } from "./modules/create-edit/MetaDataEn";
 import { TextEditorInput } from "./modules/create-edit/TextEditorInput";
+import { SelectStatus } from "./modules/Status";
 
-export { NotFound, SideBar, Title, Description, Slug, MetaDataEn, MetaDataAr, TextEditorInput };
+export {
+  NotFound,
+  SideBar,
+  Title,
+  Description,
+  Slug,
+  MetaDataEn,
+  MetaDataAr,
+  TextEditorInput,
+  SelectStatus,
+};

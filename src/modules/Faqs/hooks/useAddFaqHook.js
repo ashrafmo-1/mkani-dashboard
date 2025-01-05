@@ -13,12 +13,21 @@ export const useAddFaqHook = () => {
 
   const mutation = useMutation(addFaq, {
     onSuccess: () => {
-      queryClient.invalidateQueries('faqs');
+      queryClient.invalidateQueries("faqs");
       message.success("faq added successfully.");
     },
-    onError: () => {
-      message.error("Failed to add faq.");
-    }
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message;
+      if (typeof errorMessage === "object") {
+        for (const [field, messages] of Object.entries(errorMessage)) {
+          messages.forEach((msg) => {
+            message.error(`${field}: ${msg}`);
+          });
+        }
+      } else {
+        message.error(errorMessage || "Failed to add FAQ.");
+      }
+    },
   });
 
   return { addFaq: mutation.mutate };

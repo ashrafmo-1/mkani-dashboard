@@ -29,7 +29,7 @@ const EditProduct = ({ productId }) => {
   };
 
   const handleSubmit = async (values) => {
-    setIsPending(true);
+    setIsPending(true); // Set loading state to true
     try {
       await editProduct(productId, values);
       message.success("Product edited successfully.");
@@ -37,7 +37,7 @@ const EditProduct = ({ productId }) => {
     } catch (error) {
       message.error("Failed to edit product.", error);
     } finally {
-      setIsPending(false);
+      setIsPending(false); // Reset loading state
     }
   };
 
@@ -54,7 +54,7 @@ const EditProduct = ({ productId }) => {
         slugAr: data.slugAr,
         metaDataEn: data.metaDataEn,
         metaDataAr: data.metaDataAr,
-        isActive: data.isActive,
+        isActive: data.isActive !== undefined ? String(data.isActive) : "",
       });
     }
   }, [data, form, isModalVisible]);
@@ -81,7 +81,12 @@ const EditProduct = ({ productId }) => {
 
           <UploadImages />
           <SelectisActive />
-          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
+          <Button 
+            type="primary" 
+            htmlType="submit" 
+            className="w-full" 
+            loading={isPending}
+          >
             {t("globals.edit")}
           </Button>
         </Form>

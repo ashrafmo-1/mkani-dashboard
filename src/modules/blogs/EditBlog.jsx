@@ -49,7 +49,8 @@ export const EditBlog = ({ blogId }) => {
         metaDataEn: data.metaDataEn,
         thumbnail: data.thumbnail,
         categoryId: data.categoryId,
-        isPublished: data.isPublished,
+        isPublished:
+          data.isPublished !== undefined ? String(data.isPublished) : "",
       });
     }
   }, [data, form, isModalVisible]);
@@ -164,10 +165,16 @@ export const EditBlog = ({ blogId }) => {
           >
             <Select placeholder={t("blogs.add.placeholder.isPublished")}>
               <Select.Option value="1">
-                {t("blogs.add.placeholder.isPublished")}
+                <div className="flex items-center gap-1">
+                  <span className="bg-green-600 p-1 rounded-full"></span>
+                  <span>{t("globals.status.active")}</span>
+                </div>
               </Select.Option>
               <Select.Option value="0">
-                {t("blogs.add.placeholder.Draft")}
+                <div className="flex items-center gap-1">
+                  <span className="bg-red-600 p-1 rounded-full"></span>
+                  <span>{t("globals.status.inActive")}</span>
+                </div>
               </Select.Option>
             </Select>
           </Form.Item>

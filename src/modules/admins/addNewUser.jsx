@@ -50,7 +50,12 @@ export const AddNewUser = () => {
             {t("users.add")}
           </Button>
 
-          <Modal title={t("users.add")} visible={isModalVisible} onCancel={handleCancel} footer={null}>
+          <Modal
+            title={t("users.add")}
+            visible={isModalVisible}
+            onCancel={handleCancel}
+            footer={null}
+          >
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
               <Row gutter={[16, 16]}>
                 <Col span={12}>
@@ -67,7 +72,10 @@ export const AddNewUser = () => {
                   <Form.Item
                     label="Username"
                     name="username"
-                    rules={[{ required: true, message: "Username is required." }]}>
+                    rules={[
+                      { required: true, message: "Username is required." },
+                    ]}
+                  >
                     <Input placeholder="Enter username" />
                   </Form.Item>
                 </Col>
@@ -89,7 +97,10 @@ export const AddNewUser = () => {
                 name="phone"
                 rules={[
                   { required: true, message: "Phone is required." },
-                  { pattern: /^[0-9]+$/, message: "Phone number must contain only numbers." }
+                  {
+                    pattern: /^[0-9]+$/,
+                    message: "Phone number must contain only numbers.",
+                  },
                 ]}
               >
                 <Input placeholder="Enter phone number" />
@@ -105,32 +116,59 @@ export const AddNewUser = () => {
 
               <Row gutter={[16, 16]}>
                 <Col span={12}>
-                  <Form.Item label="Status" name="status" rules={[{ required: true, message: "Status is required." }]}>
+                  <Form.Item
+                    label="Status"
+                    name="status"
+                    rules={[{ required: true, message: "Status is required." }]}
+                  >
                     <Select placeholder="Select status">
-                      <Select.Option value="1">Active</Select.Option>
-                      <Select.Option value="0">Inactive</Select.Option>
+                      <Select.Option value="1">
+                        <div className="flex items-center gap-1">
+                          <span className="bg-green-600 p-1 rounded-full"></span>
+                          <span>{t("globals.status.active")}</span>
+                        </div>
+                      </Select.Option>
+                      <Select.Option value="0">
+                        <div className="flex items-center gap-1">
+                          <span className="bg-red-600 p-1 rounded-full"></span>
+                          <span>{t("globals.status.inActive")}</span>
+                        </div>
+                      </Select.Option>
                     </Select>
                   </Form.Item>
                 </Col>
 
                 <Col span={12}>
-                  <Form.Item label="Role" name="roleId" rules={[{ required: true, message: "Role is required." }]}>
+                  <Form.Item
+                    label="Role"
+                    name="roleId"
+                    rules={[{ required: true, message: "Role is required." }]}
+                  >
                     <Select placeholder="Select role">
                       {type.map((item) => (
-                        <Select.Option value={item.value}>{item.label}</Select.Option>
+                        <Select.Option value={item.value}>
+                          {item.label}
+                        </Select.Option>
                       ))}
                     </Select>
                   </Form.Item>
                 </Col>
               </Row>
 
-              <Form.Item label="Password" name="password"
+              <Form.Item
+                label="Password"
+                name="password"
                 rules={[{ required: true, message: "Password is required." }]}
               >
                 <Input.Password placeholder="Enter password" />
               </Form.Item>
 
-              <Button type="primary" htmlType="submit" className="w-full" loading={loading}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="w-full"
+                loading={loading}
+              >
                 {t("users.add")}
               </Button>
             </Form>

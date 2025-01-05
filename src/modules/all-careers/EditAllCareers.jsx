@@ -57,7 +57,7 @@ const EditAllCareers = ({ careerId }) => {
         extraDetailsEn: data.extraDetailsEn,
         slugAr: data.slugAr,
         slugEn: data.slugEn,
-        isActive: data.isActive,
+        isActive: data.isActive !== undefined ? String(data.isActive) : "",
       });
     }
   }, [data, form, isModalVisible]);

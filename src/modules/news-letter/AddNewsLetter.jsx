@@ -46,7 +46,8 @@ const AddNewsLetter = () => {
       {hasCreateUserPermission && (
         <Button onClick={showModal} type="primary">
           <PlusSquareFilled />
-          {t("globals.add")}</Button>
+          {t("globals.add")}
+        </Button>
       )}
 
       <Modal
@@ -59,7 +60,9 @@ const AddNewsLetter = () => {
           <Form.Item
             label={t("NewsLetter.labels.subject")}
             name="subject"
-            rules={[{ required: true, message: t("validation.titleEnRequired") }]}
+            rules={[
+              { required: true, message: t("validation.titleEnRequired") },
+            ]}
           >
             <Input placeholder={t("NewsLetter.placeholders.EnterSubject")} />
           </Form.Item>
@@ -67,7 +70,12 @@ const AddNewsLetter = () => {
           <Form.Item
             label={t("NewsLetter.labels.content")}
             name="content"
-            rules={[{ required: true, message: t("validation.descriptionEnRequired") }]}
+            rules={[
+              {
+                required: true,
+                message: t("validation.descriptionEnRequired"),
+              },
+            ]}
           >
             <Input placeholder={t("NewsLetter.placeholders.EnterContent")} />
           </Form.Item>
@@ -75,11 +83,23 @@ const AddNewsLetter = () => {
           <Form.Item
             label={t("NewsLetter.labels.isSent")}
             name="isSent"
-            rules={[{ required: true, message: t("validation.isPublishedRequired") }]}
+            rules={[
+              { required: true, message: t("validation.isPublishedRequired") },
+            ]}
           >
             <Select placeholder={t("NewsLetter.placeholders.SelectStatus")}>
-              <Select.Option value="1">{t("globals.status.yes")}</Select.Option>
-              <Select.Option value="0">{t("globals.status.no")}</Select.Option>
+              <Select.Option value="1">
+                <div className="flex items-center gap-1">
+                  <span className="bg-green-600 p-1 rounded-full"></span>
+                  <span>{t("globals.status.active")}</span>
+                </div>
+              </Select.Option>
+              <Select.Option value="0">
+                <div className="flex items-center gap-1">
+                  <span className="bg-red-600 p-1 rounded-full"></span>
+                  <span>{t("globals.status.inActive")}</span>
+                </div>
+              </Select.Option>
             </Select>
           </Form.Item>
 

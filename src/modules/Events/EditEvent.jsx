@@ -1,5 +1,17 @@
 import { EditFilled, UploadOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Form, Input, message, Modal, Row, Select, TimePicker, Upload } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  TimePicker,
+  Upload,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { useEditEventHook } from "./Hooks/useEditEventHook";
 import { useGetSingleEventHook } from "./Hooks/useGetSingleEventHook";
@@ -52,7 +64,7 @@ export const EditEvent = ({ eventId }) => {
         metaDataAr: data.metaDataAr,
         metaDataEn: data.metaDataEn,
         location: data.location,
-        isPublished: data.isPublished,
+        isPublished: data.isPublished !== undefined ? String(data.isPublished) : "",
       });
     }
   }, [data, form, isModalVisible]);
@@ -63,8 +75,19 @@ export const EditEvent = ({ eventId }) => {
         <EditFilled className="text-green-900" />
       </Button>
 
-      <Modal title="edit Event" visible={isModalVisible} onCancel={handleCancel} footer={null} width={700}>
-        <Form layout="vertical" className="mt-6" onFinish={handleSubmit} form={form}>
+      <Modal
+        title="edit Event"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+        width={700}
+      >
+        <Form
+          layout="vertical"
+          className="mt-6"
+          onFinish={handleSubmit}
+          form={form}
+        >
           <Title />
           <Slug />
           <Description />
@@ -81,30 +104,57 @@ export const EditEvent = ({ eventId }) => {
 
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item label="Date" name="date" rules={[{ required: true, message: "Date is required." }]}>
+              <Form.Item
+                label="Date"
+                name="date"
+                rules={[{ required: true, message: "Date is required." }]}
+              >
                 <DatePicker format="YYYY-MM-DD" />
               </Form.Item>
             </Col>
 
             <Col span={12}>
-              <Form.Item label="Time" name="time" rules={[{ required: true, message: "Time is required." }]}>
+              <Form.Item
+                label="Time"
+                name="time"
+                rules={[{ required: true, message: "Time is required." }]}
+              >
                 <TimePicker format="HH:mm:ss" />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item label="Location" name="location" rules={[{ required: true, message: "Location is required." }]}>
-            <Input type="text" />
+          <Form.Item
+            label="Location"
+            name="location"
+            rules={[{ required: true, message: "Location is required." }]}
+          >
+            <Input type="text" placeholder="enter location" />
           </Form.Item>
 
           <Form.Item label="is published" name="isPublished">
             <Select placeholder="Select status">
-              <Select.Option value="1">Published</Select.Option>
-              <Select.Option value="0">Draft</Select.Option>
+              <Select.Option value="1">
+                <div className="flex items-center gap-1">
+                  <span className="bg-green-600 p-1 rounded-full"></span>
+                  <span>{t("globals.status.active")}</span>
+                </div>
+              </Select.Option>
+              <Select.Option value="0">
+                <div className="flex items-center gap-1">
+                  <span className="bg-red-600 p-1 rounded-full"></span>
+                  <span>{t("globals.status.inActive")}</span>
+                </div>
+              </Select.Option>
             </Select>
           </Form.Item>
 
-          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+          >
             {t("globals.edit")}
           </Button>
         </Form>

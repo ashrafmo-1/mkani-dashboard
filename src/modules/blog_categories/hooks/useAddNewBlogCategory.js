@@ -16,8 +16,20 @@ export const useAddNewBlogCategory = () => {
       queryClient.invalidateQueries("blog-categories");
       message.success("add blog successfully.");
     },
-    onError: () => {
-      message.error("Failed to add blog.");
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message;
+      if (typeof errorMessage === "object") { 
+        for (const [field, messages] of Object.entries(errorMessage)) {
+          messages.forEach((msg) => {
+            message.error({
+              content: `${field}: ${msg}`,
+              duration: 5,
+            });
+          });
+        }
+      } else {
+        message.error(errorMessage || "Failed to add blog category.");
+      }
     },
   });
 

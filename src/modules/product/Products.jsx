@@ -62,7 +62,7 @@ export const Products = () => {
             {products && products.map((product, index) => (
                 <tr className="bg-white border-b" key={index}>
                   <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <Image src={product.image} width={50} alt="" />
+                    <Image src={product.image} width={50} alt={product.name} loading="lazy" />
                   </th>
                   <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {product.name}

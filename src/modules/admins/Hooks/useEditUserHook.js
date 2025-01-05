@@ -10,6 +10,7 @@ export const useEditUserHook = () => {
     try {
       await axiosInstance.put( `${i18n.language}/admin/users/update?userId=${usersId}`, values );
       queryClient.invalidateQueries("users");
+      message.success("User edited successfully.");
     } catch (error) {
       const errorMessage = error.response?.data?.message;
       if (typeof errorMessage === "object") { 

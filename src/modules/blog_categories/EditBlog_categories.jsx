@@ -43,7 +43,7 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
         nameAr: data?.nameAr || "",
         slugAr: data?.slugAr || "",
         slugEn: data?.slugEn || "",
-        isActive: data?.isActive !== undefined ? String(data.isActive) : "",
+        isActive: data?.isActive !== undefined ? String(data.isActive) : "",  
       });
     }
   }, [data, form, isModalVisible]);
@@ -91,13 +91,13 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
             <Select placeholder={t("blogCategory.placeholder.SelectIsActive")} aria-label="isActive">
               <Select.Option value="1">
                 <div className="flex items-center gap-1">
-                  <span className="bg-green-600 p-2 rounded-full"></span>
+                  <span className="bg-green-600 p-1 rounded-full"></span>
                   <span>{t("globals.status.active")}</span>
                 </div>
               </Select.Option>
               <Select.Option value="0">
                 <div className="flex items-center gap-1">
-                  <span className="bg-red-600 p-2 rounded-full"></span>
+                  <span className="bg-red-600 p-1 rounded-full"></span>
                   <span>{t("globals.status.inActive")}</span>
                 </div>
               </Select.Option>
