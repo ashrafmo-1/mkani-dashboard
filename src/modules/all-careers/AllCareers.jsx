@@ -18,7 +18,7 @@ export const AllCareers = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+    <div className="relative overflow-x-auto w-full sm:w-[calc(100%-300px)] sm:px-8 px-3 mt-8 pb-2 sm:rounded-lg">
       <h1 className="text-4xl font-bold text-gray-800 mb-8 flex gap-2 items-center">
         <WechatWorkOutlined />
         {t("careers.title")}

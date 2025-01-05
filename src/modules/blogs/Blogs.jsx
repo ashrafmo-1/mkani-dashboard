@@ -6,6 +6,7 @@ import { useBlogHook } from "./hooks/useBlogHook";
 import { DeleteBlog } from "./DeleteBlog";
 import { EditBlog } from "./EditBlog";
 import { AddBlog } from "./AddBlog";
+import { SearchFilter } from "../../components/SearchFilter";
 
 export const Blogs = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const Blogs = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+    <div className="relative overflow-x-auto w-full sm:w-[calc(100%-300px)] sm:px-8 px-3 mt-8 pb-2 sm:rounded-lg">
       <h1 className="text-4xl font-bold text-gray-800 mb-8 flex gap-2 items-center">
         <FileTextOutlined />
         {t("blogs.title")}
@@ -25,14 +26,7 @@ export const Blogs = () => {
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
-          <input
-            type="search"
-            name="search"
-            className="border rounded outline-none py-1 px-3 w-[400px]"
-            id="search"
-            placeholder={t("globals.search")}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <SearchFilter search={setSearchTerm} />
         </div>
       </div>
 

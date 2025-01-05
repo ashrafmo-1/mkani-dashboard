@@ -5,33 +5,28 @@ import { useCandidatesHook } from "./hooks/useCandidatesHook";
 import { DeleteCandidate } from "./DeleteCandidate";
 import CandidateRow from "./components/CandidateRowPdf";
 import { UserOutlined } from "@ant-design/icons";
+import { SearchFilter } from "../../components/SearchFilter";
 
 export const Candidates = () => {
   const { t } = useTranslation();
-  const { pageCount, setSearchTerm, candidates, setCurrentPage } = useCandidatesHook();
+  const { pageCount, setSearchTerm, candidates, setCurrentPage } =
+    useCandidatesHook();
 
   const onChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   return (
-    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
-        <h1 className="text-4xl font-bold text-gray-800 mb-10 flex gap-2 items-center">
-          <UserOutlined />
-          {t("candidates.title")}
-        </h1>
+    <div className="relative overflow-x-auto w-full sm:w-[calc(100%-300px)] sm:px-8 px-3 mt-8 pb-2 sm:rounded-lg">
+      <h1 className="text-4xl font-bold text-gray-800 mb-10 flex gap-2 items-center">
+        <UserOutlined />
+        {t("candidates.title")}
+      </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className=" capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
-          <input
-            type="search"
-            name="search"
-            className="border rounded outline-none py-1 px-3 w-[400px]"
-            id="search"
-            placeholder={t("globals.search")}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <SearchFilter search={setSearchTerm} />
         </div>
       </div>
 
@@ -39,19 +34,37 @@ export const Candidates = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3">{t("candidates.table.name")}</th>
-              <th scope="col" className="px-6 py-3">{t("candidates.table.email")}</th>
-              <th scope="col" className="px-6 py-3">{t("candidates.table.phone")}</th>
-              <th scope="col" className="px-6 py-3">{t("candidates.table.coverLetter")}</th>
-              <th scope="col" className="px-6 py-3">{t("candidates.table.careerName")}</th>
-              <th scope="col" className="px-6 py-3">{t("candidates.table.cv")}</th>
-              <th scope="col" className="px-6 py-3">{t("globals.action")}</th>
+              <th scope="col" className="px-6 py-3">
+                {t("candidates.table.name")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("candidates.table.email")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("candidates.table.phone")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("candidates.table.coverLetter")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("candidates.table.careerName")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("candidates.table.cv")}
+              </th>
+              <th scope="col" className="px-6 py-3">
+                {t("globals.action")}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {candidates && candidates.map((candidate, index) => (
+            {candidates &&
+              candidates.map((candidate, index) => (
                 <tr className="bg-white border-b" key={index}>
-                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
                     {candidate.name}
                   </th>
                   <th

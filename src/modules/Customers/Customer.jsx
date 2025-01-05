@@ -5,6 +5,7 @@ import { AddNewCustomer } from "./NewCustomer";
 import { EditCustomer } from "./EditCustomer";
 import DeleteCustomer from "./DeleteCustomer";
 import { ShoppingOutlined } from "@ant-design/icons";
+import { SearchFilter } from "../../components/SearchFilter";
 
 export const Customers = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const Customers = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+    <div className="relative overflow-x-auto w-full sm:w-[calc(100%-300px)] sm:px-8 px-3 mt-8 pb-2 sm:rounded-lg">
       <h1 className="text-4xl font-bold text-gray-800 capitalize mb-8 flex gap-2 items-center">
         <ShoppingOutlined />
         {t("customers.title")}
@@ -25,14 +26,7 @@ export const Customers = () => {
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className="capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
-          <input
-            type="search"
-            name="search"
-            id="search"
-            placeholder={t("globals.search")}
-            className="border rounded outline-none py-1 px-3 w-[400px]"
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <SearchFilter search={setSearchTerm} />
         </div>
       </div>
 

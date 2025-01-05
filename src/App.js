@@ -58,7 +58,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Navigate to={`/${MAINPATH}/en/Dashboard`} />}
+          element={<Navigate to={`/${MAINPATH}/${i18n.language}/Dashboard`} />}
         />
 
         <Route element={<RequireAuth />}>

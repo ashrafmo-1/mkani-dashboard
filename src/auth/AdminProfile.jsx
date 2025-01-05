@@ -27,7 +27,7 @@ export const AdminProfile = () => {
       <div className="flex justify-between items-center w-full mb-4 flex-col sm:flex-row">
         <button onClick={toggleProfileModal}>
           <img src={avatar} width={50} alt="avatar"
-            className="flex justify-center m-2 items-center bottom-[20px] rounded-full border-blue-700 border-[4px] transition-transform duration-500 ease-in-out transform hover:scale-110"
+            className="flex justify-center my-2 items-center bottom-[20px] rounded-full border-blue-700 border-[4px] transition-transform duration-500 ease-in-out transform hover:scale-110"
           />
         </button>
         <button className="flex justify-end bg-red-600 px-3 py-2 rounded-xl" onClick={() => {

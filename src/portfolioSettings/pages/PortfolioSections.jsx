@@ -4,6 +4,7 @@ import { Status } from "../../components/Status";
 import { Button, Modal } from "antd";
 import { EyeFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { EditPortfolioSection } from "../components/EditPortfolioSection";
 
 export const PortfolioSections = ({ frontPageId }) => {
   const { t } = useTranslation();
@@ -45,48 +46,45 @@ export const PortfolioSections = ({ frontPageId }) => {
         <EyeFilled /> {t("siteSettings.showData")}
       </Button>
 
-      <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} width={800} bodyStyle={{ padding: "20px" }}
+      <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} width={800} bodyStyle={{ padding: "0px" }}
         title={<h3 className="text-lg font-semibold">Sections Details</h3>}
       >
         <div className="p-4">
           {sectionData.map((section, index) => (
             <div key={index} className="mb-6 border-b pb-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-3xl font-bold text-gray-800">
-                    {section.name || "No Name"}
-                  </h2>
-                  <Status
-                    value={section.isActive}
-                    activeText={"active"}
-                    inactiveText={"inactive"}
-                  />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">{section.name || "No Name"}</h2>
+                  <Status value={section.isActive} activeText={"active"} inactiveText={"inactive"} />
                 </div>
+                <EditPortfolioSection frontPageSectionId={section.frontPageSectionId} />
               </div>
 
-              <table className="table-auto w-full border-collapse">
-                <thead>
-                  <tr className="bg-gray-100">
-                    {Array.isArray(section?.contentEn) && section.contentEn.length > 0 &&
-                      Object.keys(section.contentEn[0]).map((key) => (
-                        <th key={key} className="border px-4 py-2 text-left text-sm font-medium text-gray-600">
-                          {key.charAt(0).toUpperCase() + key.slice(1)}
-                        </th>
-                      ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {Array.isArray(section?.contentEn) && section.contentEn.map((content, contentIndex) => (
-                      <tr key={contentIndex} className={`${contentIndex % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
-                        {Object.keys(content).map((key) => (
-                          <td key={key} className="border px-4 py-2 text-sm text-gray-700">
-                            {typeof content[key] === 'object' ? JSON.stringify(content[key]) : content[key] || "N/A"}
-                          </td>
+              <div className="overflow-x-auto">
+                <table className="table-auto w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      {Array.isArray(section?.contentEn) && section.contentEn.length > 0 &&
+                        Object.keys(section.contentEn[0]).map((key) => (
+                          <th key={key} className="border px-2 sm:px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-600">
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                          </th>
                         ))}
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.isArray(section?.contentEn) && section.contentEn.map((content, contentIndex) => (
+                        <tr key={contentIndex} className={`${contentIndex % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
+                          {Object.keys(content).map((key) => (
+                            <td key={key} className="border px-2 sm:px-4 py-2 text-xs sm:text-sm text-gray-700">
+                              {typeof content[key] === 'object' ? JSON.stringify(content[key]) : content[key] || "N/A"}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           ))}
         </div>

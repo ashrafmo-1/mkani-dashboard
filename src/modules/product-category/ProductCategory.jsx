@@ -7,6 +7,7 @@ import { AddNewProductCategeory } from "./AddNewProductCategeory";
 import { DeleteProductCategory } from "./DeleteProductCategory";
 import { EditProductCategory } from "./EditProductCategory";
 import { AppstoreOutlined } from "@ant-design/icons";
+import { SearchFilter } from "../../components/SearchFilter";
 
 export const ProductCategory = () => {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export const ProductCategory = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto w-[calc(100%-300px)] px-8 mt-8 pb-2 sm:rounded-lg">
+    <div className="relative overflow-x-auto w-full sm:w-[calc(100%-300px)] sm:px-8 px-3 mt-8 pb-2 sm:rounded-lg">
       <h1 className="text-4xl font-bold text-gray-800 mb-8 flex gap-2 items-center">
         <AppstoreOutlined />
         {t("productCategory.title")}
@@ -27,14 +28,7 @@ export const ProductCategory = () => {
       <div className="filter mb-6 shadow p-4 rounded-lg">
         <h4 className="capitalize mb-2 text-2xl">{t("globals.filter")}</h4>
         <div className="flex items-center gap-4">
-          <input
-            type="search"
-            name="search"
-            id="search"
-            placeholder={t("globals.search")}
-            className="border rounded outline-none py-1 px-3 w-[400px]"
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <SearchFilter search={setSearchTerm} />
         </div>
       </div>
 
