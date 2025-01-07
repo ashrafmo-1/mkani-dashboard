@@ -75,7 +75,7 @@ const EditProduct = ({ productId }) => {
           <Slug />
 
           <Row gutter={[16, 16]}>
-            <MetaDataEn />
+            <MetaDataEn value={form.getFieldValue("metaDataEn")} onChange={(updatedValue) => form.setFieldsValue({ metaDataEn: updatedValue })} />
             <MetaDataAr />
           </Row>
 

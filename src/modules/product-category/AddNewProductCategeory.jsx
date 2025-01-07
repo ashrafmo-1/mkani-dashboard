@@ -1,15 +1,5 @@
-import { PlusSquareFilled, UploadOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  message,
-  Modal,
-  Row,
-  Select,
-  Upload,
-} from "antd";
+import { PlusSquareFilled } from "@ant-design/icons";
+import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
 import { useAddProductCategoryHook } from "./hooks/useAddProductCategoryHook";

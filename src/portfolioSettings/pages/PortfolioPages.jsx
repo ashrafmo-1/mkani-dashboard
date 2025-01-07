@@ -36,7 +36,7 @@ export const PortfolioPages = () => {
               </div>
               <div className="flex gap-2 mt-2 sm:mt-0">
                 <PortfolioSections frontPageId={page.frontPageId} />
-                <DeletePagePortfolio frontPageId={page.frontPageId} />
+                {/*<DeletePagePortfolio frontPageId={page.frontPageId} />*/}
               </div>
             </section>
           ))

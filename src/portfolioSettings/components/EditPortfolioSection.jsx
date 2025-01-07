@@ -25,11 +25,9 @@ export const EditPortfolioSection = ({ frontPageSectionId }) => {
     try {
       const values = await form.validateFields();
       await editPortfolioSections(frontPageSectionId, values);
-      message.success(t("Portfolio section updated successfully"));
       setIsModalVisible(false);
     } catch (error) {
       console.error(error);
-      message.error(t("Failed to update portfolio section"));
     }
   };
 

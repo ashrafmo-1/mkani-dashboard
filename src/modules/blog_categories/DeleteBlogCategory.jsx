@@ -29,7 +29,7 @@ const {deleteBlogCategory} = useDeleteBlogCategoryHook()
         onCancel={handleCancel}
         confirmLoading={loading}
       >
-        <p>Are you sure you want to delete this user?</p>
+        <p>Are you sure you want to delete this blog categories?</p>
       </Modal>
     </div>
   );

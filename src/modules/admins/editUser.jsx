@@ -151,8 +151,8 @@ export const EditUser = ({ userId }) => {
                 rules={[{ required: true, message: "Role is required." }]}
               >
                 <Select placeholder="Select role">
-                  {type.map((item) => (
-                    <Select.Option value={item.value}>
+                  {type.map((item, index) => (
+                    <Select.Option value={item.value} key={index}>
                       {item.label}
                     </Select.Option>
                   ))}

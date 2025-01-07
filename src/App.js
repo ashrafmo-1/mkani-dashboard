@@ -1,94 +1,60 @@
-import "./App.css";
-import { useTranslation } from "react-i18next";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import { LoginPage } from "./modules/login/page";
-import { Home } from "./modules/home/page";
-import { MAINPATH } from "./constant/MAINPATH";
-import RequireAuth from "./auth/RequireAuth";
-import LoginProdect from "./auth/LoginProdect";
+import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
+import {MAINPATH} from "./constant/MAINPATH";
 import Cookies from "js-cookie";
-import { Roles } from "./modules/Roles/Roles";
-import { useEffect } from "react";
-import { SettingsPage } from "./portfolioSettings/SettingsPage";
-import { NotFound, SideBar } from "./common";
-import {
-  Admins,
-  Faqs,
-  Blogs,
-  Events,
-  Subscribers,
-  ContactUs,
-  ProductCategory,
-  Products,
-  Candidates,
-  AllCareers,
-  NewsLetter,
-  Blog_categories,
-  Customers,
-} from "./modules";
+import {useEffect, useState} from "react";
+import {SideBar} from "./common";
+import {AppRoutes} from "./Routes/Routes";
+import {BarsOutlined} from "@ant-design/icons";
 
 function App() {
-  const token = Cookies.get("MPO-TOKEN-DASHBOARD");
-  const { i18n } = useTranslation();
-  const navigate = useNavigate();
+    const token = Cookies.get("MPO-TOKEN-DASHBOARD");
+    const {i18n} = useTranslation();
+    const navigate = useNavigate();
+    const [active, setActive] = useState(true);
 
-  console.log(i18n.language);
+    useEffect(() => {
+        const currentPath = window.location.pathname;
+        const [, mainPath, currentLang, ...rest] = currentPath.split("/");
+        const newPath = `/${MAINPATH}/${i18n.language}/${rest.join("/")}`;
 
-  useEffect(() => {
-    const currentPath = window.location.pathname;
-    const [, mainPath, currentLang, ...rest] = currentPath.split("/");
-    const newPath = `/${MAINPATH}/${i18n.language}/${rest.join("/")}`;
+        currentLang !== i18n.language && navigate(newPath, {replace: true});
+        !token && navigate(`/${MAINPATH}/authentication`, {replace: true});
+    }, [i18n.language, navigate, token]);
 
-    if (currentLang !== i18n.language) {
-      navigate(newPath, { replace: true });
+
+    const toggleSideBar = () => {
+        setActive(!active);
+        console.log(!active);
     }
 
-    if (!token) {
-      navigate(`/${MAINPATH}/authentication`, { replace: true });
-    }
-  }, [i18n.language, navigate, token]);
+    return (
+        <main className="MPO_DASHBOARD flex w-full">
+            {token && (
+                <div className={`sticky top-0 w-[80px] sm:w-[300px] h-[99vh] ${active ? "block" : "hidden"}`}>
+                    <SideBar/>
+                </div>
+            )}
 
-  return (
-    <div className="MPO_DASHBOARD flex w-full">
-      {token && (
-        <div className="sticky top-0 w-[80px] sm:w-[300px] h-[99vh]">
-          <SideBar />
-        </div>
-      )}
-      <Routes>
-        <Route
-          path="/"
-          element={<Navigate to={`/${MAINPATH}/${i18n.language}/Dashboard`} />}
-        />
-
-        <Route element={<RequireAuth />}>
-          <Route path={`/${MAINPATH}/authentication`} element={<LoginPage />} />
-        </Route>
-
-        <Route element={<LoginProdect />}>
-          <Route path={`/${MAINPATH}/${i18n.language}`}>
-            <Route path="Dashboard" element={<Home />} />
-            <Route path="users" element={<Admins />} />
-            <Route path="roles" element={<Roles />} />
-            <Route path="customers" element={<Customers />} />
-            <Route path="products" element={<Products />} />
-            <Route path="product_categories" element={<ProductCategory />} />
-            <Route path="blog_categories" element={<Blog_categories />} />
-            <Route path="blogs" element={<Blogs />} />
-            <Route path="events" element={<Events />} />
-            <Route path="faq" element={<Faqs />} />
-            <Route path="Newsletter" element={<NewsLetter />} />
-            <Route path="subscribers" element={<Subscribers />} />
-            <Route path="careers" element={<AllCareers />} />
-            <Route path="candidates" element={<Candidates />} />
-            <Route path="contact-us" element={<ContactUs />} />
-            <Route path="portfolio-settings" element={<SettingsPage />} />
-          </Route>
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
-  );
+            <div
+                className={`${
+                    token
+                        ? `relative overflow-x-auto w-full ${active ? "sm:w-[calc(100%-300px)]" : ""}  sm:px-8 px-3 pb-2 mt-2 sm:rounded-lg`
+                        : "w-full"
+                }`}
+            >
+                {token && (
+                    <div className="header bg-[#fafafa] px-4 py-2 rounded-lg mb-4">
+                        <BarsOutlined
+                            className="cursor-pointer bg-blue-200 p-1 text-2xl rounded-xl"
+                            onClick={toggleSideBar}
+                        />
+                    </div>
+                )}
+                <AppRoutes/>
+            </div>
+        </main>
+    );
 }
 
 export default App;

@@ -9,7 +9,6 @@ export const useSelectsHook = (selectType) => {
     try {
       const response = await axiosInstance.get(`/${i18n.language}/admin/selects?allSelects=roles`);
       setType(response.data[0].options);
-      console.log(response.data[0].options);
     } catch (error) {
       console.log(error);
     }

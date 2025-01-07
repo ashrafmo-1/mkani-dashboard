@@ -1,8 +1,10 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, message, Upload } from "antd";
 import React from "react";
+import {useTranslation} from "react-i18next";
 
 export const UploadImages = () => {
+    const { t } = useTranslation();
   return (
     <Form.Item
       label="Upload Images"
@@ -17,6 +19,13 @@ export const UploadImages = () => {
           path: file.response?.url || file.name,
         }));
       }}
+      rules={[
+          {
+              required: true,
+              message:
+                  t("value") + " is required.",
+          },
+      ]}
     >
       <Upload
         name="file"
