@@ -64,12 +64,14 @@ export const PortfolioSections = ({ frontPageId }) => {
                 <table className="table-auto w-full border-collapse">
                   <thead>
                     <tr className="bg-gray-100">
-                      {Array.isArray(section?.contentEn) && section.contentEn.length > 0 &&
-                        Object.keys(section.contentEn[0]).map((key) => (
-                          <th key={key} className="border px-2 sm:px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-600">
-                            {key.charAt(0).toUpperCase() + key.slice(1)}
-                          </th>
-                        ))}
+                      {
+                        Array.isArray(section?.contentEn) && section.contentEn.length > 0 &&
+                          Object.keys(section.contentEn[0]).map((key) => (
+                            <th key={key} className="border px-2 sm:px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-600">
+                              {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </th>
+                          ))
+                      }
                     </tr>
                   </thead>
                   <tbody>

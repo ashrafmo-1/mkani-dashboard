@@ -14,11 +14,11 @@ export const useReadMessage = () => {
   };
 
   const mutation = useMutation(markMessageAsRead, {
-    onError: (error) => {
-      console.error("Error marking message as read:", error);
-    },
     onSuccess: (data) => {
       console.log("Message marked as read successfully:", data);
+    },
+    onError: (error) => {
+      console.error("Error marking message as read:", error);
     },
   });
 

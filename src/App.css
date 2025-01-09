@@ -24,6 +24,15 @@
   text-align: start;
 }
 
+
+
+/*
+  :where(.css-dev-only-do-not-override-1wwf28x).ant-input-outlined:hover {
+    border-color: red !important;
+  }
+*/
+
+
 .form_item_Metadata_career {
   margin-bottom: 5px !important;
 }

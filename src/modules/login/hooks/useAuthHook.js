@@ -22,7 +22,7 @@ const useAuthHook = () => {
             const access_token = response.data.token;
             Cookies.set("MPO-TOKEN-DASHBOARD", access_token, {expires: 0.4167});
             setUser({...response.data, token: access_token, isAuthenticated: true});
-            window.location.reload()
+            window.location.reload();
             navigate(`/${MAINPATH}/${i18n.language}/Dashboard`);
         } catch (error) {
             if (error.response && error.response.status === 422) {

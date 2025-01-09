@@ -25,7 +25,6 @@ function App() {
 
     const toggleSideBar = () => {
         setActive(!active);
-        console.log(!active);
     }
 
     return (
