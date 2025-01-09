@@ -44,7 +44,7 @@ export const EditUser = ({ userId }) => {
         username: data.username,
         email: data.email,
         phone: data.phone,
-        role: data.role,
+        roleId: data.roleId,
         status: data.status !== undefined ? String(data.status) : "",
         address: data.address,
         description: data.description,
@@ -164,7 +164,6 @@ export const EditUser = ({ userId }) => {
           <Form.Item
             label="password"
             name="password"
-            rules={[{ required: true, message: "Password is required." }]}
           >
             <Input placeholder="Enter password" />
           </Form.Item>

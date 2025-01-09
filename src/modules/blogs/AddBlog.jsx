@@ -11,6 +11,7 @@ import {
   TextEditorInput,
   Title,
 } from "../../common";
+import TextArea from "antd/es/input/TextArea";
 
 export const AddBlog = () => {
   const { t } = useTranslation();
@@ -55,6 +56,38 @@ export const AddBlog = () => {
             <MetaDataAr />
             <MetaDataEn />
           </Row>
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <Form.Item
+                label={t("blogs.add.labels.descriptionAr")}
+                name="descriptionAr"
+                rules={[
+                  {
+                    required: true,
+                    message: t("blogs.add.labels.descriptionAr") + " is required.",
+                  },
+                ]}
+              >
+                <TextArea rows={4} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={t("blogs.add.labels.descriptionEn")}
+                name="descriptionEn"
+                rules={[
+                  {
+                    required: true,
+                    message: t("blogs.add.labels.descriptionEn") + " is required.",
+                  },
+                ]}
+              >
+                <TextArea rows={4} />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          
 
           <Row gutter={[16, 16]}>
             <Col span={12}>

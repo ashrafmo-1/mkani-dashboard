@@ -12,7 +12,7 @@ export const useDeleteProductCategoryHook = () => {
       await axiosInstance.delete(
         `/${i18n.language}/admin/product-categories/delete?productCategoryId=${productCategoryId}`
       );
-      queryClient.invalidateQueries("product-categories");
+      queryClient.invalidateQueries("productsCategory");
       message.success("Product category deleted successfully");
     } catch (error) {
       console.log(error);
