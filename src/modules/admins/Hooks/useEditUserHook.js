@@ -1,29 +1,35 @@
-import { useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
-import { message } from "antd";
+import { toast } from "react-toastify";
 
 export const useEditUserHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
-  const editUser = async (usersId, values) => {
-    try {
-      await axiosInstance.put( `${i18n.language}/admin/users/update?userId=${usersId}`, values );
-      queryClient.invalidateQueries("users");
-      message.success("User edited successfully.");
-    } catch (error) {
-      const errorMessage = error.response?.data?.message;
-      if (typeof errorMessage === "object") { 
-        for (const [field, messages] of Object.entries(errorMessage)) {
-          messages.forEach((msg) => {
-            message.error(`${msg}`);
-          });
-        }
-      } else {
-        message.error(errorMessage || "Failed to edit user.");
-      }
-    }
-  };
 
-  return { editUser };
+  const mutation = useMutation(
+    async ({ usersId, values }) => {
+      await axiosInstance.put(`${i18n.language}/admin/users/update?userId=${usersId}`, values);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("users");
+        toast.success("User edited successfully.");
+      },
+      onError: (error) => {
+        const errorMessage = error.response?.data?.message;
+        if (typeof errorMessage === "object") {
+          Object.entries(errorMessage).forEach(([field, messages]) => {
+            messages.forEach((msg) => {
+              console.error(msg);
+            });
+          });
+        } else {
+          toast.error(errorMessage || "Failed to edit user.");
+        }
+      },
+    }
+  );
+
+  return { editUser: mutation.mutate };
 };

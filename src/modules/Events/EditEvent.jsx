@@ -1,23 +1,12 @@
 import { EditFilled, UploadOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Modal,
-  Row,
-  Select,
-  TimePicker,
-  Upload,
-} from "antd";
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, TimePicker, Upload } from "antd";
 import React, { useEffect, useState } from "react";
 import { useEditEventHook } from "./Hooks/useEditEventHook";
 import { useGetSingleEventHook } from "./Hooks/useGetSingleEventHook";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { Title, MetaDataEn, MetaDataAr, Description, Slug } from "../../common";
+import { toast } from "react-toastify";
 
 export const EditEvent = ({ eventId }) => {
   const { t } = useTranslation();
@@ -42,7 +31,7 @@ export const EditEvent = ({ eventId }) => {
       await editEvent(eventId, values);
       setIsModalVisible(false);
     } catch (error) {
-      message.error("Failed to edit FAQ.");
+      toast.error("Failed to edit FAQ.");
     } finally {
       setIsPending(false);
     }

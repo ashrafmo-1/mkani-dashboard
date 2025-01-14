@@ -35,7 +35,7 @@ export const AdminProfile = () => {
             window.location.reload();
           }}
         >
-          <LoginOutlined />
+          <LoginOutlined className="text-white" />
         </button>
       </div>
 

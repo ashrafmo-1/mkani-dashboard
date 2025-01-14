@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { checkPermission } from "../../helpers/checkPermission";
 import { useEditProductCategoryHook } from "./hooks/useEditProductCategoryHook";
 import { useGetProductCategory } from "./hooks/useGetProductCategory";
+import { toast } from "react-toastify";
 
 export const EditProductCategory = ({ productCategoryId }) => {
   const hasCreateUserPermission = checkPermission("create_customer");
@@ -15,7 +16,7 @@ export const EditProductCategory = ({ productCategoryId }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { editProductCategory } = useEditProductCategoryHook();
   const { data } = useGetProductCategory(productCategoryId);
-
+  const [loading, setLoading] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -25,17 +26,32 @@ export const EditProductCategory = ({ productCategoryId }) => {
     form.resetFields();
   };
 
-  const handleSubmit = async (values) => {
-    setIsPending(true);
-    try {
-      await editProductCategory(productCategoryId, values);
-      message.success("Product category edited successfully.");
-      setIsModalVisible(false);
-    } catch (error) {
-      message.error("Failed to edit product category.", error);
-    } finally {
-      setIsPending(false);
-    }
+  const handleSubmit = () => {
+    form.validateFields().then((values) => {
+        setLoading(true);
+        editProductCategory({ productCategoryId: productCategoryId, values },{
+            onSuccess: () => {
+              setIsModalVisible(false);
+            },
+            onError: (error) => {
+              const errorMessage = error.response?.data?.message;
+              if (typeof errorMessage === "object") {
+                Object.entries(errorMessage).forEach(([field, messages]) => {
+                  messages.forEach((msg) => {
+                    toast.error(`${field} ${msg}`);
+                  });
+                });
+              }
+            },
+            onSettled: () => {
+              setLoading(false);
+            },
+          }
+        );
+      })
+      .catch((errorInfo) => {
+        console.log('Validate Failed:', errorInfo);
+      });
   };
 
   useEffect(() => {

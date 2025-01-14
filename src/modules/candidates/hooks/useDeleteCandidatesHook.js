@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useQueryClient } from "react-query";
-import { message } from "antd";
+import { toast } from "react-toastify";
 
 export const useDeleteCandidatesHook = () => {
     const { i18n } = useTranslation();
@@ -11,10 +11,10 @@ export const useDeleteCandidatesHook = () => {
       try {
         await axiosInstance.delete(`/${i18n.language}/admin/candidates/delete?candidateId=${candidateId}`);
         queryClient.invalidateQueries('candidates');
-        message.success("Candidate deleted successfully");
+        toast.success("Candidate deleted successfully");
       } catch (error) {
         console.log(error);
-        message.error("Failed to delete candidate");
+        toast.error("Failed to delete candidate");
       }
     };
   

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
-import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 
 export const useAddNewCareer = () => {
   const { i18n } = useTranslation();
@@ -14,10 +14,10 @@ export const useAddNewCareer = () => {
   const mutation = useMutation(addCareer, {
     onSuccess: () => {
       queryClient.invalidateQueries("careers");
-      message.success("career added successfully.");
+      toast.success("career added successfully.");
     },
     onError: () => {
-      message.error("Failed to add career.");
+      toast.error("Failed to add career.");
     },
   });
 

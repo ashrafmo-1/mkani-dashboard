@@ -3,7 +3,17 @@ import {
   PlusOutlined,
   PlusSquareFilled,
 } from "@ant-design/icons";
-import { Button, Col, Form, Input, message, Modal, Row, Select, Space } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  Space,
+} from "antd";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAddNewPageHook } from "../hooks/useAddNewPageHook";
@@ -31,12 +41,7 @@ export const AddNewPagePortfolio = () => {
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.status) {
-        message.error("The selected status is invalid.");
-      } else {
-        message.error("Failed to send form. Please try again.");
-        console.error("Error adding FAQ:", error);
-      }
+      console.error("Error adding FAQ:", error);
     } finally {
       setIsPending(false);
     }

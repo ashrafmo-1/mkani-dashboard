@@ -1,15 +1,17 @@
-import { FileTextOutlined, UserOutlined } from "@ant-design/icons";
-import { Pagination } from "antd";
+import { EditFilled, FileTextOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Image, Pagination } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useBlogHook } from "./hooks/useBlogHook";
 import { DeleteBlog } from "./DeleteBlog";
 import { EditBlog } from "./EditBlog";
-import { AddBlog } from "./AddBlog";
 import { SearchFilter } from "../../components/SearchFilter";
+import { Link } from "react-router-dom";
+import { MAINPATH } from "../../constant/MAINPATH";
+import { Status } from "../../components/Status";
 
 export const Blogs = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { pageCount, setSearchTerm, setCurrentPage, blogs } = useBlogHook();
 
   const onChange = (pageNumber) => {
@@ -30,7 +32,9 @@ export const Blogs = () => {
         </div>
       </div>
 
-      <AddBlog />
+      <Button type="primary">
+        <Link to={`/${MAINPATH}/${i18n.language}/add-new-blog`}>add</Link>
+      </Button>
 
       <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -40,10 +44,10 @@ export const Blogs = () => {
                 {t("blogs.add.TableThumbnail")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {t("blogs.add.TableTitle")}
+                {t("blogs.add.TableTitle")}{" "}
               </th>
               <th scope="col" className="px-6 py-3">
-                {t("blogs.add.TableCategoryName")}
+                {t("blogs.add.TableCategoryName")}{" "}
               </th>
               <th scope="col" className="px-6 py-3">
                 {t("blogs.add.TableIsPublished")}
@@ -59,10 +63,14 @@ export const Blogs = () => {
                 <tr className="bg-white border-b" key={index}>
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    className="px-6 py-4 font-medium w-20 text-gray-900 whitespace-nowrap"
                   >
                     {blog.thumbnail ? (
-                      <img src={blog.thumbnail} alt={blog.title} />
+                      <Image
+                        className="w-full"
+                        src={blog.thumbnail}
+                        alt={blog.title}
+                      />
                     ) : (
                       <UserOutlined />
                     )}
@@ -80,19 +88,21 @@ export const Blogs = () => {
                     {blog.categoryName}
                   </th>
                   <td className="px-6 py-4">
-                    {blog.isPublished === 1 ? (
-                      <span className="p-1 bg-green-500 text-white px-3 rounded-full">
-                        done
-                      </span>
-                    ) : (
-                      <span className="p-1 bg-red-500 px-3 text-white rounded-full">
-                        no
-                      </span>
-                    )}
+                    <Status
+                      value={blog.isPublished}
+                      activeText={"active"}
+                      inactiveText={"inActive"}
+                    />
                   </td>
                   <td className="px-6 py-4 flex gap-3">
                     <DeleteBlog BlogId={blog.blogId} />
-                    <EditBlog blogId={blog.blogId} values={blog} />
+                    <Link
+                      to={`/${MAINPATH}/${i18n.language}/blog/edit/${blog.blogId}`}
+                    >
+                      <Button className="" type="primary">
+                        <EditFilled />
+                      </Button>
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -100,10 +110,10 @@ export const Blogs = () => {
         </table>
 
         <Pagination
-          showQuickJumper
           defaultCurrent={pageCount.current_page}
           total={pageCount.total}
           onChange={onChange}
+          showQuickJumper
           className="mb-4 mt-10 flex justify-center items-center"
         />
       </div>

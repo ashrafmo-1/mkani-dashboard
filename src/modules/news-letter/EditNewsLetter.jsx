@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import useEditNewsLetterHook from "./hooks/useEditNewsLetterHook";
 import { useGetSingleNewsLetter } from "./hooks/useGetSingleNewsLetter";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 const EditNewsLetter = ({ newsletterId }) => {
   const { t } = useTranslation();
@@ -26,10 +27,9 @@ const EditNewsLetter = ({ newsletterId }) => {
     setIsPending(true);
     try {
       await editNewsletter(newsletterId, values);
-      message.success("news letter edited successfully.");
       setIsModalVisible(false);
     } catch (error) {
-      message.error("Failed to edit news letter.", error);
+      toast.error("Failed to edit news letter.", error);
     } finally {
       setIsPending(false);
     }

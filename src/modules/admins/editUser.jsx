@@ -1,10 +1,11 @@
-import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
+import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { EditOutlined } from "@ant-design/icons";
 import { useEditUserHook } from "./Hooks/useEditUserHook";
 import { useGetSingleUserHook } from "./Hooks/useGetSingleUserHook";
 import { useTranslation } from "react-i18next";
 import { useSelectsHook } from "../../Hooks/useSelectsHook";
+import { toast } from "react-toastify";
 
 export const EditUser = ({ userId }) => {
   const { t } = useTranslation();
@@ -24,17 +25,35 @@ export const EditUser = ({ userId }) => {
     form.resetFields();
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = () => {
     setLoading(true);
-    try {
-      await editUser(userId, values);
-      setIsModalVisible(false);
-    } catch (error) {
-      message.error("Failed to edit user.");
-      console.error("Failed to edit user:", error);
-    } finally {
-      setLoading(false);
-    }
+    form.validateFields().then((values) => {
+        editUser({ usersId: userId, values },{
+            onSuccess: () => {
+              setLoading(false);
+              setIsModalVisible(false);
+            },
+            onError: (error) => {
+              setLoading(false);
+              const errorMessage = error.response?.data?.message;
+              if (typeof errorMessage === "object") {
+                Object.entries(errorMessage).forEach(([field, messages]) => {
+                  messages.forEach((msg) => {
+                    toast.error(msg);
+                  });
+                });
+              }
+            },
+            onSettled: () => {
+              setLoading(false);
+            },
+          }
+        );
+      })
+      .catch((errorInfo) => {
+        setLoading(false);
+        console.log('Validate Failed:', errorInfo);
+      });
   };
 
   useEffect(() => {
@@ -48,19 +67,14 @@ export const EditUser = ({ userId }) => {
         status: data.status !== undefined ? String(data.status) : "",
         address: data.address,
         description: data.description,
+        password: ""
       });
     }
   }, [data, form]);
 
   return (
     <div>
-      <Button
-        className="edit border-green-900"
-        outline="true"
-        onClick={showModal}
-      >
-        <EditOutlined />
-      </Button>
+      <Button className="edit border-green-900" outline="true" onClick={showModal}> <EditOutlined /> </Button>
       <Modal
         title="Edit Admin"
         visible={isModalVisible}
@@ -70,63 +84,28 @@ export const EditUser = ({ userId }) => {
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: "Name is required." }]}
-              >
-                <Input placeholder="Enter name" />
+              <Form.Item label="Name" name="name" rules={[{ required: true, message: "Name is required." }]}>
+                <Input placeholder="Enter name" allowClear />
               </Form.Item>
             </Col>
-
             <Col span={12}>
-              <Form.Item
-                label="Username"
-                name="username"
-                rules={[{ required: true, message: "User Name is required." }]}
-              >
-                <Input placeholder="Enter username" />
+              <Form.Item label="Username" name="username" rules={[{ required: true, message: "User Name is required." }]}>
+                <Input placeholder="Enter username" allowClear />
               </Form.Item>
             </Col>
           </Row>
-
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Email is required." }]}
-          >
-            <Input placeholder="Enter email" />
+          <Form.Item label="Email" name="email">
+            <Input placeholder="Enter email" allowClear />
           </Form.Item>
-
-          <Form.Item
-            label="Phone"
-            name="phone"
-            rules={[
-              { required: true, message: "Phone is required." },
-              {
-                pattern: /^[0-9]+$/,
-                message: "Phone number must contain only numbers.",
-              },
-            ]}
-          >
-            <Input placeholder="Enter phone number" />
+          <Form.Item label="Phone" name="phone" rules={[{ pattern: /^[0-9]+$/, message: "Phone number must contain only numbers." }]}>
+            <Input placeholder="Enter phone number" allowClear />
           </Form.Item>
-
-          <Form.Item
-            label="Address"
-            name="address"
-            rules={[{ required: true, message: "Addres is required." }]}
-          >
-            <Input placeholder="Enter address" />
+          <Form.Item label="Address" name="address">
+            <Input placeholder="Enter address" allowClear />
           </Form.Item>
-
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Form.Item
-                label="Status"
-                name="status"
-                rules={[{ required: true, message: "Status is required." }]}
-              >
+              <Form.Item label="Status" name="status" rules={[{ required: true, message: "Status is required." }]}>
                 <Select placeholder="Select status">
                   <Select.Option value="1">
                     <div className="flex items-center gap-1">
@@ -165,7 +144,7 @@ export const EditUser = ({ userId }) => {
             label="password"
             name="password"
           >
-            <Input placeholder="Enter password" />
+            <Input placeholder="change your password" allowClear />
           </Form.Item>
 
           <Button

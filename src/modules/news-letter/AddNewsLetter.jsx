@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
-import { Button, Form, Input, message, Modal, Select } from "antd";
+import { Button, Form, Input, Modal, Select } from "antd";
 import useAddNewNewsLetterHook from "./hooks/useAddNewNewsLetterHook";
 import { useTranslation } from "react-i18next";
 import { PlusSquareFilled } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
 const AddNewsLetter = () => {
   const { t } = useTranslation();
@@ -23,22 +24,33 @@ const AddNewsLetter = () => {
     form.resetFields();
   };
 
-  const handleSubmit = async (formData) => {
-    try {
-      setIsPending(true);
-      await addNewsletter(formData);
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.status) {
-        message.error("The selected status is invalid.");
-      } else {
-        message.error("Failed to send form. Please try again.");
-        console.error("Error adding FAQ:", error);
-      }
-    } finally {
-      setIsPending(false);
-    }
+  const handleSubmit = () => {
+    setIsPending(true);
+    form.validateFields().then((formData) => {
+      addNewsletter(formData, {
+          onSuccess: () => {
+            setIsPending(false);
+            handleCancel();
+          },
+          onError: (error) => {
+            setIsPending(false);
+            const errorMessage = error.response?.data?.message;
+            if (typeof errorMessage === "object") {
+              for (const [messages] of Object.entries(errorMessage)) {
+                messages.forEach((msg) => {
+                  console.error(msg);
+                });
+              }
+            } else {
+              toast.error(errorMessage || "Failed to add customer.");
+            }
+          },
+        });
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log("Validate Failed:", errorInfo);
+      });
   };
 
   return (

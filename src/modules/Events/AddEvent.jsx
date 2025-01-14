@@ -20,6 +20,7 @@ import { MetaDataEn } from "../../common/modules/create-edit/MetaDataEn";
 import { Slug } from "../../common/modules/create-edit/Slug";
 import { Description } from "../../common/modules/create-edit/Description";
 import { Title } from "../../common/modules/create-edit/Title";
+import { toast } from "react-toastify";
 
 export const AddEvent = () => {
   const { t } = useTranslation();
@@ -37,22 +38,35 @@ export const AddEvent = () => {
     form.resetFields();
   };
 
-  const handleSubmit = async (formData) => {
-    try {
-      setIsPending(true);
-      await addEvent(formData);
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.status) {
-        message.error(t("events.error.invalidStatus"));
-      } else {
-        message.error(t("events.error.submitFailed"));
-        console.error("Error adding Event:", error);
-      }
-    } finally {
-      setIsPending(false);
-    }
+  const handleSubmit = () => {
+    setIsPending(true);
+    form
+      .validateFields()
+      .then((formData) => {
+        addEvent(formData, {
+          onSuccess: () => {
+            setIsPending(false);
+            handleCancel();
+          },
+          onError: (error) => {
+            setIsPending(false);
+            const errorMessage = error.response?.data?.message;
+            if (typeof errorMessage === "object") {
+              for (const [messages] of Object.entries(errorMessage)) {
+                messages.forEach((msg) => {
+                  toast.error(msg);
+                });
+              }
+            } else {
+              toast.error(errorMessage || "Failed to add customer.");
+            }
+          },
+        });
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log("Validate Failed:", errorInfo);
+      });
   };
 
   return (

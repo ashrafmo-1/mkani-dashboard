@@ -4,10 +4,11 @@ import { EditFilled } from "@ant-design/icons";
 import { useGetBlogCategoryHook } from "./hooks/useGetBlogCategoryHook";
 import { useEditBolgCategoryHook } from "./hooks/useEditBolgCategoryHook";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export const EditBlogCategories = ({ blogCategoryId }) => {
   const { t } = useTranslation();
-  const { editUser } = useEditBolgCategoryHook();
+  const { editblogCategory } = useEditBolgCategoryHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [form] = Form.useForm();
@@ -22,18 +23,41 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
     form.resetFields();
   };
 
-  const handleSubmit = async (formData) => {
-    try {
-      setIsPending(true);
-      await editUser(blogCategoryId, formData);
-      setIsModalVisible(false);
-      message.success(t("blogCategory.edit.success"));
-    } catch (error) {
-      message.error(t("blogCategory.edit.error"));
-      console.error("Error editing blog category:", error);
-    } finally {
-      setIsPending(false);
-    }
+  const handleSubmit = () => {
+    setIsPending(true);
+    form
+      .validateFields()
+      .then((values) => {
+        editblogCategory(
+          { blogCategoryId: blogCategoryId, values },
+          {
+            onSuccess: () => {
+              setIsPending(false);
+              setIsModalVisible(false);
+            },
+            onError: (error) => {
+              setIsPending(false);
+              const errorMessage = error.response?.data?.message;
+              if (typeof errorMessage === "object") {
+                Object.entries(errorMessage).forEach(([field, messages]) => {
+                  messages.forEach((msg) => {
+                    toast.error(msg);
+                  });
+                });
+              } else {
+                toast.error(errorMessage || "Failed to edit customer.");
+              }
+            },
+            onSettled: () => {
+              setIsPending(false);
+            },
+          }
+        );
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log("Validate Failed:", errorInfo);
+      });
   };
 
   useEffect(() => {
@@ -43,7 +67,7 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
         nameAr: data?.nameAr || "",
         slugAr: data?.slugAr || "",
         slugEn: data?.slugEn || "",
-        isActive: data?.isActive !== undefined ? String(data.isActive) : "",  
+        isActive: data?.isActive !== undefined ? String(data.isActive) : "",
       });
     }
   }, [data, form, isModalVisible]);
@@ -64,12 +88,16 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item label={t("blogCategory.lables.nameEn")} name="nameEn">
-                <Input placeholder={t("blogCategory.placeholder.EnterNameEn")} />
+                <Input
+                  placeholder={t("blogCategory.placeholder.EnterNameEn")}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label={t("blogCategory.lables.nameAr")} name="nameAr">
-                <Input placeholder={t("blogCategory.placeholder.EnterNameAr")} />
+                <Input
+                  placeholder={t("blogCategory.placeholder.EnterNameAr")}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -77,18 +105,25 @@ export const EditBlogCategories = ({ blogCategoryId }) => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item label={t("blogCategory.lables.slugEn")} name="slugEn">
-                <Input placeholder={t("blogCategory.placeholder.EnterSlugEn")} />
+                <Input
+                  placeholder={t("blogCategory.placeholder.EnterSlugEn")}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label={t("blogCategory.lables.slugAr")} name="slugAr">
-                <Input placeholder={t("blogCategory.placeholder.EnterSlugAr")} />
+                <Input
+                  placeholder={t("blogCategory.placeholder.EnterSlugAr")}
+                />
               </Form.Item>
             </Col>
           </Row>
 
           <Form.Item label={t("blogCategory.lables.isActive")} name="isActive">
-            <Select placeholder={t("blogCategory.placeholder.SelectIsActive")} aria-label="isActive">
+            <Select
+              placeholder={t("blogCategory.placeholder.SelectIsActive")}
+              aria-label="isActive"
+            >
               <Select.Option value="1">
                 <div className="flex items-center gap-1">
                   <span className="bg-green-600 p-1 rounded-full"></span>

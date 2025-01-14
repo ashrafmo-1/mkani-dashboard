@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
 import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 export const useAddEventHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
@@ -19,11 +20,9 @@ export const useAddEventHook = () => {
       if (typeof errorMessage === "object") { 
         for (const [field, messages] of Object.entries(errorMessage)) {
           messages.forEach((msg) => {
-            message.error(`${field}: ${msg}`);
+            toast.error(msg);
           });
         }
-      } else {
-        message.error(errorMessage || "Failed to add user.");
       }
     },
   });

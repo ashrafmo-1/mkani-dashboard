@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
-import { message } from "antd";
+import { toast } from "react-toastify";
 
 export const useDeleteEventHook = () => {
   const { i18n } = useTranslation();
@@ -13,7 +13,7 @@ export const useDeleteEventHook = () => {
         `/${i18n.language}/admin/events/delete?eventId=${eventId}`
       );
       queryClient.invalidateQueries("Events");
-      message.success(i18n.t("event delete success"));
+      toast.success(i18n.t("event delete success"));
     } catch (error) {
       console.log(error);
     }

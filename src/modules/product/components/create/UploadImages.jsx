@@ -1,7 +1,8 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, message, Upload } from "antd";
+import { Button, Form, Upload } from "antd";
 import React from "react";
 import {useTranslation} from "react-i18next";
+import { toast } from "react-toastify";
 
 export const UploadImages = () => {
     const { t } = useTranslation();
@@ -35,9 +36,9 @@ export const UploadImages = () => {
         maxCount={5}
         onChange={(info) => {
           if (info.file.status === "done") {
-            message.success(`${info.file.name} file uploaded successfully.`);
+            toast.success(`${info.file.name} file uploaded successfully.`);
           } else if (info.file.status === "error") {
-            message.error(`${info.file.name} file upload failed.`);
+            toast.error(`${info.file.name} file upload failed.`);
           }
         }}
       >

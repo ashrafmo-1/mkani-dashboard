@@ -1,48 +1,38 @@
-import { EditOutlined } from "@ant-design/icons";
-import { Button, Form, message, Modal, Row } from "antd";
+import { Button, Form, message, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { InputName } from "./components/create/InputName";
 import { UploadImages } from "./components/create/UploadImages";
 import { SelectisActive } from "./components/create/SelectisActive";
-import { checkPermission } from "../../helpers/checkPermission";
 import { useTranslation } from "react-i18next";
 import { useEditProductHook } from "./hook/useEditProductHook";
 import { useGetSingleProduct } from "./hook/useGetSingleProduct";
 import { MetaDataEn, MetaDataAr, Slug, Description, TextEditorInput } from "../../common";
+import { BackwardFilled } from "@ant-design/icons";
+import { Link, useParams } from "react-router-dom";
+import { MAINPATH } from "../../constant/MAINPATH";
+import { toast } from "react-toastify";
 
-const EditProduct = ({ productId }) => {
-  const { t } = useTranslation();
+const EditProduct = () => {
+  const { productId } = useParams();
+  const { t, i18n } = useTranslation();
   const { editProduct } = useEditProductHook();
-  const hasCreateUserPermission = checkPermission("create_customer");
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const { data } = useGetSingleProduct(productId);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form.resetFields();
-  };
-
   const handleSubmit = async (values) => {
-    setIsPending(true); // Set loading state to true
+    setIsPending(true);
     try {
       await editProduct(productId, values);
-      message.success("Product edited successfully.");
-      setIsModalVisible(false);
     } catch (error) {
-      message.error("Failed to edit product.", error);
+      toast.error("Failed to edit product.", error);
     } finally {
-      setIsPending(false); // Reset loading state
+      setIsPending(false);
     }
   };
 
   useEffect(() => {
-    if (isModalVisible && data) {
+    if (data) {
       form.setFieldsValue({
         nameEn: data.nameEn,
         nameAr: data.nameAr,
@@ -55,42 +45,53 @@ const EditProduct = ({ productId }) => {
         metaDataEn: data.metaDataEn,
         metaDataAr: data.metaDataAr,
         isActive: data.isActive !== undefined ? String(data.isActive) : "",
+        images: data.images && data.images.length > 0 ? data.images.map((image, index) => ({
+          path: image.file || image
+        })) : [],
       });
     }
-  }, [data, form, isModalVisible]);
+  }, [data, form]);
 
   return (
-    <div>
-      {hasCreateUserPermission && (
-        <Button className="edit" onClick={showModal}>
-          <EditOutlined />
-        </Button>
-      )}
-
-      <Modal title={t("globals.edit")} footer={null} visible={isModalVisible} onCancel={handleCancel} width={1440}>
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <InputName />
-          <Description />
-          <TextEditorInput />
-          <Slug />
-
-          <Row gutter={[16, 16]}>
-            <MetaDataEn value={form.getFieldValue("metaDataEn")} onChange={(updatedValue) => form.setFieldsValue({ metaDataEn: updatedValue })} />
-            <MetaDataAr />
-          </Row>
-
-          <UploadImages />
-          <SelectisActive />
-          <Button 
-            type="primary" 
-            htmlType="submit" 
-            className="w-full" 
-            loading={isPending}
-          >
-            {t("globals.edit")}
+    <div className="edit-product-page">
+      <div className="mb-8 flex justify-between items-center">
+        <h1 className="text-3xl capitalize">
+          {t("globals.edit")} Product
+        </h1>
+        <Link to={`/${MAINPATH}/${i18n.language}/products`}>
+          <Button type="primary">
+            <BackwardFilled />
+            {"all products"}
           </Button>
-        </Form>
-      </Modal>
+        </Link>
+      </div>
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <InputName />
+        <Description />
+        <TextEditorInput />
+        <Slug />
+
+        <Row gutter={[16, 16]}>
+          <MetaDataEn
+            value={form.getFieldValue("metaDataEn")}
+            onChange={(updatedValue) =>
+              form.setFieldsValue({ metaDataEn: updatedValue })
+            }
+          />
+          <MetaDataAr />
+        </Row>
+
+        <UploadImages />
+        <SelectisActive />
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="mb-8"
+          loading={isPending}
+        >
+          {t("globals.edit")}
+        </Button>
+      </Form>
     </div>
   );
 };

@@ -1,16 +1,22 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Status } from "../../components/Status";
-import { Image, Pagination } from "antd";
+import { Button, Image, Pagination } from "antd";
 import { useProductsHook } from "./hook/useProductsHook";
 import DeleteProduct from "./DeleteProduct";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
-import { AppstoreOutlined } from "@ant-design/icons";
+import {
+  AppstoreOutlined,
+  EditOutlined,
+  PlusSquareFilled,
+} from "@ant-design/icons";
 import { SearchFilter } from "../../components/SearchFilter";
+import { Link } from "react-router-dom";
+import { MAINPATH } from "../../constant/MAINPATH";
 
 export const Products = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { products, pageCount, setSearchTerm, setCurrentPage } =
     useProductsHook();
 
@@ -32,7 +38,14 @@ export const Products = () => {
         </div>
       </div>
 
-      <AddProduct />
+      {/* {hasCreateUserPermission && ( */}
+      <Link to={`/${MAINPATH}/${i18n.language}/add-new-product`} type="primary">
+        <Button type="primary">
+          <PlusSquareFilled />
+          {t("products.add.title")}
+        </Button>
+      </Link>
+      {/* )} */}
 
       <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -85,7 +98,14 @@ export const Products = () => {
                   </th>
                   <td className="px-6 py-4 flex gap-3">
                     <DeleteProduct productId={product.productId} />
-                    <EditProduct productId={product.productId} />
+                    <Button className="edit">
+                      <Link
+                        to={`/${MAINPATH}/${i18n.language}/products/edit/${product.productId}`}
+                      >
+                        <EditOutlined />
+                      </Link>
+                    </Button>
+                    {/* <EditProduct productId= /> */}
                   </td>
                 </tr>
               ))}

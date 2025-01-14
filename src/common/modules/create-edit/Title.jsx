@@ -2,13 +2,13 @@ import { Col, Form, Input, Row } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export const Title = () => {
+export const Title = ({LabletitleAr, LabletitleEn}) => {
   const { t } = useTranslation();
   return (
     <Row gutter={[16, 16]}>
       <Col span={12}>
         <Form.Item
-          label={t("careers.labels.jobTitleEn")}
+          label={LabletitleAr}
           name="titleEn"
           rules={[
             {
@@ -23,7 +23,7 @@ export const Title = () => {
 
       <Col span={12}>
         <Form.Item
-          label={t("careers.labels.jobTitleAr")}
+          label={LabletitleEn}
           name="titleAr"
           rules={[
             {

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
 import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 
 export const useAddFaqHook = () => {
   const { i18n } = useTranslation();
@@ -14,18 +15,16 @@ export const useAddFaqHook = () => {
   const mutation = useMutation(addFaq, {
     onSuccess: () => {
       queryClient.invalidateQueries("faqs");
-      message.success("faq added successfully.");
+      toast.success("faq added successfully.");
     },
     onError: (error) => {
       const errorMessage = error.response?.data?.message;
       if (typeof errorMessage === "object") {
         for (const [field, messages] of Object.entries(errorMessage)) {
           messages.forEach((msg) => {
-            message.error(`${field}: ${msg}`);
+            toast.error(msg);
           });
         }
-      } else {
-        message.error(errorMessage || "Failed to add FAQ.");
       }
     },
   });

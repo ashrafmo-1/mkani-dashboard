@@ -4,6 +4,7 @@ import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import { useAddFaqHook } from "./hooks/useAddFaqHook";
 import { PlusSquareFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export const AddFaq = () => {
   const { t } = useTranslation();
@@ -22,21 +23,33 @@ export const AddFaq = () => {
     form.resetFields();
   };
 
-  const handleSubmit = async (formData) => {
-    try {
-      setIsPending(true);
-      await addFaq(formData);
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.status) {
-        console.error("The selected status is invalid.");
-      } else {
-        console.error("Error adding FAQ:", error);
-      }
-    } finally {
-      setIsPending(false);
-    }
+  const handleSubmit = () => {
+    setIsPending(true);
+    form.validateFields().then((formData) => {
+        addFaq(formData, {
+          onSuccess: () => {
+            setIsPending(false);
+            handleCancel();
+          },
+          onError: (error) => {
+            setIsPending(false);
+            const errorMessage = error.response?.data?.message;
+            if (typeof errorMessage === "object") {
+              for (const [ messages ] of Object.entries(errorMessage)) {
+                messages.forEach((msg) => {
+                  toast.error(msg);
+                });
+              }
+            } else {
+              toast.error(errorMessage || "Failed to add user.");
+            }
+          },
+        });
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log('Validate Failed:', errorInfo);
+      });
   };
 
   return (
@@ -48,13 +61,8 @@ export const AddFaq = () => {
         </Button>
       )}
 
-      <Modal
-        title={t("globals.add")}
-        footer={null}
-        visible={isModalVisible}
-        onCancel={handleCancel}
-      >
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+      <Modal title={t("globals.add")} footer={null} visible={isModalVisible} onCancel={handleCancel}>
+        <Form form={form} layout="vertical" onFinish={handleSubmit} initialValues={{ isPublished: "1" }}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
@@ -143,13 +151,7 @@ export const AddFaq = () => {
           </Form.Item>
 
           <Col span={12}>
-            <Form.Item
-              label={t("faqs.labels.order")}
-              name="order"
-              rules={[
-                { required: true, message: t("placeholders.EnterOrder") },
-              ]}
-            >
+            <Form.Item label={t("faqs.labels.order")} name="order" initialValue="1" hidden>
               <Input placeholder={t("faqs.placeholders.EnterOrder")} />
             </Form.Item>
           </Col>

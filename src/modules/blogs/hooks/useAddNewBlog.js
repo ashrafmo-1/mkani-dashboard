@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
-import { message } from "antd";
+import { toast } from "react-toastify";
 
 export const useAddNewBlog = () => {
   const { i18n } = useTranslation();
@@ -14,10 +14,20 @@ export const useAddNewBlog = () => {
   const mutation = useMutation(addNewBlog, {
     onSuccess: () => {
       queryClient.invalidateQueries("blogs");
-      message.success("add blog successfully.");
+      
+      toast.success("add blog successfully.");
     },
-    onError: () => {
-      message.error("Failed to add blog.");
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message;
+      if (typeof errorMessage === "object") {
+        for (const [field, messages] of Object.entries(errorMessage)) {
+          messages.forEach((msg) => {
+            toast.error(msg);
+          });
+        }
+      } else {
+        toast.error(errorMessage || "Failed to add blog.");
+      }
     },
   });
 

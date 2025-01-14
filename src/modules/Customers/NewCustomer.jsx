@@ -1,9 +1,11 @@
-import { Button, Col, Form, Input, message, Modal, Row } from "antd";
+import { Button, Col, Form, Input, Modal, Row } from "antd";
 import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
 import { useAddCustomerHook } from "./Hooks/useAddCustomerHook";
 import { PlusSquareFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import TextArea from "antd/es/input/TextArea";
+import { toast } from "react-toastify";
 
 export const AddNewCustomer = () => {
   const { t } = useTranslation();
@@ -22,21 +24,35 @@ export const AddNewCustomer = () => {
     form.resetFields();
   };
 
-  const handleSubmit = async (formData) => {
-    try {
-      setIsPending(true);
-      await addNewCustomer(formData);
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.status) {
-        message.error("The selected status is invalid.");
-      } else {
-        console.error("Error adding user:", error);
-      }
-    } finally {
-      setIsPending(false);
-    }
+  const handleSubmit = () => {
+    setIsPending(true);
+    form
+      .validateFields()
+      .then((formData) => {
+        addNewCustomer(formData, {
+          onSuccess: () => {
+            setIsPending(false);
+            handleCancel();
+          },
+          onError: (error) => {
+            setIsPending(false);
+            const errorMessage = error.response?.data?.message;
+            if (typeof errorMessage === "object") {
+              for (const [messages] of Object.entries(errorMessage)) {
+                messages.forEach((msg) => {
+                  toast.error(msg);
+                });
+              }
+            } else {
+              toast.error(errorMessage || "Failed to add customer.");
+            }
+          },
+        });
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log("Validate Failed:", errorInfo);
+      });
   };
 
   return (
@@ -44,9 +60,10 @@ export const AddNewCustomer = () => {
       {hasCreateUserPermission && (
         <Button onClick={showModal} type="primary">
           {" "}
-          <PlusSquareFilled /> {t("customers.add")}{" "}
+          <PlusSquareFilled /> {t("customers.add")}
         </Button>
       )}
+
       <Modal
         title={t("customers.add")}
         visible={isModalVisible}
@@ -61,19 +78,28 @@ export const AddNewCustomer = () => {
                 name="name"
                 rules={[{ required: true, message: "Name is required." }]}
               >
-                <Input placeholder={t("customers.placeholder.EnterName")} />
+                <Input
+                  placeholder={t("customers.placeholder.EnterName")}
+                  allowClear
+                />
               </Form.Item>
             </Col>
+            {/* // { required: true, message: "Email is required." }, */}
             <Col span={12}>
               <Form.Item
                 label={t("customers.email")}
                 name="email"
                 rules={[
-                  { required: true, message: "Email is required." },
-                  { type: "email", message: "Please enter a valid email address." }
+                  {
+                    type: "email",
+                    message: "Please enter a valid email address.",
+                  },
                 ]}
               >
-                <Input placeholder={t("customers.placeholder.EnterEmail")} />
+                <Input
+                  placeholder={t("customers.placeholder.EnterEmail")}
+                  allowClear
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -81,33 +107,28 @@ export const AddNewCustomer = () => {
             label={t("customers.phone")}
             name="phone"
             rules={[
-              { required: true, message: "Phone is required." },
               {
                 pattern: /^[0-9]+$/,
                 message: "Phone number must contain only numbers.",
               },
             ]}
           >
-            <Input placeholder={t("customers.placeholder.EnterPhone")} />
-          </Form.Item>
-          <Form.Item
-            label={t("customers.address")}
-            name="address"
-            rules={[{ required: true, message: "Address is required." }]}
-          >
-            <Input placeholder={t("customers.placeholder.EnterAddress")} />
-          </Form.Item>
-          <Form.Item
-            label={t("customers.description")}
-            name="description"
-            rules={[
-              { required: true, message: "description is required." },
-              { type: "description", message: "Please enter description" },
-            ]}
-          >
             <Input
+              placeholder={t("customers.placeholder.EnterPhone")}
+              allowClear
+            />
+          </Form.Item>
+          <Form.Item label={t("customers.address")} name="address">
+            <Input
+              placeholder={t("customers.placeholder.EnterAddress")}
+              allowClear
+            />
+          </Form.Item>
+          <Form.Item label={t("customers.description")} name="description">
+            <TextArea
               placeholder={t("customers.placeholder.EnterDescriptoin")}
               aria-label="description"
+              allowClear
             />
           </Form.Item>
 
@@ -115,8 +136,8 @@ export const AddNewCustomer = () => {
           <Button
             type="primary"
             htmlType="submit"
-            className="w-full"
             loading={isPending}
+            disabled={isPending}
           >
             {t("customers.add")}
           </Button>

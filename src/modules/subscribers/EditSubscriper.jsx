@@ -2,6 +2,7 @@ import { Button, Form, Input, message, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import useEditSubscibersHook from "./hooks/useEditSubscibersHook";
 import { EditOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
 export const EditSubscriper = ({ initialValues, subscriberId }) => {
   const { editSubsciber } = useEditSubscibersHook();
@@ -28,10 +29,9 @@ export const EditSubscriper = ({ initialValues, subscriberId }) => {
     setIsPending(true);
     try {
       await editSubsciber(subscriberId, values);
-      message.success("FAQ edited successfully.");
       setIsModalVisible(false);
     } catch (error) {
-      message.error("Failed to edit FAQ.", error);
+      toast.error("Failed to edit FAQ.", error);
     } finally {
       setIsPending(false);
     }

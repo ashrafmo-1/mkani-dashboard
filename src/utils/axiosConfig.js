@@ -4,6 +4,7 @@ import { API } from "../constant/APIS";
 const axiosInstance = axios.create({
   baseURL: `${API}/`,
 });
+
 axiosInstance.defaults.headers.get["Authorization"] = `Bearer ${token}`;
 axiosInstance.defaults.headers.put["Authorization"] = `Bearer ${token}`;
 axiosInstance.defaults.headers.delete["Authorization"] = `Bearer ${token}`;

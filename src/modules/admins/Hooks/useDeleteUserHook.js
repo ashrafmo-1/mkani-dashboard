@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useQueryClient } from "react-query";
-import { message } from "antd";
+import { toast } from "react-toastify";
 
 export const useDeleteUserHook = () => {
   const { i18n } = useTranslation();
@@ -13,8 +13,9 @@ export const useDeleteUserHook = () => {
         `/${i18n.language}/admin/users/delete?userId=${userId}`
       );
       queryClient.invalidateQueries("users");
-      message.success("user deleted")
+      toast.success("User deleted successfully.");
     } catch (error) {
+      toast.error("Failed to delete user.");
       console.log(error);
     }
   };

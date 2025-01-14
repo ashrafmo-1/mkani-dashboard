@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {SideBar} from "./common";
 import {AppRoutes} from "./Routes/Routes";
 import {BarsOutlined} from "@ant-design/icons";
+import { ToastContainer } from "react-toastify";
 
 function App() {
     const token = Cookies.get("MPO-TOKEN-DASHBOARD");
@@ -35,8 +36,7 @@ function App() {
                 </div>
             )}
 
-            <div
-                className={`${
+            <div className={`${
                     token
                         ? `relative overflow-x-auto w-full ${active ? "sm:w-[calc(100%-300px)]" : ""}  sm:px-8 px-3 pb-2 mt-2 sm:rounded-lg`
                         : "w-full"
@@ -44,10 +44,8 @@ function App() {
             >
                 {token && (
                     <div className="header bg-[#fafafa] px-4 py-2 rounded-lg mb-4">
-                        <BarsOutlined
-                            className="cursor-pointer bg-blue-200 p-1 text-2xl rounded-xl"
-                            onClick={toggleSideBar}
-                        />
+                        <ToastContainer position="bottom-right" autoClose={8000} pauseOnFocusLoss={false} pauseOnHover={false} closeOnClick />
+                        <BarsOutlined className="cursor-pointer bg-blue-200 p-1 text-2xl rounded-xl" onClick={toggleSideBar} />
                     </div>
                 )}
                 <AppRoutes/>

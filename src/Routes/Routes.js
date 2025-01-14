@@ -11,6 +11,10 @@ import {Roles} from "../modules/Roles/Roles";
 import {SettingsPage} from "../portfolioSettings/SettingsPage";
 import {NotFound} from "../common";
 import { useTranslation } from "react-i18next";
+import AddProduct from "../modules/product/AddProduct";
+import EditProduct from "../modules/product/EditProduct";
+import { AddBlog } from "../modules/blogs/AddBlog";
+import { EditBlog } from "../modules/blogs/EditBlog";
 
 export const AppRoutes = () => {
     const {i18n} = useTranslation();
@@ -28,10 +32,14 @@ export const AppRoutes = () => {
                     <Route path="users" element={<Admins/>}/>
                     <Route path="roles" element={<Roles/>}/>
                     <Route path="customers" element={<Customers/>}/>
-                    <Route path="products" element={<Products/>}/>
+                    <Route path="add-new-product" element={<AddProduct />}/>
+                    <Route path="products" element={<Products/>} />
+                    <Route path="products/edit/:productId" element={<EditProduct />} /> 
                     <Route path="product_categories" element={<ProductCategory/>}/>
                     <Route path="blog_categories" element={<Blog_categories/>}/>
+                    <Route path="add-new-blog" element={<AddBlog/>}/>
                     <Route path="blogs" element={<Blogs/>}/>
+                    <Route path="blog/edit/:blogId" element={<EditBlog/>}/>
                     <Route path="events" element={<Events/>}/>
                     <Route path="faq" element={<Faqs/>}/>
                     <Route path="Newsletter" element={<NewsLetter/>}/>

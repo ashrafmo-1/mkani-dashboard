@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { checkPermission } from "../../helpers/checkPermission";
 import { useAddProductCategoryHook } from "./hooks/useAddProductCategoryHook";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export const AddNewProductCategeory = () => {
   const { t } = useTranslation();
@@ -22,21 +23,34 @@ export const AddNewProductCategeory = () => {
     form.resetFields();
   };
 
-  const handleSubmit = async (form_data) => {
-    try {
-      setIsPending(true);
-      await addProductCategory(form_data);
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      if (error.response?.data?.message) {
-        message.error(error.response.data.message);
-      } else {
-        message.error(t("productCategory.add.errorMessage"));
-      }
-    } finally {
-      setIsPending(false);
-    }
+  const handleSubmit = () => {
+    setIsPending(true);
+    form.validateFields()
+      .then((formData) => {
+        addProductCategory(formData, {
+          onSuccess: () => {
+            setIsPending(false);
+            handleCancel();
+          },
+          onError: (error) => {
+            setIsPending(false);
+            const errorMessage = error.response?.data?.message;
+            if (typeof errorMessage === "object") {
+              for (const [ messages ] of Object.entries(errorMessage)) {
+                messages.forEach((msg) => {
+                  toast.error(msg);
+                });
+              }
+            } else {
+              toast.error(errorMessage || "Failed to add user.");
+            }
+          },
+        });
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log('Validate Failed:', errorInfo);
+      });
   };
 
   return (
@@ -54,7 +68,7 @@ export const AddNewProductCategeory = () => {
         visible={isModalVisible}
         onCancel={handleCancel}
       >
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <Form form={form} layout="vertical" onFinish={handleSubmit} initialValues={{ isActive: "1" }}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
@@ -124,6 +138,7 @@ export const AddNewProductCategeory = () => {
             htmlType="submit"
             className="w-full"
             loading={isPending}
+            disabled={isPending}
           >
             {t("productCategory.add.title")}
           </Button>

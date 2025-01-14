@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useQueryClient } from "react-query";
-import { message } from "antd";
+import { toast } from "react-toastify";
 
 export const useDeleteProductCategoryHook = () => {
   const { i18n } = useTranslation();
@@ -13,10 +13,10 @@ export const useDeleteProductCategoryHook = () => {
         `/${i18n.language}/admin/product-categories/delete?productCategoryId=${productCategoryId}`
       );
       queryClient.invalidateQueries("productsCategory");
-      message.success("Product category deleted successfully");
+      toast.success("Product category deleted successfully");
     } catch (error) {
       console.log(error);
-      message.error("Failed to delete product category");
+      toast.error("Failed to delete product category");
     }
   };
 

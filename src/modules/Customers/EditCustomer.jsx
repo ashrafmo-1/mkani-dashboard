@@ -3,6 +3,7 @@ import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useEditCustomerHook } from "./Hooks/useEditCustomerHook";
 import { useGetSingleCustomerHook } from "./Hooks/useGetSingleCustomerHook";
+import { toast } from "react-toastify";
 
 export const EditCustomer = ({ customerId }) => {
   const { editCustomers } = useEditCustomerHook();
@@ -20,16 +21,39 @@ export const EditCustomer = ({ customerId }) => {
     form.resetFields();
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = () => {
     setLoading(true);
-    try {
-      await editCustomers(customerId, values);
-      setIsModalVisible(false);
-    } catch (error) {
-      console.error("Failed to edit customer:", error);
-    } finally {
-      setLoading(false);
-    }
+    form.validateFields().then((values) => {
+        editCustomers(
+          { customerId: customerId, values },
+          {
+            onSuccess: () => {
+              setLoading(false);
+              setIsModalVisible(false);
+            },
+            onError: (error) => {
+              setLoading(false);
+              const errorMessage = error.response?.data?.message;
+              if (typeof errorMessage === "object") {
+                Object.entries(errorMessage).forEach(([field, messages]) => {
+                  messages.forEach((msg) => {
+                    toast.error(msg);
+                  });
+                });
+              } else {
+                toast.error(errorMessage || "Failed to edit customer.");
+              }
+            },
+            onSettled: () => {
+              setLoading(false);
+            },
+          }
+        );
+      })
+      .catch((errorInfo) => {
+        setLoading(false);
+        console.log("Validate Failed:", errorInfo);
+      });
   };
 
   useEffect(() => {
@@ -49,7 +73,6 @@ export const EditCustomer = ({ customerId }) => {
       <Button className="edit" onClick={showModal}>
         <EditOutlined />
       </Button>
-
       <Modal
         title="Edit Customer"
         visible={isModalVisible}
@@ -67,23 +90,16 @@ export const EditCustomer = ({ customerId }) => {
                 <Input placeholder="Enter name" />
               </Form.Item>
             </Col>
-
             <Col span={12}>
-              <Form.Item
-                label="Email"
-                name="email"
-                rules={[{ required: true, message: "Email is required." }]}
-              >
+              <Form.Item label="Email" name="email">
                 <Input placeholder="Enter email" />
               </Form.Item>
             </Col>
           </Row>
-
           <Form.Item
             label="Phone"
             name="phone"
             rules={[
-              { required: true, message: "Phone is required." },
               {
                 pattern: /^[0-9]+$/,
                 message: "Phone number must contain only numbers.",
@@ -92,23 +108,12 @@ export const EditCustomer = ({ customerId }) => {
           >
             <Input placeholder="Enter phone number" />
           </Form.Item>
-
-          <Form.Item
-            label="Address"
-            name="address"
-            rules={[{ required: true, message: "Address is required." }]}
-          >
+          <Form.Item label="Address" name="address">
             <Input placeholder="Enter address" />
           </Form.Item>
-
-          <Form.Item
-            label="Description"
-            name="description"
-            rules={[{ required: true, message: "Description is required." }]}
-          >
+          <Form.Item label="Description" name="description">
             <Input placeholder="Enter description" />
           </Form.Item>
-
           <Button
             type="primary"
             htmlType="submit"

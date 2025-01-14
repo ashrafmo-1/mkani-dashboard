@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { checkPermission } from "../../helpers/checkPermission";
-import { Button, Form, message, Modal, Row } from "antd";
+import React, { useState, useCallback } from "react";
+import { Button, Form, Row } from "antd";
 import { useAddProductHook } from "./hook/useAddProductHook";
-import { PlusSquareFilled } from "@ant-design/icons";
 import { InputName } from "./components/create/InputName";
 import { UploadImages } from "./components/create/UploadImages";
 import { SelectisActive } from "./components/create/SelectisActive";
@@ -11,93 +9,134 @@ import { MetaDataEn } from "../../common/modules/create-edit/MetaDataEn";
 import { MetaDataAr } from "../../common/modules/create-edit/MetaDataAr";
 import { Slug } from "../../common/modules/create-edit/Slug";
 import { Description, TextEditorInput } from "../../common";
+import { BackwardFilled } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { MAINPATH } from "../../constant/MAINPATH";
+import { toast } from "react-toastify";
 
 const AddProduct = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { addProduct } = useAddProductHook();
-  const hasCreateUserPermission = checkPermission("create_customer");
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  const handleSubmit = useCallback(() => {
+    setIsPending(true);
+    form.validateFields().then(async (form_data) => {
+        const formData = new FormData();
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form.resetFields();
-  };
+        if (form_data.images && form_data.images.length > 0) {
+          form_data.images.forEach((image, index) => {
+            formData.append(`images[${index}][path]`, image.file || image);
+          });
+        } else {
+          formData.append("images", "");
+        }
 
-  const handleSubmit = async (form_data) => {
-    const formData = new FormData();
-  
+        formData.append("nameEn", form_data.nameEn || "");
+        formData.append("nameAr", form_data.nameAr || "");
+        formData.append("descriptionEn", form_data.descriptionEn || "");
+        formData.append("descriptionAr", form_data.descriptionAr || "");
+        formData.append("slugEn", form_data.slugEn || "");
+        formData.append("slugAr", form_data.slugAr || "");
+        formData.append("contentEn", form_data.contentEn || "");
+        formData.append("contentAr", form_data.contentAr || "");
+        formData.append("metaDataEn[title]", form_data.metaDataEn?.title || "");
+        formData.append(
+          "metaDataEn[description]",
+          form_data.metaDataEn?.description || ""
+        );
+        if (
+          form_data.metaDataEn?.keywords &&
+          form_data.metaDataEn.keywords.length > 0
+        ) {
+          form_data.metaDataEn.keywords.forEach((keyword, index) => {
+            formData.append(`metaDataEn[keywords][${index}]`, keyword);
+          });
+        } else {
+          formData.append("metaDataEn[keywords]", "");
+        }
+        formData.append("metaDataAr[title]", form_data.metaDataAr?.title || "");
+        formData.append(
+          "metaDataAr[description]",
+          form_data.metaDataAr?.description || ""
+        );
+        if (
+          form_data.metaDataAr?.keywords &&
+          form_data.metaDataAr.keywords.length > 0
+        ) {
+          form_data.metaDataAr.keywords.forEach((keyword, index) => {
+            formData.append(`metaDataAr[keywords][${index}]`, keyword);
+          });
+        } else {
+          formData.append("metaDataAr[keywords]", "");
+        }
+        formData.append("isActive", form_data.isActive ? 1 : 0);
 
-    if (form_data.images && form_data.images.length > 0) {
-      form_data.images.forEach((image, index) => {
-        formData.append(`images[${index}][path]`, image.file || image);
+        addProduct(formData, {
+          onSuccess: () => {
+            setIsPending(false);
+          },
+          onError: (error) => {
+            setIsPending(false);
+            const errorMessage = error.response?.data?.message;
+            if (typeof errorMessage === "object") {
+              for (const [field, messages] of Object.entries(errorMessage)) {
+                messages.forEach((msg) => {
+                  console.error(`${field}: ${msg}`);
+                });
+              }
+            } else {
+              setIsPending(false);
+              toast.error(
+                errorMessage || "Failed to send form. Please try again."
+              );
+            }
+          },
+        });
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log("Validate Failed:", errorInfo);
       });
-    } else {
-      formData.append("images", "");
-    }
-
-    formData.append('nameEn', form_data.nameEn || "");
-    formData.append('nameAr', form_data.nameAr || "");
-    formData.append('descriptionEn', form_data.descriptionEn || "");
-    formData.append('descriptionAr', form_data.descriptionAr || "");
-    formData.append('slugEn', form_data.slugEn || "");
-    formData.append('slugAr', form_data.slugAr || "");
-    formData.append('contentEn', form_data.contentEn || "");
-    formData.append('contentAr', form_data.contentAr || "");
-    formData.append('metaDataEn[]', JSON.stringify(form_data.metaDataEn || []));
-    formData.append('metaDataAr[]', JSON.stringify(form_data.metaDataAr || []));
-    formData.append('isActive', form_data.isActive ? 1 : 0);
-  
-    try {
-      setIsPending(true);
-      await addProduct(formData);;
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      if (error.response?.data?.message) {
-        message.error(error.response.data.message);
-      } else {
-        message.error("Failed to send form. Please try again.");
-      }
-    } finally {
-      setIsPending(false);
-    }
-  };
-  
+  }, [addProduct, form]);
 
   return (
-    <div className="">
-      {hasCreateUserPermission && (
-        <Button onClick={showModal} type="primary">
-          <PlusSquareFilled />
-          {t("products.add.title")}
-        </Button>
-      )}
-
-      <Modal title={t("products.add.title")} footer={null} visible={isModalVisible} onCancel={handleCancel} width={1440}>
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <InputName />
-          <Description />
-          <TextEditorInput />
-          <Slug />
-
-          <Row gutter={[16, 16]}>
-            <MetaDataEn />
-            <MetaDataAr />
-          </Row>
-
-          <UploadImages />
-          <SelectisActive />
-          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
-            {t("products.add.title")}
+    <div className="add-product-page">
+      <div className="flex justify-between items-center mb-12">
+        <h1 className="text-3xl capitalize">
+          {t("products.add.title")} new product
+        </h1>
+        <Link to={`/${MAINPATH}/${i18n.language}/products`}>
+          <Button type="primary">
+            <BackwardFilled />
+            all products
           </Button>
-        </Form>
-      </Modal>
+        </Link>
+      </div>
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <InputName />
+        <Description />
+        <TextEditorInput />
+        <Slug />
+
+        <Row gutter={[16, 16]}>
+          <MetaDataEn />
+          <MetaDataAr />
+        </Row>
+
+        <UploadImages />
+        <SelectisActive />
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={isPending}
+          disabled={isPending}
+          className="mb-10"
+        >
+          {isPending ? t("loading") : t("products.add.title")}
+        </Button>
+      </Form>
     </div>
   );
 };

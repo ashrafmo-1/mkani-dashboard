@@ -1,62 +1,43 @@
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, Space } from "antd";
+import { Col, Form, Input, Select, Space } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export const MetaDataEn = ({ value = [], onChange }) => {
+export const MetaDataEn = () => {
   const { t } = useTranslation();
 
   return (
     <Col span={12}>
-    <Form.Item
-      className="form_item_Metadata_career"
-      name={["metaDataEn", 0]}
-      label={t("careers.labels.metaDataEn.title")}
-      rules={[{ required: true, message: t("careers.labels.metaDataEn.required.global") }]}
-    >
-      <Form.List name="metaDataEn">
-        {(fields, { add, remove }) => (
-          <>
-            {fields.map(({ key, name, fieldKey, ...restField }) => (
-              <Space
-                key={key}
-                style={{ display: "flex", marginBottom: 8 }}
-                align="baseline"
-              >
-                <Form.Item
-                  {...restField}
-                  name={[name, "title"]}
-                  fieldKey={[fieldKey, "title"]}
-                  rules={[{ required: true, message: t("careers.labels.metaDataEn.required.title") }]}
-                >
-                  <Input placeholder={t("careers.placeholders.EnterMetaDataEn.title")} />
-                </Form.Item>
-                <Form.Item
-                  {...restField}
-                  name={[name, "value"]}
-                  fieldKey={[fieldKey, "value"]}
-                  rules={[{ required: true, message: t("careers.labels.metaDataEn.required.value") }]}
-                >
-                  <Input placeholder={t("careers.placeholders.EnterMetaDataEn.value")} />
-                </Form.Item>
-                {fields.length > 1 && (
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                )}
-              </Space>
-            ))}
-            <Form.Item>
-              <Button
-                type="dashed"
-                onClick={() => add()}
-                icon={<PlusOutlined />}
-              >
-                {t("globals.add")}
-              </Button>
-            </Form.Item>
-          </>
-        )}
-      </Form.List>
-    </Form.Item>
+      <Space direction="vertical" size="large" className="metadata-space">
+        <Form.Item
+          label={t("careers.labels.metaDataEn.title")}
+          name={["metaDataEn", "title"]}
+        >
+          <Input
+            placeholder={t("careers.placeholders.metaDataEn.title")}
+            className="metadata-input"
+          />
+        </Form.Item>
+        <Form.Item
+          label={t("careers.labels.metaDataEn.description")}
+          name={["metaDataEn", "description"]}
+        >
+          <Input.TextArea
+            placeholder={t("careers.placeholders.metaDataEn.description")}
+            className="metadata-textarea"
+          />
+        </Form.Item>
+        <Form.Item
+          label={t("careers.labels.metaDataEn.keywords")}
+          name={["metaDataEn", "keywords"]}
+        >
+          <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            placeholder={t("careers.placeholders.metaDataEn.keywords")}
+            className="metadata-input"
+          />
+        </Form.Item>
+      </Space>
     </Col>
   );
 };

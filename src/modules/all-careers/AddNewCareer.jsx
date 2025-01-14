@@ -3,8 +3,6 @@ import { checkPermission } from "../../helpers/checkPermission";
 import { Button, Col, Form, message, Modal, Row } from "antd";
 import { useAddNewCareer } from "./hooks/useAddNewCareer";
 import { CareerContent } from "./components/CareerContent";
-import { CareerMetaDataEn } from "./components/CareerMetaDataEn";
-import { CareermetaDataAr } from "./components/CareermetaDataAr";
 import { CareerExtraDetailsEn } from "./components/CareerExtraDetailsEn";
 import { CareerExtraDetailsAr } from "./components/CareerExtraDetailsAr";
 import { Slug } from "./components/Slug";
@@ -13,6 +11,8 @@ import { PlusSquareFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { Description } from "../../common/modules/create-edit/Description";
 import { Title } from "../../common/modules/create-edit/Title";
+import { toast } from "react-toastify";
+import { MetaDataAr, MetaDataEn } from "../../common";
 
 const AddNewCareer = () => {
   const { t } = useTranslation();
@@ -32,14 +32,14 @@ const AddNewCareer = () => {
     try {
       setIsPending(true);
       await addCareer(formData);
-      message.success("Career added successfully.");
+      toast.success("Career added successfully.");
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.status) {
-        message.error("The selected status is invalid.");
+        toast.error("The selected status is invalid.");
       } else {
-        message.error("Failed to send form. Please try again.", error);
+        toast.error("Failed to send form. Please try again.", error);
       }
     } finally {
       setIsPending(false);
@@ -62,17 +62,13 @@ const AddNewCareer = () => {
         width={900}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Title />
+          <Title LabletitleAr={"career arabic title"} LabletitleEn={"career english title"} />
           <Description />
           <CareerContent />
 
           <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <CareerMetaDataEn />
-            </Col>
-            <Col span={12}>
-              <CareermetaDataAr />
-            </Col>
+            <MetaDataAr />
+            <MetaDataEn />
           </Row>
 
           <Row gutter={[16, 16]}>

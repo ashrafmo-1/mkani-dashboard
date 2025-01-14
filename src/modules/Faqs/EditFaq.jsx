@@ -4,10 +4,11 @@ import { Button, Col, Form, Input, Row, Select, Modal, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useGetSingleFaqHook } from "./hooks/useGetSingleFaqHook";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export const EditFaq = ({ faqId }) => {
   const { t } = useTranslation();
-  const { editFaq } = useEditFaqsHook();
+  const { editFaqs } = useEditFaqsHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
@@ -22,17 +23,35 @@ export const EditFaq = ({ faqId }) => {
     form.resetFields();
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = () => {
     setIsPending(true);
-    try {
-      await editFaq(faqId, values);
-      message.success("FAQ edited successfully.");
-      setIsModalVisible(false);
-    } catch (error) {
-      message.error("Failed to edit FAQ.", error);
-    } finally {
-      setIsPending(false);
-    }
+    form.validateFields().then((values) => {
+      editFaqs({ faqId: faqId, values },{
+            onSuccess: () => {
+              setIsPending(false);
+              setIsModalVisible(false);
+            },
+            onError: (error) => {
+              setIsPending(false);
+              const errorMessage = error.response?.data?.message;
+              if (typeof errorMessage === "object") {
+                Object.entries(errorMessage).forEach(([field, messages]) => {
+                  messages.forEach((msg) => {
+                    toast.error(msg);
+                  });
+                });
+              }
+            },
+            onSettled: () => {
+              setIsPending(false);
+            },
+          }
+        );
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log('Validate Failed:', errorInfo);
+      });
   };
 
   useEffect(() => {
@@ -44,7 +63,7 @@ export const EditFaq = ({ faqId }) => {
         answerAr: data.answerAr,
         isPublished:
           data.isPublished !== undefined ? String(data.isPublished) : "",
-        order: data.order,
+        order: 1,
       });
     }
   }, [data, form, isModalVisible]);
@@ -110,8 +129,8 @@ export const EditFaq = ({ faqId }) => {
             </Select>
           </Form.Item>
 
-          <Col span={12}>
-            <Form.Item label={t("faqs.labels.order")} name="order">
+          <Col span={12} className="">
+            <Form.Item label={t("faqs.labels.order")} name="order" hidden>
               <Input placeholder={t("faqs.placeholders.EnterOrder")} />
             </Form.Item>
           </Col>

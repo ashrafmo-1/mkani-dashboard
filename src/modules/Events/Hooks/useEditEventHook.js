@@ -1,26 +1,40 @@
-import { useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export const useEditEventHook = () => {
-
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
-  const editEvent = async (eventId, values) => {
-    try {
-      await axiosInstance.put(
-        `${i18n.language}/admin/events/update?eventId=${eventId}`,
-        values
-      );
-      queryClient.invalidateQueries('Events');
-    } catch (error) {
-      console.error(
-        "Error editing Event:",
-        error.response ? error.response.data : error.message
-      );
+
+
+
+
+
+  const mutation = useMutation(
+    async ({ eventId, values }) => {
+      await axiosInstance.put(`${i18n.language}/admin/events/update?eventId=${eventId}`, values );
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("Events");
+        toast.success("User Event successfully.");
+      },
+      onError: (error) => {
+        const errorMessage = error.response?.data?.message;
+        if (typeof errorMessage === "object") {
+          Object.entries(errorMessage).forEach(([field, messages]) => {
+            messages.forEach((msg) => {
+              console.error(msg);
+            });
+          });
+        } else {
+          toast.error(errorMessage || "Failed to edit customer.");
+        }
+      },
     }
-  };
+  );
 
 
-  return { editEvent }
+  return { editEvent: mutation.mutate }
 }

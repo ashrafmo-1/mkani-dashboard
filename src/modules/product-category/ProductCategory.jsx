@@ -50,7 +50,7 @@ export const ProductCategory = () => {
             </tr>
           </thead>
           <tbody>
-            {productCategories &&
+            {productCategories && productCategories.length > 0 ? (
               productCategories.map((productCategory, index) => (
                 <tr className="bg-white border-b" key={index}>
                   <th
@@ -78,7 +78,30 @@ export const ProductCategory = () => {
                     />
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="px-6 py-4 text-center text-gray-500 bg-gray-100">
+                  <div className="flex flex-col items-center">
+                    <svg
+                      className="w-12 h-12 mb-2 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 14l2-2 4 4m0 0l4-4m-4 4V3"
+                      ></path>
+                    </svg>
+                    <span>{t("Product category noData")}</span>
+                  </div>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
 

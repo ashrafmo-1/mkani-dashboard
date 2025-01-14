@@ -1,9 +1,9 @@
-import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
+import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import React, { useState } from "react";
-import { checkPermission } from "../../helpers/checkPermission";
 import { useAddNewBlogCategory } from "./hooks/useAddNewBlogCategory";
 import { PlusSquareFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export const AddNewBlog_categories = () => {
   const { t } = useTranslation();
@@ -22,21 +22,35 @@ export const AddNewBlog_categories = () => {
     form.resetFields();
   };
 
-  const handleSubmit = async (formData) => {
-    try {
-      setIsPending(true);
-      await addNewBlogCategories(formData);
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.status) {
-        message.error(t("blogCategory.error.invalidStatus"));
-      } else {
-        console.error("Error adding blog category:", error);
-      }
-    } finally {
-      setIsPending(false);
-    }
+  const handleSubmit = () => {
+    setIsPending(true);
+    form
+      .validateFields()
+      .then((formData) => {
+        addNewBlogCategories(formData, {
+          onSuccess: () => {
+            setIsPending(false);
+            handleCancel();
+          },
+          onError: (error) => {
+            setIsPending(false);
+            const errorMessage = error.response?.data?.message;
+            if (typeof errorMessage === "object") {
+              for (const [messages] of Object.entries(errorMessage)) {
+                messages.forEach((msg) => {
+                  console.error(msg);
+                });
+              }
+            } else {
+              toast.error(errorMessage || "Failed to add blog category.");
+            }
+          },
+        });
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log("Validate Failed:", errorInfo);
+      });
   };
 
   return (
@@ -60,10 +74,15 @@ export const AddNewBlog_categories = () => {
                 label={t("blogCategory.lables.nameEn")}
                 name="nameEn"
                 rules={[
-                  { required: true, message: t("blogCategory.placeholder.EnterNameEn") },
+                  {
+                    required: true,
+                    message: t("blogCategory.placeholder.EnterNameEn"),
+                  },
                 ]}
               >
-                <Input placeholder={t("blogCategory.placeholder.EnterNameEn")} />
+                <Input
+                  placeholder={t("blogCategory.placeholder.EnterNameEn")}
+                />
               </Form.Item>
             </Col>
 
@@ -72,10 +91,15 @@ export const AddNewBlog_categories = () => {
                 label={t("blogCategory.lables.nameAr")}
                 name="nameAr"
                 rules={[
-                  { required: true, message: t("blogCategory.placeholder.EnterNameAr") },
+                  {
+                    required: true,
+                    message: t("blogCategory.placeholder.EnterNameAr"),
+                  },
                 ]}
               >
-                <Input placeholder={t("blogCategory.placeholder.EnterNameAr")} />
+                <Input
+                  placeholder={t("blogCategory.placeholder.EnterNameAr")}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -86,10 +110,15 @@ export const AddNewBlog_categories = () => {
                 label={t("blogCategory.lables.slugEn")}
                 name="slugEn"
                 rules={[
-                  { required: true, message: t("blogCategory.placeholder.EnterSlugEn") },
+                  {
+                    required: true,
+                    message: t("blogCategory.placeholder.EnterSlugEn"),
+                  },
                 ]}
               >
-                <Input placeholder={t("blogCategory.placeholder.EnterSlugEn")} />
+                <Input
+                  placeholder={t("blogCategory.placeholder.EnterSlugEn")}
+                />
               </Form.Item>
             </Col>
 
@@ -98,10 +127,15 @@ export const AddNewBlog_categories = () => {
                 label={t("blogCategory.lables.slugAr")}
                 name="slugAr"
                 rules={[
-                  { required: true, message: t("blogCategory.placeholder.EnterSlugAr") },
+                  {
+                    required: true,
+                    message: t("blogCategory.placeholder.EnterSlugAr"),
+                  },
                 ]}
               >
-                <Input placeholder={t("blogCategory.placeholder.EnterSlugAr")} />
+                <Input
+                  placeholder={t("blogCategory.placeholder.EnterSlugAr")}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -109,9 +143,17 @@ export const AddNewBlog_categories = () => {
           <Form.Item
             label={t("blogCategory.lables.isActive")}
             name="isActive"
-            rules={[{ required: true, message: t("blogCategory.placeholder.SelectIsActive") }]}
+            rules={[
+              {
+                required: true,
+                message: t("blogCategory.placeholder.SelectIsActive"),
+              },
+            ]}
           >
-            <Select placeholder={t("blogCategory.placeholder.SelectIsActive")} aria-label="isActive">
+            <Select
+              placeholder={t("blogCategory.placeholder.SelectIsActive")}
+              aria-label="isActive"
+            >
               <Select.Option value="1">
                 <div className="flex items-center gap-1">
                   <span className="bg-green-600 p-1 rounded-full"></span>
@@ -127,7 +169,12 @@ export const AddNewBlog_categories = () => {
             </Select>
           </Form.Item>
 
-          <Button type="primary" htmlType="submit" className="w-full" loading={isPending}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+          >
             {t("blogCategory.add")}
           </Button>
         </Form>

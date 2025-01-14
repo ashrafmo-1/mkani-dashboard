@@ -1,7 +1,7 @@
-import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export const useReplayMessageHook = () => {
   const { i18n } = useTranslation();
@@ -14,10 +14,10 @@ export const useReplayMessageHook = () => {
   const mutation = useMutation(addNewReplay, {
     onSuccess: () => {
       queryClient.invalidateQueries("contactUs");
-      message.success("add contact successfully.");
+      toast.success("add contact successfully.");
     },
     onError: () => {
-      message.error("Failed to add contact.");
+      toast.error("Failed to add contact.");
     },
   });
 

@@ -12,6 +12,8 @@ import { Slug } from "./components/Slug";
 import { CareerIsActive } from "./components/CareerIsActive";
 import { useEditCareer } from "./hooks/useEditCareer";
 import { useGetSingleCareerHook } from "./hooks/useGetSingleCareerHook";
+import { toast } from "react-toastify";
+import { MetaDataAr, MetaDataEn } from "../../common";
 
 const EditAllCareers = ({ careerId }) => {
   const { editCareer } = useEditCareer();
@@ -33,10 +35,10 @@ const EditAllCareers = ({ careerId }) => {
     setIsPending(true);
     try {
       await editCareer(careerId, values);
-      message.success("career edited successfully.");
+      toast.success("career edited successfully.");
       setIsModalVisible(false);
     } catch (error) {
-      message.error("Failed to edit career.", error);
+      toast.error("Failed to edit career.", error);
     } finally {
       setIsPending(false);
     }
@@ -76,17 +78,16 @@ const EditAllCareers = ({ careerId }) => {
         width={850}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Title />
+          <Title
+            LabletitleAr={"career arabic title"}
+            LabletitleEn={"career english title"}
+          />
           <Description />
           <CareerContent />
 
           <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <CareerMetaDataEn />
-            </Col>
-            <Col span={12}>
-              <CareermetaDataAr />
-            </Col>
+            <MetaDataAr />
+            <MetaDataEn />
           </Row>
 
           <Row gutter={[16, 16]}>

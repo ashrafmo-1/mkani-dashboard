@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
 import { message } from "antd";
+import { toast } from "react-toastify";
 
 export const useAddNewBlogCategory = () => {
   const { i18n } = useTranslation();
@@ -14,21 +15,18 @@ export const useAddNewBlogCategory = () => {
   const mutation = useMutation(addNewBlogCategories, {
     onSuccess: () => {
       queryClient.invalidateQueries("blog-categories");
-      message.success("add blog successfully.");
+      toast.success("add blog successfully.");
     },
     onError: (error) => {
       const errorMessage = error.response?.data?.message;
       if (typeof errorMessage === "object") { 
         for (const [field, messages] of Object.entries(errorMessage)) {
           messages.forEach((msg) => {
-            message.error({
-              content: `${field}: ${msg}`,
-              duration: 5,
-            });
+            toast.error(msg);
           });
         }
       } else {
-        message.error(errorMessage || "Failed to add blog category.");
+        toast.error(errorMessage || "Failed to add blog category.");
       }
     },
   });

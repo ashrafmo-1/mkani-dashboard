@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useQueryClient } from "react-query";
 import { message } from "antd";
+import { toast } from "react-toastify";
 
 const useDeleteNewsLetterHook = () => {
   const { i18n } = useTranslation();
@@ -11,10 +12,10 @@ const useDeleteNewsLetterHook = () => {
     try {
       await axiosInstance.delete(`/${i18n.language}/admin/newsletters/delete?newsletterId=${newsletterId}`);
       queryClient.invalidateQueries('newsletters');
-      message.success("Newsletter deleted successfully");
+      toast.success("Newsletter deleted successfully");
     } catch (error) {
       console.log(error);
-      message.error("Failed to delete newsletter");
+      toast.error("Failed to delete newsletter");
     }
   };
 

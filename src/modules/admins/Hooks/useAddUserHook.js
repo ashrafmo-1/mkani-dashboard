@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../../../utils/axiosConfig";
-import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 
 export const useAddUserHook = () => {
   const { i18n } = useTranslation();
@@ -14,7 +14,7 @@ export const useAddUserHook = () => {
   const mutation = useMutation(addNewUser, {
     onSuccess: () => {
       queryClient.invalidateQueries("users");
-      message.success("User added successfully.");
+      toast.success("User added successfully.");
     },
 
     onError: (error) => {
@@ -22,11 +22,11 @@ export const useAddUserHook = () => {
       if (typeof errorMessage === "object") { 
         for (const [field, messages] of Object.entries(errorMessage)) {
           messages.forEach((msg) => {
-            message.error(`${field}: ${msg}`);
+            toast.error(msg);
           });
         }
       } else {
-        message.error(errorMessage || "Failed to add user.");
+        toast.error(errorMessage || "Failed to add user.");
       }
     },
   });
