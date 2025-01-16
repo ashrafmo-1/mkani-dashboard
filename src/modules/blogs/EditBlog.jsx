@@ -1,5 +1,5 @@
 import { FastBackwardOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Row, Select, Upload } from "antd";
+import { Button, Form, Row, Select, Upload } from "antd";
 import React, { useEffect, useState } from "react";
 import { useEditBlogHook } from "./hooks/useEditBlogHook";
 import { useBlog_categoriesHook } from "../blog_categories/hooks/useBlog_categoriesHook";
@@ -8,9 +8,8 @@ import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { MAINPATH } from "../../constant/MAINPATH";
 import { Description, MetaDataAr, MetaDataEn, Slug, TextEditorInput, Title } from "../../common";
-import ReactQuill from "react-quill";
 import { toast } from "react-toastify";
-import "react-quill/dist/quill.snow.css"; 
+import "react-quill/dist/quill.snow.css";
 
 export const EditBlog = () => {
   const { t, i18n } = useTranslation();
@@ -20,6 +19,7 @@ export const EditBlog = () => {
   const [isPending, setIsPending] = useState(false);
   const [form] = Form.useForm();
   const { data } = useGetBlogsHook(blogId);
+  const [fileList, setFileList] = useState([]);
 
   const handleSubmit = () => {
     setIsPending(true);
@@ -72,8 +72,14 @@ export const EditBlog = () => {
         isPublished:
           data.isPublished !== undefined ? String(data.isPublished) : "",
       });
+      setFileList(data.thumbnail ? [{ url: data.thumbnail }] : []);
     }
   }, [data, form]);
+
+  const handleChange = ({ fileList }) => {
+    setFileList(fileList);
+    form.setFieldsValue({ thumbnail: fileList });
+  };
 
   return (
     <div>
@@ -100,17 +106,8 @@ export const EditBlog = () => {
           <MetaDataAr />
         </Row>
 
-        {/* thumbnail */}
-        <Form.Item
-          name="thumbnail"
-          valuePropName="fileList"
-          label={t("blogs.add.lables.thumbnail")}
-          rules={[
-            {
-              required: true,
-              message: t("blogs.add.lables.thumbnail") + " is required.",
-            },
-          ]}
+        <Form.Item name="thumbnail" valuePropName="fileList" label={t("blogs.add.lables.thumbnail")}
+          rules={[{ required: true, message: t("blogs.add.lables.thumbnail") + " is required." }]}
           getValueFromEvent={(e) => {
             if (Array.isArray(e)) {
               return e;
@@ -122,14 +119,8 @@ export const EditBlog = () => {
             listType="picture"
             beforeUpload={() => false}
             maxCount={1}
-            fileList={
-              Array.isArray(form.getFieldValue("thumbnail"))
-                ? form.getFieldValue("thumbnail")
-                : []
-            }
-            onChange={({ fileList }) => {
-              form.setFieldsValue({ thumbnail: fileList });
-            }}
+            fileList={fileList}
+            onChange={handleChange}
           >
             <Button icon={<UploadOutlined />}>
               {t("blogs.add.placeholder.EnterThumbnail")}
