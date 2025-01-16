@@ -1,1 +1,1 @@
-export const MAINPATH = 'MBOParma-Dashboard';
+export const MAINPATH = 'admin';
