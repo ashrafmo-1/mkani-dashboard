@@ -24,7 +24,50 @@ export const EditBlog = () => {
   const handleSubmit = () => {
     setIsPending(true);
     form.validateFields().then((values) => {
-        editBlog({ blogId: blogId, values },
+      const formData = new FormData();
+        if (values.thumbnail && values.thumbnail[0]?.originFileObj) {
+          formData.append("thumbnail", values.thumbnail[0].originFileObj);
+        } else {
+          formData.append("thumbnail", "");
+        }
+        formData.append("titleEn", values.titleEn || "");
+        formData.append("titleAr", values.titleAr || "");
+        formData.append("slugAr", values.slugAr || "");
+        formData.append("slugEn", values.slugEn || "");
+        formData.append("descriptionAr", values.descriptionAr || "");
+        formData.append("descriptionEn", values.descriptionEn || "");
+        formData.append("contentAr", values.contentAr || "");
+        formData.append("contentEn", values.contentEn || "");
+        formData.append("isPublished", values.isPublished || "0");
+        formData.append("categoryId", values.categoryId || "");
+  
+        formData.append("descriptionEn", values.descriptionEn || "");
+        formData.append("descriptionAr", values.descriptionAr || "");
+        formData.append("slugEn", values.slugEn || "");
+        formData.append("slugAr", values.slugAr || "");
+        formData.append("contentEn", values.contentEn || "");
+        formData.append("contentAr", values.contentAr || "");
+        formData.append("metaDataEn[title]", values.metaDataEn?.title || "");
+        formData.append("metaDataEn[description]", values.metaDataEn?.description || "");
+        if ( values.metaDataEn?.keywords && values.metaDataEn.keywords.length > 0) {
+          values.metaDataEn.keywords.forEach((keyword, index) => {
+            formData.append(`metaDataEn[keywords][${index}]`, keyword);
+          });
+        } else {
+          formData.append("metaDataEn[keywords]", "");
+        }
+        formData.append("metaDataAr[title]", values.metaDataAr?.title || "");
+        formData.append("metaDataAr[description]", values.metaDataAr?.description || "");
+        if ( values.metaDataAr?.keywords && values.metaDataAr.keywords.length > 0) {
+          values.metaDataAr.keywords.forEach((keyword, index) => {
+            formData.append(`metaDataAr[keywords][${index}]`, keyword);
+          });
+        } else {
+          formData.append("metaDataAr[keywords]", "");
+        }
+  
+
+        editBlog({ blogId: blogId, formData },
           {
             onSuccess: () => {
               setIsPending(false);
@@ -39,7 +82,7 @@ export const EditBlog = () => {
                   });
                 });
               } else {
-                toast.error(errorMessage || "Failed to edit customer.");
+                toast.error(errorMessage || "Failed to edit blog.");
               }
             },
             onSettled: () => {
@@ -105,25 +148,21 @@ export const EditBlog = () => {
           <MetaDataEn />
           <MetaDataAr />
         </Row>
-
-        <Form.Item name="thumbnail" valuePropName="fileList" label={t("blogs.add.lables.thumbnail")}
-          rules={[{ required: true, message: t("blogs.add.lables.thumbnail") + " is required." }]}
-          getValueFromEvent={(e) => {
-            if (Array.isArray(e)) {
-              return e;
-            }
-            return e && e.fileList ? e.fileList : [];
-          }}
+        <Form.Item
+          label={t("blogs.edit.labels.thumbnail")}
+          name="thumbnail"
+          valuePropName="fileList"
+          getValueFromEvent={(e) => e && e.fileList}
+          rules={[
+            {
+              required: true,
+              message: t("blogs.edit.labels.thumbnail") + " is required.",
+            },
+          ]}
         >
-          <Upload
-            listType="picture"
-            beforeUpload={() => false}
-            maxCount={1}
-            fileList={fileList}
-            onChange={handleChange}
-          >
+          <Upload listType="picture" beforeUpload={() => false} onChange={handleChange}>
             <Button icon={<UploadOutlined />}>
-              {t("blogs.add.placeholder.EnterThumbnail")}
+              {t("blogs.edit.placeholder.EnterThumbnail")}
             </Button>
           </Upload>
         </Form.Item>

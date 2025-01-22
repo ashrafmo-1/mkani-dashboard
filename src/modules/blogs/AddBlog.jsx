@@ -16,43 +16,77 @@ export const AddBlog = () => {
   const [isPending, setIsPending] = useState(false);
   const [form] = Form.useForm();
 
-  const handleSubmit = () => {
-    setIsPending(true);
-    form.validateFields().then(async (form_data) => {
-        const formData = new FormData();
+  const handleSubmit = async () => {
+    try {
+      setIsPending(true);
+      const form_data = await form.validateFields();
+      const formData = new FormData();
 
-        if (form_data.thumbnail) {
-          formData.append(
-            "thumbnail",
-            form_data.thumbnail.file || form_data.thumbnail
-          );
-        } else {
-          formData.append("thumbnail", "");
-        }
+      if (form_data.thumbnail) {
+        formData.append("thumbnail", form_data.thumbnail.file || form_data.thumbnail);
+      } else {
+        formData.append("thumbnail", "");
+      }
 
-        addNewBlog(formData, {
-          onSuccess: () => {
-            setIsPending(false);
-          },
-          onError: (error) => {
-            setIsPending(false);
-            const errorMessage = error.response?.data?.message;
-            if (typeof errorMessage === "object") {
-              for (const [messages] of Object.entries(errorMessage)) {
-                messages.forEach((msg) => {
-                  toast.error(msg);
-                });
-              }
-            } else {
-              toast.error(errorMessage || "Failed to add blog.");
-            }
-          },
+      formData.append("titleEn", form_data.titleEn || "");
+      formData.append("titleAr", form_data.titleAr || "");
+      formData.append("slugAr", form_data.slugAr || "");
+      formData.append("slugEn", form_data.slugEn || "");
+      formData.append("descriptionAr", form_data.descriptionAr || "");
+      formData.append("descriptionEn", form_data.descriptionEn || "");
+      formData.append("contentAr", form_data.contentAr || "");
+      formData.append("contentEn", form_data.contentEn || "");
+      formData.append("isPublished", form_data.isPublished || "0");
+      formData.append("categoryId", form_data.categoryId || "");
+
+      formData.append("descriptionEn", form_data.descriptionEn || "");
+      formData.append("descriptionAr", form_data.descriptionAr || "");
+      formData.append("slugEn", form_data.slugEn || "");
+      formData.append("slugAr", form_data.slugAr || "");
+      formData.append("contentEn", form_data.contentEn || "");
+      formData.append("contentAr", form_data.contentAr || "");
+      formData.append("metaDataEn[title]", form_data.metaDataEn?.title || "");
+      formData.append("metaDataEn[description]", form_data.metaDataEn?.description || "");
+      if ( form_data.metaDataEn?.keywords && form_data.metaDataEn.keywords.length > 0) {
+        form_data.metaDataEn.keywords.forEach((keyword, index) => {
+          formData.append(`metaDataEn[keywords][${index}]`, keyword);
         });
-      })
-      .catch((errorInfo) => {
-        setIsPending(false);
-        console.log("Validate Failed:", errorInfo);
+      } else {
+        formData.append("metaDataEn[keywords]", "");
+      }
+      formData.append("metaDataAr[title]", form_data.metaDataAr?.title || "");
+      formData.append("metaDataAr[description]", form_data.metaDataAr?.description || "");
+      if ( form_data.metaDataAr?.keywords && form_data.metaDataAr.keywords.length > 0) {
+        form_data.metaDataAr.keywords.forEach((keyword, index) => {
+          formData.append(`metaDataAr[keywords][${index}]`, keyword);
+        });
+      } else {
+        formData.append("metaDataAr[keywords]", "");
+      }
+
+      addNewBlog(formData, {
+        onSuccess: () => {
+          setIsPending(false);
+          toast.success("Blog added successfully.");
+        },
+        onError: (error) => {
+          setIsPending(false);
+          const errorMessage = error.response?.data?.message;
+          if (typeof errorMessage === "object") {
+            Object.entries(errorMessage).forEach(([field, messages]) => {
+              messages.forEach((msg) => {
+                toast.error(msg);
+              });
+            });
+          } else {
+            toast.error(errorMessage || "Failed to add blog.");
+          }
+        },
       });
+    } catch (errorInfo) {
+      setIsPending(false);
+      console.log("Validate Failed:", errorInfo);
+    }
   };
 
   return (
@@ -86,10 +120,8 @@ export const AddBlog = () => {
             <Form.Item
               label={t("blogs.add.lables.thumbnail")}
               name="thumbnail"
-              valuePropName="fileList"
-              getValueFromEvent={(e) =>
-                Array.isArray(e) ? e : e && e.fileList
-              }
+              valuePropName="file"
+              getValueFromEvent={(e) => e && e.file}
               rules={[
                 {
                   required: true,
@@ -156,8 +188,9 @@ export const AddBlog = () => {
           htmlType="submit"
           className="mb-8"
           loading={isPending}
+          disabled={isPending}
         >
-          {t("blogs.add.title")}
+          {isPending ? t("loading") : t("blogs.add.title")}
         </Button>
       </Form>
     </div>

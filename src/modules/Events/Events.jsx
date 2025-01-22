@@ -1,6 +1,6 @@
 import React from "react";
 import { CalendarOutlined, UserOutlined } from "@ant-design/icons";
-import { Pagination } from "antd";
+import { Image, Pagination } from "antd";
 import { useTranslation } from "react-i18next";
 import { useEventHook } from "./Hooks/useEventHook";
 import { DeleteEvent } from "./DeleteEvent";
@@ -68,11 +68,7 @@ export const Events = () => {
               events.map((event, index) => (
                 <tr className="bg-white border-b" key={index}>
                   <td className="px-6 py-4">
-                    {event.thumbnail === " " ? (
-                      <img src={event.thumbnail} alt="" />
-                    ) : (
-                      <UserOutlined />
-                    )}
+                    <Image src={event.thumbnail} width={100} alt="" />
                   </td>
                   <td className="px-6 py-4">{event.title}</td>
                   <td className="px-6 py-4">{event.date}</td>

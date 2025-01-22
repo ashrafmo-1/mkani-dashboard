@@ -13,11 +13,10 @@ export const Layout = () => {
                 {t("siteSettings.title")}
             </h1>
 
-            <Tabs
-                defaultActiveKey="1"
+            <Tabs defaultActiveKey="1"
                 items={[
                     {
-                        label: t("general"),
+                        label: t("General Portfolio Settings"),
                         key: "1",
                         children: <GeneralPortfolioSettings/>,
                     },

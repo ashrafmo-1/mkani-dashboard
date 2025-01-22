@@ -16,7 +16,7 @@ const SideBarLink = ({ endPoint, content, iconComp }) => {
       to={`/${MAINPATH}/${i18n.language}/${endPoint}`}
       className={`capitalize side-link flex gap-2 py-1 px-4 rounded-md justify-center sm:justify-start ${
         
-        isActive ? "bg-[#1890ff] text-white" : "hover:bg-[#b4b4b4]"
+        isActive ? "bg-[#1890ff] text-white" : "hover:bg-[#383838]"
       }`}
     >
       {iconComp}

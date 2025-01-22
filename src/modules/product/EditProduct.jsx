@@ -1,4 +1,4 @@
-import { Button, Form, message, Row } from "antd";
+import { Button, Form, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { InputName } from "./components/create/InputName";
 import { UploadImages } from "./components/create/UploadImages";
@@ -20,19 +20,87 @@ const EditProduct = () => {
   const [isPending, setIsPending] = useState(false);
   const { data } = useGetSingleProduct(productId);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async () => {
     setIsPending(true);
-    try {
-      await editProduct(productId, values);
-    } catch (error) {
-      toast.error("Failed to edit product.", error);
-    } finally {
-      setIsPending(false);
-    }
+    form.validateFields().then((values) => {
+        const formData = new FormData();
+        Object.entries(values).forEach(([key, value]) => {
+          if (key === "images") {
+            if (value && value.length > 0) {
+              value.forEach((file, index) => {
+                formData.append(`images[${index}][path]`, file.file);
+              });
+            }
+          } else {
+            formData.append(key, value);
+          }
+        });
+
+        formData.append("metaDataEn[title]", values.metaDataEn?.title || "");
+        formData.append(
+          "metaDataEn[description]",
+          values.metaDataEn?.description || ""
+        );
+        if (
+          values.metaDataEn?.keywords &&
+          values.metaDataEn.keywords.length > 0
+        ) {
+          values.metaDataEn.keywords.forEach((keyword, index) => {
+            formData.append(`metaDataEn[keywords][${index}]`, keyword);
+          });
+        } else {
+          formData.append("metaDataEn[keywords]", "");
+        }
+        formData.append("metaDataAr[title]", values.metaDataAr?.title || "");
+        formData.append(
+          "metaDataAr[description]",
+          values.metaDataAr?.description || ""
+        );
+        if (
+          values.metaDataAr?.keywords &&
+          values.metaDataAr.keywords.length > 0
+        ) {
+          values.metaDataAr.keywords.forEach((keyword, index) => {
+            formData.append(`metaDataAr[keywords][${index}]`, keyword);
+          });
+        } else {
+          formData.append("metaDataAr[keywords]", "");
+        }
+
+        editProduct({ productId, values: formData },{
+            onSuccess: () => {
+              setIsPending(false);
+              toast.success("Product updated successfully!");
+            },
+            onError: (error) => {
+              setIsPending(false);
+              const errorMessage = error.response?.data?.message;
+              if (typeof errorMessage === "object") {
+                Object.entries(errorMessage).forEach(([field, messages]) => {
+                  messages.forEach((msg) => {
+                    toast.error(msg);
+                  });
+                });
+              }
+            },
+            onSettled: () => {
+              setIsPending(false);
+            },
+          }
+        );
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log("Validate Failed:", errorInfo);
+      });
   };
 
   useEffect(() => {
     if (data) {
+      data.images.forEach((image) => {
+        console.log(image);
+      });
+
       form.setFieldsValue({
         nameEn: data.nameEn,
         nameAr: data.nameAr,
@@ -45,9 +113,10 @@ const EditProduct = () => {
         metaDataEn: data.metaDataEn,
         metaDataAr: data.metaDataAr,
         isActive: data.isActive !== undefined ? String(data.isActive) : "",
-        images: data.images && data.images.length > 0 ? data.images.map((image, index) => ({
-          path: image.file || image
-        })) : [],
+        images: data.images.map((image) => ({
+          imageId: image.imageId,
+          path: image.path,
+        })),
       });
     }
   }, [data, form]);
@@ -55,9 +124,7 @@ const EditProduct = () => {
   return (
     <div className="edit-product-page">
       <div className="mb-8 flex justify-between items-center">
-        <h1 className="text-3xl capitalize">
-          {t("globals.edit")} Product
-        </h1>
+        <h1 className="text-3xl capitalize">{t("globals.edit")} Product</h1>
         <Link to={`/${MAINPATH}/${i18n.language}/products`}>
           <Button type="primary">
             <BackwardFilled />

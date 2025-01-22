@@ -30,6 +30,7 @@ const useAuthHook = () => {
             } else {
                 console.log("An error occurred. Please try again later.");
             }
+            alert("تاكد من صحه الاسم وكلمه المرور")
         } finally {
             setLoading(false);
         }

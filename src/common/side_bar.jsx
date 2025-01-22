@@ -83,7 +83,7 @@ export const SideBar = () => {
   const isActive = (path) => location.pathname.includes(path);
 
   return (
-    <section className="side-bar bg-[#fafafa] size-full m-1 rounded-lg text-black shadow-md border-[.4px] border-black sticky top-0 py-4 pb-20 transition-all left-0 px-4">
+    <section className="side-bar bg-[#151515] size-full m-1 rounded-lg text-white shadow-md border-[.4px] border-black sticky top-0 py-4 pb-20 transition-all left-0 px-4">
       <img src={logo} alt="logo" width={100} className="mb-5" />
       <div className="side-links px-1 mb-10 flex flex-col gap-1">
         <SideBarLink

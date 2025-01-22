@@ -6,11 +6,7 @@ import { LoginOutlined } from "@ant-design/icons";
 export const LoginPage = () => {
   const { loading, formik } = useAuthHook();
   const { Title } = Typography;
-
-  const initialValues = {
-    username: formik.values.username || "",
-    password: formik.values.password || "",
-  };
+  const initialValues = formik.values || { username: "", password: "" };
 
   return (
     <section className="bg-pharma animate-gradient flex items-center justify-center w-full h-[100vh]">
@@ -33,16 +29,15 @@ export const LoginPage = () => {
               >
                 <Input
                   placeholder="name@company.com"
-                  value={formik.values.username}
+                  value={formik.values?.username || ""}
                   onChange={formik.handleChange}
                   allowClear
                 />
               </Form.Item>
-              <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}
-              >
+              <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
                 <Input.Password
                   placeholder="••••••••"
-                  value={formik.values.password}
+                  value={formik.values?.password || ""}
                   onChange={formik.handleChange}
                   allowClear
                 />
@@ -60,6 +55,7 @@ export const LoginPage = () => {
                   <LoginOutlined />
                 </Button>
               </Form.Item>
+
             </Form>
           </div>
         </div>

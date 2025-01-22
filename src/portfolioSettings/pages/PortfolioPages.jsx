@@ -1,6 +1,5 @@
 import React from "react";
 import { useShowPgaesHook } from "../hooks/useShowPgaesHook";
-import { DeletePagePortfolio } from "../components/DeletePagePortfolio";
 import { Status } from "../../components/Status";
 import { PortfolioSections } from "./PortfolioSections";
 
@@ -10,10 +9,6 @@ export const PortfolioPages = () => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-
-  // const handlePageChange = (page) => {
-  //   setCurrentPage(page);
-  // };
 
   return (
     <div className="px-8 py-6 border border-1 border-solid border-gray-300 rounded-2xl shadow">
@@ -36,7 +31,6 @@ export const PortfolioPages = () => {
               </div>
               <div className="flex gap-2 mt-2 sm:mt-0">
                 <PortfolioSections frontPageId={page.frontPageId} />
-                {/*<DeletePagePortfolio frontPageId={page.frontPageId} />*/}
               </div>
             </section>
           ))

@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button, Form, Input, Modal, Select, Upload } from "antd";
-import { EditFilled, UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { useGetSinglePortfolioSectionHook } from "../hooks/useGetSinglePortfolioSectionHook";
+// import { useGetSinglePortfolioSectionHook } from "../hooks/useGetSinglePortfolioSectionHook";
 import { useEditPortfolioSectionHook } from "../hooks/useEditPortfolioSectionHook";
 
-export const EditPortfolioSection = ({ frontPageSectionId }) => {
+export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, setSectionData, isModalVisibleTow, setIsModalVisibleTow }) => {
   const { t } = useTranslation();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
-  const { data } = useGetSinglePortfolioSectionHook(frontPageSectionId);
   const { editPortfolioSections } = useEditPortfolioSectionHook();
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
+  
   const handleCancel = () => {
-    setIsModalVisible(false);
+    setIsModalVisibleTow(false);
     form.resetFields();
   };
 
@@ -25,23 +18,15 @@ export const EditPortfolioSection = ({ frontPageSectionId }) => {
     try {
       const values = await form.validateFields();
       await editPortfolioSections(frontPageSectionId, values);
-      setIsModalVisible(false);
+      setIsModalVisibleTow(false);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getValueFromEvent = (e) => {
-    const isValidFile = (file) =>
-      ["image/png", "image/jpeg"].includes(file.type) && file.size <= 2 * 1024 * 1024;
-    return e && e.fileList
-      ? e.fileList.filter((file) => isValidFile(file.originFileObj)).map((file) => file.originFileObj)
-      : [];
-  };
-
   const renderDynamicTableInputs = (contentKey, data) => {
     if (!Array.isArray(data) || data.length === 0) {
-      return null;
+      return <p>{t("No data available")}</p>;
     }
 
     return (
@@ -49,9 +34,9 @@ export const EditPortfolioSection = ({ frontPageSectionId }) => {
         <h4>{t(`${contentKey} Table`)}</h4>
         {data.map((row, rowIndex) => (
           <div key={`${contentKey}-${rowIndex}`} className="border p-3 mb-3 rounded-lg">
-            {Object.keys(row).map((field, fieldIndex) => (
+            {Object.keys(row).map((field) => (
               <Form.Item key={`${contentKey}-${rowIndex}-${field}`} name={[contentKey, rowIndex, field]} label={t(field)}>
-                <Input placeholder={t(`Enter ${field}`)} defaultValue={row[field]} />
+                <Input placeholder={t(`Enter ${field}`)} />
               </Form.Item>
             ))}
           </div>
@@ -60,40 +45,20 @@ export const EditPortfolioSection = ({ frontPageSectionId }) => {
     );
   };
 
-  useEffect(() => {
-    if (isModalVisible && data) {
-      form.setFieldsValue({
-        name: data?.name || "",
-        isActive: data?.isActive ? "1" : "0",
-        contentEn: data?.contentEn || [],
-        contentAr: data?.contentAr || [],
-      });
-    }
-  }, [data, form, isModalVisible]);
 
   return (
     <div>
-      <Button onClick={showModal} type="default" icon={<EditFilled />}>
-        {t("edit")}
-      </Button>
-
-      <Modal title={t("edit section")} footer={null} visible={isModalVisible} onCancel={handleCancel}>
+      <Modal title={t("edit section")} visible={isModalVisibleTow} onCancel={handleCancel} footer={null}>
         <Form layout="vertical" form={form}>
           <Form.Item label={t("name")} name="name">
-            <Input placeholder={t("NewsLetter.placeholders.EnterContent")} />
+            <Input placeholder={t("NewsLetter.placeholders.EnterContent")} disabled />
           </Form.Item>
 
-          {renderDynamicTableInputs("contentEn", data?.contentEn)}
+          {renderDynamicTableInputs("contentEn", sectionData?.contentEn)}
+          {renderDynamicTableInputs("contentAr", sectionData?.contentAr)}
 
-          {renderDynamicTableInputs("contentAr", data?.contentAr)}
-
-          <Form.Item label={t("upload images")} name="images" valuePropName="fileList" getValueFromEvent={getValueFromEvent}>
-            <Upload
-              name="images"
-              listType="picture"
-              beforeUpload={() => false}
-              multiple
-            >
+          <Form.Item label={t("images")} name="images">
+            <Upload name="images" listType="picture" beforeUpload={() => false} multiple>
               <Button icon={<UploadOutlined />}>{t("globals.upload")}</Button>
             </Upload>
           </Form.Item>
@@ -107,7 +72,7 @@ export const EditPortfolioSection = ({ frontPageSectionId }) => {
 
           <Form.Item>
             <Button type="primary" onClick={handleOk}>
-              {t("handle")}
+              {t("save")}
             </Button>
           </Form.Item>
         </Form>

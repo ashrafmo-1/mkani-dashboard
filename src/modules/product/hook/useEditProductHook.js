@@ -1,4 +1,4 @@
-import { useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -9,22 +9,33 @@ export const useEditProductHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const editProduct = async (faqId, values) => {
-    try {
-      await axiosInstance.put(
-        `${i18n.language}/admin/products/update?productId=${faqId}`,
-        values
-      );
-      toast.success("Product updated successfully.");
-      queryClient.invalidateQueries("products");
-      navigate(`/${MAINPATH}/${i18n.language}/products`);
-    } catch (error) {
-      console.error(
-        "Error editing FAQ:",
-        error.response ? error.response.data : error.message
-      );
-    }
-  };
 
-  return { editProduct };
+  const mutation = useMutation(
+    async ({ productId, values }) => {
+      const formData = new FormData();
+      formData.append("_method", "PUT");
+      for (const [key, value] of values.entries()) {
+        formData.append(key, value);
+      }
+      await axiosInstance.post(
+        `${i18n.language}/admin/products/update?productId=${productId}`,
+        formData
+      );
+    },
+    {
+      onSuccess: () => {
+        toast.success("Product updated successfully.");
+        queryClient.invalidateQueries("products");
+        navigate(`/${MAINPATH}/${i18n.language}/products`);
+      },
+      onError: (error) => {
+        console.error(
+          "Error editing product:",
+          error.response ? error.response.data : error.message
+        );
+      },
+    }
+  );
+
+  return { editProduct: mutation.mutate };
 };

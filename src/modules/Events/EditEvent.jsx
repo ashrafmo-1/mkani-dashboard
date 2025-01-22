@@ -1,5 +1,16 @@
 import { EditFilled, UploadOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, TimePicker, Upload } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  TimePicker,
+  Upload,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { useEditEventHook } from "./Hooks/useEditEventHook";
 import { useGetSingleEventHook } from "./Hooks/useGetSingleEventHook";
@@ -28,10 +39,10 @@ export const EditEvent = ({ eventId }) => {
   const handleSubmit = async (values) => {
     setIsPending(true);
     try {
-      await editEvent(eventId, values);
+      await editEvent({ eventId, values });
       setIsModalVisible(false);
     } catch (error) {
-      toast.error("Failed to edit FAQ.");
+      toast.error("Failed to edit event.");
     } finally {
       setIsPending(false);
     }
@@ -46,14 +57,15 @@ export const EditEvent = ({ eventId }) => {
         descriptionAr: data.descriptionAr,
         slugAr: data.slugAr,
         slugEn: data.slugEn,
-        date: moment(data.date, "YYYY-MM-DD"),
-        time: moment(data.time, "HH:mm:ss"),
+        date: data.date ? moment(data.date, "YYYY-MM-DD") : null,
+        time: moment(data.time, "HH:mm"),
         contentAr: data.contentAr,
         contentEn: data.contentEn,
         metaDataAr: data.metaDataAr,
         metaDataEn: data.metaDataEn,
         location: data.location,
-        isPublished: data.isPublished !== undefined ? String(data.isPublished) : "",
+        isPublished:
+          data.isPublished !== undefined ? String(data.isPublished) : "",
       });
     }
   }, [data, form, isModalVisible]);
@@ -94,11 +106,24 @@ export const EditEvent = ({ eventId }) => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label="Date"
+                label={t("events.labels.date")}
                 name="date"
-                rules={[{ required: true, message: "Date is required." }]}
+                rules={[
+                  {
+                    required: true,
+                    message: t("events.validation.dateRequired"),
+                  },
+                  {
+                    type: "object",
+                    message: t("events.validation.dateInvalid"),
+                  },
+                ]}
               >
-                <DatePicker format="YYYY-MM-DD" />
+                <DatePicker
+                  format="YYYY-MM-DD"
+                  style={{ width: "100%" }}
+                  placeholder={t("events.placeholders.date")}
+                />
               </Form.Item>
             </Col>
 
@@ -108,7 +133,7 @@ export const EditEvent = ({ eventId }) => {
                 name="time"
                 rules={[{ required: true, message: "Time is required." }]}
               >
-                <TimePicker format="HH:mm:ss" />
+                <TimePicker format="HH:mm" style={{ width: "100%" }} />
               </Form.Item>
             </Col>
           </Row>

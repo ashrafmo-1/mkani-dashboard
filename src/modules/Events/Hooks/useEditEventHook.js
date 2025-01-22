@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { message } from "antd";
 
 export const useEditEventHook = () => {
   const { i18n } = useTranslation();
@@ -25,7 +26,7 @@ export const useEditEventHook = () => {
         if (typeof errorMessage === "object") {
           Object.entries(errorMessage).forEach(([field, messages]) => {
             messages.forEach((msg) => {
-              console.error(msg);
+              message.error(msg);
             });
           });
         } else {

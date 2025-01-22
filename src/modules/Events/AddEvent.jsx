@@ -5,7 +5,6 @@ import {
   DatePicker,
   Form,
   Input,
-  message,
   Modal,
   Row,
   Select,
@@ -21,6 +20,7 @@ import { Slug } from "../../common/modules/create-edit/Slug";
 import { Description } from "../../common/modules/create-edit/Description";
 import { Title } from "../../common/modules/create-edit/Title";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 export const AddEvent = () => {
   const { t } = useTranslation();
@@ -38,35 +38,86 @@ export const AddEvent = () => {
     form.resetFields();
   };
 
-  const handleSubmit = () => {
-    setIsPending(true);
-    form
-      .validateFields()
-      .then((formData) => {
-        addEvent(formData, {
-          onSuccess: () => {
-            setIsPending(false);
-            handleCancel();
-          },
-          onError: (error) => {
-            setIsPending(false);
-            const errorMessage = error.response?.data?.message;
-            if (typeof errorMessage === "object") {
-              for (const [messages] of Object.entries(errorMessage)) {
-                messages.forEach((msg) => {
-                  toast.error(msg);
-                });
-              }
-            } else {
-              toast.error(errorMessage || "Failed to add customer.");
-            }
-          },
+  const handleSubmit = async () => {
+    try {
+      setIsPending(true);
+      const form_data = await form.validateFields();
+      const formData = new FormData();
+
+      if (form_data.thumbnail) {
+        formData.append(
+          "thumbnail",
+          form_data.thumbnail.file || form_data.thumbnail
+        );
+      } else {
+        formData.append("thumbnail", "");
+      }
+
+      formData.append("titleEn", form_data.titleEn || "");
+      formData.append("titleAr", form_data.titleAr || "");
+      formData.append("descriptionEn", form_data.descriptionEn || "");
+      formData.append("descriptionAr", form_data.descriptionAr || "");
+      formData.append("slugEn", form_data.slugEn || "");
+      formData.append("slugAr", form_data.slugAr || "");
+      formData.append("metaDataEn[title]", form_data.metaDataEn?.title || "");
+      formData.append(
+        "metaDataEn[description]",
+        form_data.metaDataEn?.description || ""
+      );
+      formData.append("location", form_data.location || "");
+      formData.append("time", moment(form_data.time, "HH:mm"));
+      formData.append("date", moment(form_data.date).format("YYYY-MM-DD"));
+
+      if (
+        form_data.metaDataEn?.keywords &&
+        form_data.metaDataEn.keywords.length > 0
+      ) {
+        form_data.metaDataEn.keywords.forEach((keyword, index) => {
+          formData.append(`metaDataEn[keywords][${index}]`, keyword);
         });
-      })
-      .catch((errorInfo) => {
-        setIsPending(false);
-        console.log("Validate Failed:", errorInfo);
+      } else {
+        formData.append("metaDataEn[keywords]", "");
+      }
+      formData.append("metaDataAr[title]", form_data.metaDataAr?.title || "");
+      formData.append(
+        "metaDataAr[description]",
+        form_data.metaDataAr?.description || ""
+      );
+      if (
+        form_data.metaDataAr?.keywords &&
+        form_data.metaDataAr.keywords.length > 0
+      ) {
+        form_data.metaDataAr.keywords.forEach((keyword, index) => {
+          formData.append(`metaDataAr[keywords][${index}]`, keyword);
+        });
+      } else {
+        formData.append("metaDataAr[keywords]", "");
+      }
+      formData.append("isPublished", form_data.isPublished ? 1 : 0);
+      addEvent(formData, {
+        onSuccess: () => {
+          toast.success("Blog added successfully.");
+          setIsPending(false);
+          handleCancel()
+        },
+        onError: (error) => {
+          setIsPending(false);
+          const errorMessage = error.response?.data?.message;
+          if (typeof errorMessage === "object") {
+            Object.entries(errorMessage).forEach(([field, messages]) => {
+              messages.forEach((msg) => {
+                toast.error(msg);
+              });
+            });
+          } else {
+            toast.error(errorMessage || "Failed to add blog.");
+          }
+        },
       });
+    } catch (errorInfo) {
+      setIsPending(false);
+      console.log("Validate Failed:", errorInfo);
+    }
   };
 
   return (
@@ -88,7 +139,10 @@ export const AddEvent = () => {
           onFinish={handleSubmit}
           form={form}
         >
-          <Title />
+          <Title
+            LabletitleAr={"event arabic title"}
+            LabletitleEn={"event english title"}
+          />
           <Slug />
           <Description />
           <Row gutter={[16, 16]}>
@@ -97,18 +151,20 @@ export const AddEvent = () => {
           </Row>
 
           <Form.Item
-            label={t("events.labels.thumbnail")}
+            label={t("blogs.add.lables.thumbnail")}
             name="thumbnail"
+            valuePropName="file"
+            getValueFromEvent={(e) => e && e.file}
             rules={[
               {
                 required: true,
-                message: t("events.validation.thumbnailRequired"),
+                message: t("blogs.add.lables.thumbnail") + " is required.",
               },
             ]}
           >
-            <Upload name="thumbnail" listType="picture">
+            <Upload listType="picture" beforeUpload={() => false}>
               <Button icon={<UploadOutlined />}>
-                {t("events.upload.clickToUpload")}
+                {t("blogs.add.placeholder.EnterThumbnail")}
               </Button>
             </Upload>
           </Form.Item>
@@ -139,7 +195,7 @@ export const AddEvent = () => {
                   },
                 ]}
               >
-                <TimePicker format="HH:mm:ss" />
+                <TimePicker format="HH:mm" />
               </Form.Item>
             </Col>
           </Row>
