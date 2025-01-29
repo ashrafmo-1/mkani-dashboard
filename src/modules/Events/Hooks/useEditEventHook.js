@@ -8,10 +8,6 @@ export const useEditEventHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
 
-
-
-
-
   const mutation = useMutation(
     async ({ eventId, values }) => {
       await axiosInstance.put(`${i18n.language}/admin/events/update?eventId=${eventId}`, values );
