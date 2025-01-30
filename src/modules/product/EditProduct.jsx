@@ -32,19 +32,21 @@ const EditProduct = () => {
         console.log(values);
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
-          
           if (key === "images") {
             if (value && value.length > 0) {
-              
               value.forEach((file, index) => {
-                formData.append(`images[${index}][path]`, file.originFileObj);
+                if (file.originFileObj) {
+                  formData.append(`images[${index}][path]`, file.originFileObj);
+                } else {
+                  formData.append(`images[${index}][path]`, file.path);
+                }
               });
             }
           } else {
             formData.append(key, value);
           }
         });
-
+  
 
         formData.append("metaDataEn[title]", values.metaDataEn?.title || "");
         formData.append(
@@ -122,10 +124,10 @@ const EditProduct = () => {
         metaDataAr: data.metaDataAr,
         isActive: data.isActive !== undefined ? String(data.isActive) : "",
         images: data?.images?.map((image) => ({
-          uid: image.imageId, // Ensure unique uid for Upload component
-          name: image.path.split("/").pop(), // Extract file name from path
-          status: "done", // Set status to done for preloaded images
-          url: image.path, // Set the image URL
+          uid: image.imageId,
+          name: image.path.split("/").pop(),
+          status: "done",
+          url: image.path,
           imageId: image.imageId,
           path: image.path,
         })),
