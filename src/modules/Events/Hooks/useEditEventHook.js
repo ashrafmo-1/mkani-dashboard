@@ -9,8 +9,9 @@ export const useEditEventHook = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
-    async ({ eventId, values }) => {
-      await axiosInstance.put(`${i18n.language}/admin/events/update?eventId=${eventId}`, values );
+    async ({ eventId, formData }) => {
+      formData.append("_method", "PUT");
+      await axiosInstance.post(`${i18n.language}/admin/events/update?eventId=${eventId}`, formData );
     },
     {
       onSuccess: () => {
@@ -22,7 +23,7 @@ export const useEditEventHook = () => {
         if (typeof errorMessage === "object") {
           Object.entries(errorMessage).forEach(([field, messages]) => {
             messages.forEach((msg) => {
-              message.error(msg);
+              console.error(msg);
             });
           });
         } else {

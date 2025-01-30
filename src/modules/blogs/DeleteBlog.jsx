@@ -2,13 +2,11 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 import React, { useState } from "react";
 import { useDeleteBlogHook } from "./hooks/useDeleteBlogHook";
-import { useTranslation } from "react-i18next";
 
 export const DeleteBlog = ({ BlogId }) => {
   const { deleteBlog } = useDeleteBlogHook();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPending, setIsPending] = useState(false);
-  const { t } = useTranslation();
   
   return (
     <div>
@@ -26,7 +24,7 @@ export const DeleteBlog = ({ BlogId }) => {
         }}
         onCancel={() => setIsModalVisible(null)} confirmLoading={isPending}
       >
-        <p>{t("blog.delete")}</p>
+        <p>Are you sure you want to delete this blog?</p>
       </Modal>
     </div>
   );

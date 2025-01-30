@@ -9,31 +9,31 @@ export const MetaDataEn = () => {
     <Col span={12}>
       <Space direction="vertical" size="large" className="metadata-space">
         <Form.Item
-          label={t("careers.labels.metaDataEn.title")}
+          label={t("Meta Data in English title")}
           name={["metaDataEn", "title"]}
         >
           <Input
-            placeholder={t("careers.placeholders.metaDataEn.title")}
+            placeholder={t("Meta Data in English title")}
             className="metadata-input"
           />
         </Form.Item>
         <Form.Item
-          label={t("careers.labels.metaDataEn.description")}
+          label={t("Meta Data in English description")}
           name={["metaDataEn", "description"]}
         >
           <Input.TextArea
-            placeholder={t("careers.placeholders.metaDataEn.description")}
+            placeholder={t("Meta Data in English description")}
             className="metadata-textarea"
           />
         </Form.Item>
         <Form.Item
-          label={t("careers.labels.metaDataEn.keywords")}
+          label={t("Meta Data in English keywords")}
           name={["metaDataEn", "keywords"]}
         >
           <Select
             mode="tags"
             style={{ width: "100%" }}
-            placeholder={t("careers.placeholders.metaDataEn.keywords")}
+            placeholder={t("Meta Data in English keywords")}
             className="metadata-input"
           />
         </Form.Item>

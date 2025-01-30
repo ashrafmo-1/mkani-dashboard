@@ -143,6 +143,7 @@ export const AddNewBlog_categories = () => {
           <Form.Item
             label={t("blogCategory.lables.isActive")}
             name="isActive"
+            initialValue="1" // Set default value to active
             rules={[
               {
                 required: true,
@@ -152,8 +153,7 @@ export const AddNewBlog_categories = () => {
           >
             <Select
               placeholder={t("blogCategory.placeholder.SelectIsActive")}
-              aria-label="isActive"
-            >
+              aria-label="isActive" defaultValue="1">
               <Select.Option value="1">
                 <div className="flex items-center gap-1">
                   <span className="bg-green-600 p-1 rounded-full"></span>

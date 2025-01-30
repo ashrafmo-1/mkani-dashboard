@@ -2,10 +2,13 @@ import { useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { MAINPATH } from "../../../constant/MAINPATH";
+import { useNavigate } from "react-router-dom";
 
 export const useEditBlogHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const mutation = useMutation(
     async ({ blogId, formData }) => {
@@ -18,6 +21,7 @@ export const useEditBlogHook = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("blogs");
+        navigate(`/${MAINPATH}/${i18n.language}/blogs`)
         toast.success("Blog edited successfully.");
       },
       onError: (error) => {

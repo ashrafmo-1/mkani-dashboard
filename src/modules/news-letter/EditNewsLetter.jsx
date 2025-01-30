@@ -1,5 +1,5 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Select } from "antd";
+import { Button, Form, Input, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import useEditNewsLetterHook from "./hooks/useEditNewsLetterHook";
 import { useGetSingleNewsLetter } from "./hooks/useGetSingleNewsLetter";
@@ -71,13 +71,13 @@ const EditNewsLetter = ({ newsletterId }) => {
             <Select.Option value="1">
                 <div className="flex items-center gap-1">
                   <span className="bg-green-600 p-1 rounded-full"></span>
-                  <span>{t("globals.status.active")}</span>
+                  <span>{t("send")}</span>
                 </div>
               </Select.Option>
               <Select.Option value="0">
                 <div className="flex items-center gap-1">
                   <span className="bg-red-600 p-1 rounded-full"></span>
-                  <span>{t("globals.status.inActive")}</span>
+                  <span>{t("draft")}</span>
                 </div>
               </Select.Option>
             </Select>

@@ -38,14 +38,12 @@ export const Products = () => {
         </div>
       </div>
 
-      {/* {hasCreateUserPermission && ( */}
       <Link to={`/${MAINPATH}/${i18n.language}/add-new-product`} type="primary">
         <Button type="primary">
           <PlusSquareFilled />
           {t("products.add.title")}
         </Button>
       </Link>
-      {/* )} */}
 
       <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-2">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -98,14 +96,11 @@ export const Products = () => {
                   </th>
                   <td className="px-6 py-4 flex gap-3">
                     <DeleteProduct productId={product.productId} />
-                    <Button className="edit">
-                      <Link
-                        to={`/${MAINPATH}/${i18n.language}/products/edit/${product.productId}`}
-                      >
+                    <Link to={`/${MAINPATH}/${i18n.language}/products/edit/${product.productId}`}>
+                      <Button className="edit">
                         <EditOutlined />
-                      </Link>
-                    </Button>
-                    {/* <EditProduct productId= /> */}
+                      </Button>
+                    </Link>
                   </td>
                 </tr>
               ))}

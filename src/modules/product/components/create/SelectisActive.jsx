@@ -6,14 +6,14 @@ export const SelectisActive = () => {
     const {t} = useTranslation();
 
     return (
-        <Form.Item label="is active" name="isActive" rules={[
+        <Form.Item label="is active" name="isActive" initialValue={"1"} rules={[
             {
                 required: true,
                 message:
                     t("value") + " is required.",
             },
         ]}>
-            <Select placeholder="Select status">
+            <Select placeholder="Select status" value={"1"}>
                 <Select.Option value="1">
                     <div className="flex items-center gap-1">
                         <span className="bg-green-600 p-1 rounded-full"></span>

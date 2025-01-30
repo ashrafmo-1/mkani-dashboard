@@ -1,16 +1,22 @@
-import { Button, Form, Row } from "antd";
+import { Button, Form, Row, Upload } from "antd";
 import React, { useEffect, useState } from "react";
 import { InputName } from "./components/create/InputName";
-import { UploadImages } from "./components/create/UploadImages";
 import { SelectisActive } from "./components/create/SelectisActive";
 import { useTranslation } from "react-i18next";
 import { useEditProductHook } from "./hook/useEditProductHook";
 import { useGetSingleProduct } from "./hook/useGetSingleProduct";
-import { MetaDataEn, MetaDataAr, Slug, Description, TextEditorInput } from "../../common";
+import {
+  MetaDataEn,
+  MetaDataAr,
+  Slug,
+  Description,
+  TextEditorInput,
+} from "../../common";
 import { BackwardFilled } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 import { MAINPATH } from "../../constant/MAINPATH";
 import { toast } from "react-toastify";
+import { UploadImages } from "./components/create/UploadImages";
 
 const EditProduct = () => {
   const { productId } = useParams();
@@ -22,19 +28,25 @@ const EditProduct = () => {
 
   const handleSubmit = async () => {
     setIsPending(true);
-    form.validateFields().then((values) => {
+    form
+      .validateFields()
+      .then((values) => {
+        console.log(values);
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
+          
           if (key === "images") {
             if (value && value.length > 0) {
+              
               value.forEach((file, index) => {
-                formData.append(`images[${index}][path]`, file.file);
+                formData.append(`images[${index}][path]`, file.originFileObj);
               });
             }
           } else {
             formData.append(key, value);
           }
         });
+
 
         formData.append("metaDataEn[title]", values.metaDataEn?.title || "");
         formData.append(
@@ -67,7 +79,9 @@ const EditProduct = () => {
           formData.append("metaDataAr[keywords]", "");
         }
 
-        editProduct({ productId, values: formData },{
+        editProduct(
+          { productId, values: formData },
+          {
             onSuccess: () => {
               setIsPending(false);
               toast.success("Product updated successfully!");
@@ -97,10 +111,6 @@ const EditProduct = () => {
 
   useEffect(() => {
     if (data) {
-      data.images.forEach((image) => {
-        console.log(image);
-      });
-
       form.setFieldsValue({
         nameEn: data.nameEn,
         nameAr: data.nameAr,
@@ -113,7 +123,11 @@ const EditProduct = () => {
         metaDataEn: data.metaDataEn,
         metaDataAr: data.metaDataAr,
         isActive: data.isActive !== undefined ? String(data.isActive) : "",
-        images: data.images.map((image) => ({
+        images: data?.images?.map((image) => ({
+          uid: image.imageId, // Ensure unique uid for Upload component
+          name: image.path.split("/").pop(), // Extract file name from path
+          status: "done", // Set status to done for preloaded images
+          url: image.path, // Set the image URL
           imageId: image.imageId,
           path: image.path,
         })),
@@ -148,7 +162,8 @@ const EditProduct = () => {
           <MetaDataAr />
         </Row>
 
-        <UploadImages />
+        <UploadImages isEdit={true} />
+
         <SelectisActive />
         <Button
           type="primary"

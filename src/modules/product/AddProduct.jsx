@@ -25,13 +25,16 @@ const AddProduct = () => {
     form.validateFields().then(async (form_data) => {
         const formData = new FormData();
 
-        if (form_data.images && form_data.images.length > 0) {
-          form_data.images.forEach((image, index) => {
-            formData.append(`images[${index}][path]`, image.file || image);
+        if (form_data.images.fileList && form_data.images.fileList.length > 0) {
+          form_data.images.fileList.forEach((image, index) => {
+            formData.append(`images[${index}][path]`, image.originFileObj);
           });
         } else {
           formData.append("images", "");
         }
+
+        console.log(form_data.images);
+        
 
         formData.append("nameEn", form_data.nameEn || "");
         formData.append("nameAr", form_data.nameAr || "");
@@ -114,7 +117,7 @@ const AddProduct = () => {
           <MetaDataAr />
         </Row>
 
-        <UploadImages />
+        <UploadImages isEdit={false} />
         <SelectisActive />
         <Button
           type="primary"

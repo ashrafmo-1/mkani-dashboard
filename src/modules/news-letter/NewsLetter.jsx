@@ -65,8 +65,8 @@ export const NewsLetter = () => {
                   >
                     <Status
                       value={newsletter.isSent}
-                      activeText={"yes"}
-                      inactiveText={"no"}
+                      activeText={"send"}
+                      inactiveText={"draft"}
                     />
                   </th>
                   <td className="px-6 py-4 flex gap-3">

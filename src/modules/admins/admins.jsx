@@ -114,7 +114,8 @@ export const Admins = () => {
                     )}
                   </td>
                   <td className="px-6 py-4 flex gap-3">
-                    <DeleteUser userId={user.userId} />
+                    {user.userId !== 1 ? <DeleteUser userId={user.userId} /> : null}
+                    
                     <EditUser userId={user.userId} />
                   </td>
                 </tr>

@@ -141,6 +141,7 @@ export const AddBlog = () => {
         <Form.Item
           label={t("blogs.add.lables.isPublished")}
           name="isPublished"
+          initialValue="1"
           rules={[
             {
               required: true,
@@ -148,17 +149,17 @@ export const AddBlog = () => {
             },
           ]}
         >
-          <Select placeholder={t("blogs.add.placeholder.isPublished")}>
+          <Select placeholder={t("blogs.add.placeholder.isPublished")} defaultValue="1">
             <Select.Option value="1">
               <div className="flex items-center gap-1">
                 <span className="bg-green-600 p-1 rounded-full"></span>
-                <span>{t("globals.status.active")}</span>
+                <span>{t("published")}</span>
               </div>
             </Select.Option>
             <Select.Option value="0">
               <div className="flex items-center gap-1">
                 <span className="bg-red-600 p-1 rounded-full"></span>
-                <span>{t("globals.status.inActive")}</span>
+                <span>{t("draft")}</span>
               </div>
             </Select.Option>
           </Select>

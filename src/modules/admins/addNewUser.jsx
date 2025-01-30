@@ -105,11 +105,20 @@ export const AddNewUser = () => {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item label="Role" name="roleId" rules={[{ required: true, message: "Role is required." }]}>
-                    <Select placeholder="Select role">
-                      {type.map((item, index) => ( <Select.Option value={item.value} key={index}> {item.label} </Select.Option> ))}
-                    </Select>
-                  </Form.Item>
+                <Form.Item
+                  label="Role"
+                  name="roleId"
+                  rules={[{ required: true, message: "Role is required." }]}
+                  initialValue={type[0]?.value}
+                >
+                  <Select placeholder="Select role">
+                    {type.map((item, index) => (
+                      <Select.Option value={item.value} key={index}>
+                        {item.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
                 </Col>
               </Row>
               <Form.Item label="Password" name="password" rules={[{ required: true, message: "Password is required." }]}>
