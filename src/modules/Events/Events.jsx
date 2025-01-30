@@ -67,8 +67,8 @@ export const Events = () => {
             {events &&
               events.map((event, index) => (
                 <tr className="bg-white border-b" key={index}>
-                  <td className="px-6 py-4">
-                    <Image src={event.thumbnail} width={100} alt="" />
+                  <td className="w-12 h-10">
+                    <Image src={event.thumbnail} className="w-full px-6 py-2" alt="" />
                   </td>
                   <td className="px-6 py-4">{event.title}</td>
                   <td className="px-6 py-4">{event.date}</td>

@@ -65,7 +65,7 @@ export const AddEvent = () => {
         form_data.metaDataEn?.description || ""
       );
       formData.append("location", form_data.location || "");
-      formData.append("time", moment(form_data.time, "HH:mm"));
+      formData.append("time", form_data.time.format("HH:mm"));
       formData.append("date", moment(form_data.date).format("YYYY-MM-DD"));
 
       if (
@@ -195,7 +195,7 @@ export const AddEvent = () => {
                   },
                 ]}
               >
-                <TimePicker format="HH:mm" />
+                <TimePicker format="HH:mm" onChange={(time) => form.setFieldsValue({ time })} />
               </Form.Item>
             </Col>
           </Row>

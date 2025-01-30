@@ -39,72 +39,87 @@ export const EditEvent = ({ eventId }) => {
 
   const handleSubmit = () => {
     setIsPending(true);
-    form.validateFields().then((values) => {
-      const formData = new FormData();
-      if (values.thumbnail && values.thumbnail[0]?.originFileObj) {
-        formData.append("thumbnail", values.thumbnail[0].originFileObj);
-      } else {
-        formData.append("thumbnail", null);
-      }
-      formData.append("titleEn", values.titleEn || "");
-      formData.append("titleAr", values.titleAr || "");
-      formData.append("slugAr", values.slugAr || "");
-      formData.append("slugEn", values.slugEn || "");
-      formData.append("location", values.location  || "");
-      formData.append("descriptionAr", values.descriptionAr || "");
-      formData.append("descriptionEn", values.descriptionEn || "");
-      formData.append("isPublished", values.isPublished ? "1" : "0");
-      formData.append("time", moment(values.time, "HH:mm"));
-      formData.append("date", moment(values.date).format("YYYY-MM-DD"));
-
-      formData.append("metaDataEn[title]", values.metaDataEn?.title || "");
-      formData.append("metaDataEn[description]", values.metaDataEn?.description || "");
-      
-      // Handle keywords for metaDataEn
-      if (Array.isArray(values.metaDataEn?.keywords) && values.metaDataEn.keywords.length > 0) {
-        values.metaDataEn.keywords.forEach((keyword, index) => {
-          formData.append(`metaDataEn[keywords][${index}]`, keyword);
-        });
-      }
-
-      formData.append("metaDataAr[title]", values.metaDataAr?.title || "");
-      formData.append("metaDataAr[description]", values.metaDataAr?.description || "");
-      
-      // Handle keywords for metaDataAr
-      if (Array.isArray(values.metaDataAr?.keywords) && values.metaDataAr.keywords.length > 0) {
-        values.metaDataAr.keywords.forEach((keyword, index) => {
-          formData.append(`metaDataAr[keywords][${index}]`, keyword);
-        });
-      }
-
-      editEvent({ eventId: eventId, formData },
-        {
-          onSuccess: () => {
-            setIsPending(false);
-          },
-          onError: (error) => {
-            setIsPending(false);
-            const errorMessage = error.response?.data?.message;
-            if (typeof errorMessage === "object") {
-              Object.entries(errorMessage).forEach(([field, messages]) => {
-                messages.forEach((msg) => {
-                  toast.error(msg);
-                });
-              });
-            } else {
-              toast.error(errorMessage || "Failed to edit event.");
-            }
-          },
-          onSettled: () => {
-            setIsPending(false);
-          },
+    form
+      .validateFields()
+      .then((values) => {
+        const formData = new FormData();
+        if (values.thumbnail && values.thumbnail[0]?.originFileObj) {
+          formData.append("thumbnail", values.thumbnail[0].originFileObj);
+        } else {
+          formData.append("thumbnail", null);
         }
-      );
-    })
-    .catch((errorInfo) => {
-      setIsPending(false);
-      console.log("Validate Failed:", errorInfo);
-    });
+        formData.append("titleEn", values.titleEn || "");
+        formData.append("titleAr", values.titleAr || "");
+        formData.append("slugAr", values.slugAr || "");
+        formData.append("slugEn", values.slugEn || "");
+        formData.append("location", values.location || "");
+        formData.append("descriptionAr", values.descriptionAr || "");
+        formData.append("descriptionEn", values.descriptionEn || "");
+        formData.append("isPublished", values.isPublished ? "1" : "0");
+        formData.append("time", values.time.format("HH:mm"));
+        formData.append("date", moment(values.date).format("YYYY-MM-DD"));
+
+        formData.append("metaDataEn[title]", values.metaDataEn?.title || "");
+        formData.append(
+          "metaDataEn[description]",
+          values.metaDataEn?.description || ""
+        );
+
+        // Handle keywords for metaDataEn
+        if (
+          Array.isArray(values.metaDataEn?.keywords) &&
+          values.metaDataEn.keywords.length > 0
+        ) {
+          values.metaDataEn.keywords.forEach((keyword, index) => {
+            formData.append(`metaDataEn[keywords][${index}]`, keyword);
+          });
+        }
+
+        formData.append("metaDataAr[title]", values.metaDataAr?.title || "");
+        formData.append(
+          "metaDataAr[description]",
+          values.metaDataAr?.description || ""
+        );
+
+        // Handle keywords for metaDataAr
+        if (
+          Array.isArray(values.metaDataAr?.keywords) &&
+          values.metaDataAr.keywords.length > 0
+        ) {
+          values.metaDataAr.keywords.forEach((keyword, index) => {
+            formData.append(`metaDataAr[keywords][${index}]`, keyword);
+          });
+        }
+
+        editEvent(
+          { eventId: eventId, formData },
+          {
+            onSuccess: () => {
+              setIsPending(false);
+            },
+            onError: (error) => {
+              setIsPending(false);
+              const errorMessage = error.response?.data?.message;
+              if (typeof errorMessage === "object") {
+                Object.entries(errorMessage).forEach(([field, messages]) => {
+                  messages.forEach((msg) => {
+                    toast.error(msg);
+                  });
+                });
+              } else {
+                toast.error(errorMessage || "Failed to edit event.");
+              }
+            },
+            onSettled: () => {
+              setIsPending(false);
+            },
+          }
+        );
+      })
+      .catch((errorInfo) => {
+        setIsPending(false);
+        console.log("Validate Failed:", errorInfo);
+      });
   };
 
   useEffect(() => {
@@ -118,7 +133,7 @@ export const EditEvent = ({ eventId }) => {
         descriptionAr: data.descriptionAr,
         slugAr: data.slugAr,
         slugEn: data.slugEn,
-        // date: data.date ? moment(data.date).startOf('day') : null,
+        date: data.date ? moment(data.date).startOf("day") : null,
         time: moment(data.time, "HH:mm"),
         contentAr: data.contentAr,
         contentEn: data.contentEn,
@@ -127,9 +142,9 @@ export const EditEvent = ({ eventId }) => {
         location: data.location,
         isPublished:
           data.isPublished !== undefined ? String(data.isPublished) : "",
-          thumbnail: data.thumbnail ? [{ url: data.thumbnail }] : [],
-        });
-        setFileList(data.thumbnail ? [{ url: data.thumbnail }] : []);
+        thumbnail: data.thumbnail ? [{ url: data.thumbnail }] : [],
+      });
+      setFileList(data.thumbnail ? [{ url: data.thumbnail }] : []);
     }
   }, [data, form, isModalVisible]);
 
@@ -166,23 +181,25 @@ export const EditEvent = ({ eventId }) => {
           </Row>
 
           <Form.Item
-          label={t("thumbnail")}
-          name="thumbnail"
-          valuePropName="fileList"
-          getValueFromEvent={(e) => e && e.fileList}
-          rules={[
-            {
-              required: true,
-              message: t("requie") + " is required.",
-            },
-          ]}
-        >
-          <Upload listType="picture" beforeUpload={() => false} onChange={handleChange}>
-            <Button icon={<UploadOutlined />}>
-              {t("update")}
-            </Button>
-          </Upload>
-        </Form.Item>
+            label={t("thumbnail")}
+            name="thumbnail"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+            rules={[
+              {
+                required: true,
+                message: t("requie") + " is required.",
+              },
+            ]}
+          >
+            <Upload
+              listType="picture"
+              beforeUpload={() => false}
+              onChange={handleChange}
+            >
+              <Button icon={<UploadOutlined />}>{t("update")}</Button>
+            </Upload>
+          </Form.Item>
 
           <Row gutter={[16, 16]}>
             <Col span={12}>

@@ -28,9 +28,7 @@ const EditProduct = () => {
 
   const handleSubmit = async () => {
     setIsPending(true);
-    form
-      .validateFields()
-      .then((values) => {
+    form.validateFields().then((values) => {
         console.log(values);
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
