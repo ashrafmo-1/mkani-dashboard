@@ -70,16 +70,20 @@ export const GeneralPortfolioSettings = () => {
       console.log();
       let newData;
       try {
-        newData = JSON.parse(data.data.content);
+        newData = data.data.content;
       } catch (e) {
         console.error("Invalid JSON data:", e);
         newData = {};
       }
       form.setFieldsValue({
         title: newData?.title,
-        description: newData.description,
-        address: newData.address || [],
+        descriptionEn: newData.descriptionEn,
+        descriptionAr: newData.descriptionAr,
+        addressesEn: newData.addressesEn || [],
+        addressesAr: newData.addressesAr || [],
         contact: newData.contact || [],
+        emails: newData.emails || [],
+        googleMapLink: newData.googleMapLink || [],
         socialMedia: {
           facebook: newData.socialMedia?.facebook || "",
           instagram: newData.socialMedia?.instagram || "",
@@ -124,37 +128,69 @@ export const GeneralPortfolioSettings = () => {
           <Input placeholder="Enter portfolio title" />
         </Form.Item>
 
+        {/* descriptions */}
         <Form.Item
-          label="Portfolio Description"
-          name="description"
+          label="Portfolio arabic Description"
+          name="descriptionAr"
           rules={[
             {
               required: true,
-              message: "Please enter the portfolio description",
+              message: "Please enter the portfolio arabic description",
             },
           ]}
         >
-          <Input.TextArea placeholder="Enter portfolio description" rows={4} />
+          <Input.TextArea placeholder="Enter portfolio arabic description" rows={4} />
         </Form.Item>
 
         <Form.Item
-          label="Address"
-          name="address"
+          label="Portfolio english Description"
+          name="descriptionEn"
           rules={[
-            { required: true, message: "Please enter the portfolio address" },
+            {
+              required: true,
+              message: "Please enter the portfolio english description",
+            },
           ]}
         >
-          <Select mode="tags" placeholder="Enter portfolio address">
-            {data?.data?.content?.address?.map((address, index) => (
-              <Select.Option key={index} value={address}>
-                {address}
+          <Input.TextArea placeholder="Enter portfolio englishenglish description" rows={4} />
+        </Form.Item>
+
+        {/* addreess */}
+        <Form.Item
+          label="arabic Addresses"
+          name="addressesAr"
+          rules={[
+            { required: true, message: "Please enter the portfolio arabic addresses" },
+          ]}
+        >
+          <Select mode="tags" placeholder="Enter portfolio arabic addresses">
+            {data?.data?.content?.addressAr?.map((addressAr, index) => (
+              <Select.Option key={index} value={addressAr}>
+                {addressAr}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        {/* addreess */}
+        <Form.Item
+          label="english Address"
+          name="addressesEn"
+          rules={[
+            { required: true, message: "Please enter the portfolio english addresses" },
+          ]}
+        >
+          <Select mode="tags" placeholder="Enter portfolio english addresses">
+            {data?.data?.content?.addressEn?.map((addressEn, index) => (
+              <Select.Option key={index} value={addressEn}>
+                {addressEn}
               </Select.Option>
             ))}
           </Select>
         </Form.Item>
 
         <Form.Item
-          label="Contact"
+          label="Contact numbers"
           name="contact"
           rules={[
             { required: true, message: "Please enter the portfolio contact" },
@@ -167,6 +203,32 @@ export const GeneralPortfolioSettings = () => {
               </Select.Option>
             ))}
           </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="emails"
+          name="emails"
+          rules={[
+            { required: true, message: "Please enter emails"},
+          ]}
+        >
+          <Select mode="tags" placeholder="Enter emails">
+            {data?.data?.content?.emails?.map((emails, index) => (
+              <Select.Option key={index} value={emails}>
+                {emails}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="google map link"
+          name="googleMapLink"
+          rules={[
+            { required: true, message: "Please enter google map link" },
+          ]}
+        >
+          <Input placeholder="Enter google map link" />
         </Form.Item>
 
         <Form.Item
@@ -222,7 +284,7 @@ export const GeneralPortfolioSettings = () => {
               },
             ]}
           >
-            <Upload listType="picture" beforeUpload={() => false}>
+            <Upload listType="picture" maxCount={1} beforeUpload={() => false}>
               <Button icon={<UploadOutlined />}>{"edit"}</Button>
             </Upload>
           </Form.Item>

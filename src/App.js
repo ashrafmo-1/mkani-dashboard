@@ -9,7 +9,7 @@ import {BarsOutlined} from "@ant-design/icons";
 import { ToastContainer } from "react-toastify";
 
 function App() {
-    const token = Cookies.get("MPO-TOKEN-DASHBOARD");
+    const token = Cookies.get("mkani-TOKEN-DASHBOARD");
     const {i18n} = useTranslation();
     const navigate = useNavigate();
     const [active, setActive] = useState(true);

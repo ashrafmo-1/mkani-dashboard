@@ -18,31 +18,27 @@ export const UploadImages = ({ isEdit }) => {
     return e.fileList;
   };
 
-
-  // عرض الـ Modal عند الضغط على زر الحذف
   const handleRemove = (file) => {
-    setFileToDelete(file); // حفظ الصورة المحددة للحذف
-    setIsModalVisible(true); // عرض الـ Modal
-    return false; // منع الحذف المباشر
+    setFileToDelete(file);
+    setIsModalVisible(true);
+    return false;
   };
 
-  // تأكيد الحذف
   const handleConfirmDelete = async () => {
     if (fileToDelete) {
       try {
-        await deleteProductPhoto(fileToDelete.uid); // تنفيذ عملية الحذف باستخدام الـ API
-        setIsModalVisible(false); // إخفاء الـ Modal بعد الحذف
-        setFileToDelete(null); // مسح الصورة المحددة
+        await deleteProductPhoto(fileToDelete.uid);
+        setIsModalVisible(false);
+        setFileToDelete(null);
       } catch (error) {
         console.error("Failed to delete image", error);
       }
     }
   };
 
-  // إلغاء الحذف
   const handleCancelDelete = () => {
-    setIsModalVisible(false); // إخفاء الـ Modal
-    setFileToDelete(null); // مسح الصورة المحددة
+    setIsModalVisible(false);
+    setFileToDelete(null);
   };
 
   return (
@@ -65,7 +61,7 @@ export const UploadImages = ({ isEdit }) => {
           listType="picture"
           multiple
           maxCount={2}
-          onRemove={handleRemove} // تنفيذ handleRemove عند الضغط على زر الحذف
+          onRemove={handleRemove}
           onChange={(info) => {
             if (info.file.status === "done") {
               console.log(`${info.file.name} ${t("file uploaded successfully")}.`);

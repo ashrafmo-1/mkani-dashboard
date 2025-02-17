@@ -1,6 +1,5 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
-import React, { useState } from "react";
-import { checkPermission } from "../../helpers/checkPermission";
+import { useState } from "react";
 import { useAddCustomerHook } from "./Hooks/useAddCustomerHook";
 import { PlusSquareFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -9,7 +8,6 @@ import { toast } from "react-toastify";
 
 export const AddNewCustomer = () => {
   const { t } = useTranslation();
-  const hasCreateUserPermission = checkPermission("create_customer");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const { addNewCustomer } = useAddCustomerHook();
@@ -57,12 +55,9 @@ export const AddNewCustomer = () => {
 
   return (
     <div>
-      {hasCreateUserPermission && (
-        <Button onClick={showModal} type="primary">
-          {" "}
-          <PlusSquareFilled /> {t("customers.add")}
-        </Button>
-      )}
+      <Button onClick={showModal} type="primary">
+        <PlusSquareFilled /> {t("customers.add")}
+      </Button>
 
       <Modal
         title={t("customers.add")}
@@ -124,7 +119,16 @@ export const AddNewCustomer = () => {
               allowClear
             />
           </Form.Item>
-          <Form.Item label={t("customers.description")} name="description">
+          <Form.Item
+            label={t("customers.description")}
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: "description is required",
+              },
+            ]}
+          >
             <TextArea
               placeholder={t("customers.placeholder.EnterDescriptoin")}
               aria-label="description"

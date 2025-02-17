@@ -74,7 +74,7 @@ export const EditUser = ({ userId }) => {
 
   return (
     <div>
-      <Button className="edit border-green-900" outline="true" onClick={showModal}> <EditOutlined /> </Button>
+      <Button className="edit border-green-900 px-1" outline="true" onClick={showModal}> <EditOutlined /> </Button>
       <Modal
         title="Edit Admin"
         visible={isModalVisible}

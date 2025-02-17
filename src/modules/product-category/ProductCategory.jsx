@@ -22,7 +22,7 @@ export const ProductCategory = () => {
     <div>
       <h1 className="text-4xl font-bold text-gray-800 mb-8 flex gap-2 items-center">
         <AppstoreOutlined />
-        {t("productCategory.title")}
+        {t("Labor classification")}
       </h1>
 
       <div className="filter mb-6 shadow p-4 rounded-lg">

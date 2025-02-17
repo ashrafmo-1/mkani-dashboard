@@ -111,6 +111,8 @@ const EditProduct = () => {
 
   useEffect(() => {
     if (data) {
+      console.log(data.image);
+      
       form.setFieldsValue({
         nameEn: data.nameEn,
         nameAr: data.nameAr,
@@ -131,6 +133,7 @@ const EditProduct = () => {
           imageId: image.imageId,
           path: image.path,
         })),
+        
       });
     }
   }, [data, form]);

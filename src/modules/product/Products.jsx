@@ -4,13 +4,7 @@ import { Status } from "../../components/Status";
 import { Button, Image, Pagination } from "antd";
 import { useProductsHook } from "./hook/useProductsHook";
 import DeleteProduct from "./DeleteProduct";
-import AddProduct from "./AddProduct";
-import EditProduct from "./EditProduct";
-import {
-  AppstoreOutlined,
-  EditOutlined,
-  PlusSquareFilled,
-} from "@ant-design/icons";
+import {AppstoreOutlined,EditOutlined,PlusSquareFilled} from "@ant-design/icons";
 import { SearchFilter } from "../../components/SearchFilter";
 import { Link } from "react-router-dom";
 import { MAINPATH } from "../../constant/MAINPATH";
@@ -50,10 +44,10 @@ export const Products = () => {
           <thead className="text-xs text-gray-700 capitalize bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
-                {t("products.name")}
+                {t("photo")}
               </th>
               <th scope="col" className="px-6 py-3">
-                {t("photo")}
+                {t("name")}
               </th>
               <th scope="col" className="px-6 py-3">
                 {t("globals.status.title")}
@@ -95,12 +89,13 @@ export const Products = () => {
                     />
                   </th>
                   <td className="px-6 py-4 flex gap-3">
-                    <DeleteProduct productId={product.productId} />
+                    
                     <Link to={`/${MAINPATH}/${i18n.language}/products/edit/${product.productId}`}>
                       <Button className="edit">
                         <EditOutlined />
                       </Button>
                     </Link>
+                    <DeleteProduct productId={product.productId} />
                   </td>
                 </tr>
               ))}

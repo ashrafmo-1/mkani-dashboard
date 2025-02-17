@@ -6,7 +6,7 @@ export const PermissionsContext = createContext();
 export const PermissionsProvider = ({ children }) => {
   const { user } = useContext(UserContext);
   const [permissions, setPermissions] = useState(() => {
-    const savedPermissions = localStorage.getItem("permissions");
+    const savedPermissions = localStorage.getItem("mkani-permissions");
     return savedPermissions ? JSON.parse(savedPermissions) : [];
   });
 
@@ -14,7 +14,7 @@ export const PermissionsProvider = ({ children }) => {
     if (user) {
       const userPermissions = user.permissions || [];
       setPermissions(userPermissions);
-      localStorage.setItem("permissions", JSON.stringify(userPermissions));
+      localStorage.setItem("mkani-permissions", JSON.stringify(userPermissions));
     }
   }, [user]);
 

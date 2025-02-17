@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       const userProfile = user.profile || [];
-      localStorage.setItem("MBO-PROFILE-DASHBOARD", JSON.stringify(userProfile));
+      localStorage.setItem("mkani-PROFILE-DASHBOARD", JSON.stringify(userProfile));
     }
   }, [user]);
 

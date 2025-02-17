@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { useEditCustomerHook } from "./Hooks/useEditCustomerHook";
-import { useGetSingleCustomerHook } from "./Hooks/useGetSingleCustomerHook";
+import { Button, Form, Input, Modal, Select } from "antd";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useEditFeedBackHook } from "./hooks/useEditFeedBackHook";
+import { useTranslation } from "react-i18next";
+import { useGetSingleFeedBackHook } from "./hooks/useGetSingleFeedBackHook";
 
-// eslint-disable-next-line react/prop-types
-export const EditCustomer = ({ customerId }) => {
-  const { editCustomers } = useEditCustomerHook();
+export const EditFeedBacks = ({ feedbackId }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const { data } = useGetSingleCustomerHook(isModalVisible ? customerId : null);
-
+  const { editFeedback } = useEditFeedBackHook();
+  const { t } = useTranslation();
+  const { data } = useGetSingleFeedBackHook(feedbackId);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -22,11 +22,15 @@ export const EditCustomer = ({ customerId }) => {
     form.resetFields();
   };
 
+  console.log(data);
+
   const handleSubmit = () => {
     setLoading(true);
-    form.validateFields().then((values) => {
-        editCustomers(
-          { customerId: customerId, values },
+    form
+      .validateFields()
+      .then((values) => {
+        editFeedback(
+          { feedbackId: feedbackId, values },
           {
             onSuccess: () => {
               setLoading(false);
@@ -61,10 +65,8 @@ export const EditCustomer = ({ customerId }) => {
     if (data) {
       form.setFieldsValue({
         name: data.name,
-        email: data.email,
-        phone: data.phone,
-        address: data.address,
-        description: data.description,
+        feedback: data.feedback,
+        rating: data.rating,
       });
     }
   }, [data, form]);
@@ -74,46 +76,43 @@ export const EditCustomer = ({ customerId }) => {
       <Button className="edit" onClick={showModal}>
         <EditOutlined />
       </Button>
+
       <Modal
-        title="Edit Customer"
+        title="Edit feed back"
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: "Name is required." }]}
-              >
-                <Input placeholder="Enter name" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="Email" name="email">
-                <Input placeholder="Enter email" />
-              </Form.Item>
-            </Col>
-          </Row>
           <Form.Item
-            label="Phone"
-            name="phone"
-            rules={[
-              {
-                pattern: /^[0-9]+$/,
-                message: "Phone number must contain only numbers.",
-              },
-            ]}
+            label={t("customers.name")}
+            name="name"
+            rules={[{ required: true, message: "Name is required." }]}
           >
-            <Input placeholder="Enter phone number" />
+            <Input
+              placeholder={t("customers.placeholder.EnterName")}
+              allowClear
+            />
           </Form.Item>
-          <Form.Item label="Address" name="address">
-            <Input placeholder="Enter address" />
+          <Form.Item
+            label={t("Feedback")}
+            name="feedback"
+            rules={[{ required: true, message: "Feedback is required." }]}
+          >
+            <Input.TextArea placeholder={t("enter your feedback")} allowClear />
           </Form.Item>
-          <Form.Item label="Description" name="description">
-            <Input placeholder="Enter description" />
+          <Form.Item
+            label={t("Rating")}
+            name="rating"
+            rules={[{ required: true, message: "Rating is required." }]}
+          >
+            <Select placeholder={t("select rating")} allowClear>
+              <Select.Option value={1}>⭐</Select.Option>
+              <Select.Option value={2}>⭐⭐</Select.Option>
+              <Select.Option value={3}>⭐⭐⭐</Select.Option>
+              <Select.Option value={4}>⭐⭐⭐⭐</Select.Option>
+              <Select.Option value={5}>⭐⭐⭐⭐⭐</Select.Option>
+            </Select>
           </Form.Item>
           <Button
             type="primary"

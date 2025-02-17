@@ -5,8 +5,8 @@ import {useTranslation} from "react-i18next";
 
 const RequireAuth = () => {
   const {i18n} = useTranslation();
-  const token = Cookies.get('MPO-TOKEN-DASHBOARD');
-  return token ? <Navigate to={`/${MAINPATH}/${i18n.language}/Dashboard`} /> : <Outlet />
+  const token = Cookies.get('mkani-TOKEN-DASHBOARD');
+  return token ? <Navigate to={`/${MAINPATH}/${i18n.language}/home`} /> : <Outlet />
 };
 
 export default RequireAuth;

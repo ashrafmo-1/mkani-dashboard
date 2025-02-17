@@ -19,7 +19,7 @@ export const AdminProfile = () => {
     i18n.changeLanguage(newLanguage);
   };
 
-  const profileString = window.localStorage.getItem("MBO-PROFILE-DASHBOARD");
+  const profileString = window.localStorage.getItem("mkani-PROFILE-DASHBOARD");
   const profile = profileString && JSON.parse(profileString);
 
   return (
@@ -31,7 +31,7 @@ export const AdminProfile = () => {
           />
         </button>
         <button className="flex justify-end bg-red-600 px-3 py-2 rounded-xl" onClick={() => {
-            Cookies.remove("MPO-TOKEN-DASHBOARD");
+            Cookies.remove("mkani-TOKEN-DASHBOARD");
             window.location.reload();
           }}
         >

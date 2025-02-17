@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { MAINPATH } from "../constant/MAINPATH";
 
 const LoginProdect = () => {
-  const token = Cookies.get('MPO-TOKEN-DASHBOARD');
+  const token = Cookies.get('mkani-TOKEN-DASHBOARD');
   return token ? <Outlet /> : <Navigate to={`/${MAINPATH}/authentication`} />
 };
 

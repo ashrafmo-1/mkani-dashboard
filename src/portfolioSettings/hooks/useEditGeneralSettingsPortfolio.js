@@ -21,7 +21,7 @@ export const useEditGeneralSettingsPortfolio = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("users");
+        queryClient.invalidateQueries("generaldata");
         toast.success("User edited successfully.");
       },
       onError: (error) => {

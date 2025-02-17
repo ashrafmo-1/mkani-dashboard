@@ -86,17 +86,14 @@ export const ContactUs = () => {
                       <Status
                         value={message.status}
                         activeText={"active"}
-                        inactiveText={"globals.status.inActive"}
+                        inactiveText={"inActive"}
                       />
                     </span>
                   </th>
                   <td className="px-6 py-4">
-                    {message.newMessagesCount === 0 ? (
-                      message.newMessagesCount
+                    {message.newMessagesCount === 0 ? (`${message.newMessagesCount}`
                     ) : (
-                      <div className="bg-red-600 p-2 text-white">
-                        message.newMessagesCount
-                      </div>
+                        `${message.newMessagesCount}`
                     )}
                   </td>
                   <td className="px-6 py-4 flex gap-3">

@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-let token = Cookies.get("MPO-TOKEN-DASHBOARD");
+let token = Cookies.get("mkani-TOKEN-DASHBOARD");
 
 if (!token) {
   token = null;

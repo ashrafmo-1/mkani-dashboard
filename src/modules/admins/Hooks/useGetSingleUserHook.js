@@ -8,7 +8,7 @@ export const useGetSingleUserHook = (userId) => {
     const { data } = await axiosInstance.get(`/${i18n.language}/admin/users/edit`, {
       params: { userId },
     });
-    return data;
+    return data.data;
   };
 
   return useQuery(["users", userId], fetchSingleUser, {

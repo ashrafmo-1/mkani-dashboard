@@ -13,8 +13,8 @@ export const useGeneralSettingsPortfolioHook = (mainSettingId) => {
     );
     return data;
   };
-
-  return useQuery(["users", mainSettingId], fetchSingleUser, {
+  
+  return useQuery(["generaldata", mainSettingId], fetchSingleUser, {
     enabled: !!mainSettingId,
     staleTime: 300000,
   });

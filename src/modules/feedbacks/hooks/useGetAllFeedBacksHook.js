@@ -1,10 +1,9 @@
-import {  useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import qs from "qs";
-import { useQuery } from "react-query";
 import axiosInstance from "../../../utils/axiosConfig";
-
-export const useCustomerHook = () => {
+import { useQuery } from "react-query";
+export const useGetAllFeedBacksHook = () => {
   const { i18n } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,19 +14,19 @@ export const useCustomerHook = () => {
     const combinedFilters = { search, ...customFilters };
 
     const queryString = qs.stringify(
-      { filter: combinedFilters },
+      { filters: combinedFilters },
       { encode: false }
     );
 
     const response = await axiosInstance.get(
-      `/${language}/admin/customers?page=${page}&pageSize=10&${queryString}`
+      `/${language}/admin/feedbacks?page=${page}&pageSize=10&${queryString}`
     );
     return response.data;
   };
 
   const { data, error, isLoading } = useQuery(
     [
-      "customers",
+      "feedbacks",
       {
         search: searchTerm,
         page: currentPage,
@@ -41,16 +40,15 @@ export const useCustomerHook = () => {
     }
   );
 
-  const customers = data?.result?.customers || [];
+  const feedbacks = data?.data || [];
   const pageCount = data?.pagination || {};
-
   return {
     pageCount,
     setSearchTerm,
     error,
     isLoading,
     currentPage,
-    customers,
+    feedbacks,
     setCurrentPage,
   };
 };

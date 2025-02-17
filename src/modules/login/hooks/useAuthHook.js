@@ -20,10 +20,10 @@ const useAuthHook = () => {
             const response = await axios.post(api.login, values);
             setUser(response.data);
             const access_token = response.data.token;
-            Cookies.set("MPO-TOKEN-DASHBOARD", access_token, {expires: 0.4167});
+            Cookies.set("mkani-TOKEN-DASHBOARD", access_token, {expires: 0.4167});
             setUser({...response.data, token: access_token, isAuthenticated: true});
             window.location.reload();
-            navigate(`/${MAINPATH}/${i18n.language}/Dashboard`);
+            navigate(`/${MAINPATH}/${i18n.language}/home`);
         } catch (error) {
             if (error.response && error.response.status === 422) {
                 console.log("Unprocessable Entity: Invalid input data.");
@@ -39,7 +39,7 @@ const useAuthHook = () => {
     const formik = useFormik({
         initialValues: {
             username: "admin",
-            password: "M@Ns123456",
+            password: "ag123456789",
         },
         onSubmit: handleSubmit,
     });

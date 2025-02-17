@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
-import axiosInstance from "../../../utils/axiosConfig";
 import { useTranslation } from "react-i18next";
+import axiosInstance from "../../../utils/axiosConfig";
 
 export const useGetSingleCustomerHook = (customerId) => {
   const { i18n } = useTranslation();
@@ -11,7 +11,7 @@ export const useGetSingleCustomerHook = (customerId) => {
         params: { customerId },
       }
     );
-    return data;
+    return data.data;
   };
 
   return useQuery(["customers", customerId], fetchSingleCustomer, {

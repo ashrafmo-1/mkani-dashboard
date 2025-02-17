@@ -33,7 +33,6 @@ const AddProduct = () => {
           formData.append("images", "");
         }
 
-        console.log(form_data.images);
         
 
         formData.append("nameEn", form_data.nameEn || "");

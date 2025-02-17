@@ -1,22 +1,20 @@
-import { EditOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, message, Modal, Row, Select,
+import { EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input,  Modal, Row, Select, Upload,
 } from "antd";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { checkPermission } from "../../helpers/checkPermission";
 import { useEditProductCategoryHook } from "./hooks/useEditProductCategoryHook";
 import { useGetProductCategory } from "./hooks/useGetProductCategory";
 import { toast } from "react-toastify";
 
 export const EditProductCategory = ({ productCategoryId }) => {
-  const hasCreateUserPermission = checkPermission("create_customer");
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const [isPending, setIsPending] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { editProductCategory } = useEditProductCategoryHook();
   const { data } = useGetProductCategory(productCategoryId);
   const [loading, setLoading] = useState(false);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -26,19 +24,22 @@ export const EditProductCategory = ({ productCategoryId }) => {
     form.resetFields();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setLoading(true);
     form.validateFields().then((values) => {
-        setLoading(true);
-        editProductCategory({ productCategoryId: productCategoryId, values },{
+        editProductCategory({ productCategoryId, values },{
             onSuccess: () => {
-              setIsModalVisible(false);
+              setLoading(false);
+              toast.success("Product updated successfully!");
+              handleCancel();
             },
             onError: (error) => {
+              setLoading(false);
               const errorMessage = error.response?.data?.message;
               if (typeof errorMessage === "object") {
                 Object.entries(errorMessage).forEach(([field, messages]) => {
                   messages.forEach((msg) => {
-                    toast.error(`${field} ${msg}`);
+                    toast.error(msg);
                   });
                 });
               }
@@ -50,30 +51,34 @@ export const EditProductCategory = ({ productCategoryId }) => {
         );
       })
       .catch((errorInfo) => {
-        console.log('Validate Failed:', errorInfo);
+        setLoading(false);
+        console.log("Validate Failed:", errorInfo);
       });
   };
+
 
   useEffect(() => {
     if (isModalVisible && data) {
       form.setFieldsValue({
         nameEn: data.nameEn,
         nameAr: data.nameAr,
+        descriptionEn: data.descriptionEn,
+        descriptionAr: data.descriptionAr,
         isActive: data.isActive !== undefined ? String(data.isActive) : "",
+        image: data.image ? [{ url: data.image }] : [],
       });
     }
   }, [data, form, isModalVisible]);
 
+
   return (
     <div>
-      {hasCreateUserPermission && (
         <Button className="edit" onClick={showModal}>
           <EditOutlined />
         </Button>
-      )}
 
       <Modal
-        title={t("productCategory.edit.title")}
+        title={t("edit")}
         footer={null}
         visible={isModalVisible}
         onCancel={handleCancel}
@@ -100,6 +105,63 @@ export const EditProductCategory = ({ productCategoryId }) => {
             </Col>
           </Row>
 
+
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <Form.Item
+                label={t("description ar")}
+                name="descriptionAr"
+                rules={[
+                  {
+                    required: true,
+                    message: t("descriptionAr") + " is required.",
+                  },
+                ]}
+              >
+                <Input.TextArea placeholder={t("descriptionAr")} />
+              </Form.Item>
+            </Col>
+
+            <Col span={12}>
+              <Form.Item
+                label={t("descriptionEn")}
+                name="descriptionEn"
+                rules={[
+                  {
+                    required: true,
+                    message: t("descriptionEn") + " is required.",
+                  },
+                ]}
+              >
+                <Input.TextArea placeholder={t("descriptionEn")} />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item
+  label={t("image")}
+  name="image"
+  valuePropName="fileList"
+  getValueFromEvent={(e) => e?.fileList}
+  rules={[
+    {
+      required: true,
+      message: t("image") + " is required.",
+    },
+  ]}
+>
+  <Upload
+    listType="picture"
+    beforeUpload={() => false}
+    maxCount={1}
+  >
+    <Button icon={<UploadOutlined />}>
+      {t("image")}
+    </Button>
+  </Upload>
+</Form.Item>
+
+
           <Form.Item label={t("globals.status.checkActive")} name="isActive">
             <Select placeholder="Select status">
             <Select.Option value="1">
@@ -121,7 +183,7 @@ export const EditProductCategory = ({ productCategoryId }) => {
             type="primary"
             htmlType="submit"
             className="w-full"
-            loading={isPending}
+            loading={loading}
           >
             {t("productCategory.edit.title")}
           </Button>

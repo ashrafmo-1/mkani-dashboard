@@ -1,20 +1,19 @@
-import { useMutation, useQueryClient } from "react-query";
 import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import axiosInstance from "../../../utils/axiosConfig";
 
-export const useEditCustomerHook = () => {
+export const useEditFeedBackHook = () => {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
 
+
   const mutation = useMutation(
-    async ({ customerId, values }) => {
-      await axiosInstance.put(`${i18n.language}/admin/customers/update?customerId=${customerId}`, values);
-    },
+    async ({ feedbackId, values }) => {await axiosInstance.put(`${i18n.language}/admin/feedbacks/update?feedbackId=${feedbackId}`, values)},
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("customers");
-        toast.success("User edited successfully.");
+        queryClient.invalidateQueries("feedbacks");
+        toast.success("feed back edited successfully.");
       },
       onError: (error) => {
         const errorMessage = error.response?.data?.message;
@@ -25,11 +24,11 @@ export const useEditCustomerHook = () => {
             });
           });
         } else {
-          toast.error(errorMessage || "Failed to edit customer.");
+          toast.error(errorMessage || "Failed to edit feed back.");
         }
       },
     }
   );
 
-  return { editCustomers: mutation.mutate };
+  return { editFeedback: mutation.mutate };
 };

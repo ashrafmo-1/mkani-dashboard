@@ -1,22 +1,21 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
-import { useState } from "react";
-import { useDeleteCustomerHook } from "./Hooks/useDeleteCustomerHook";
+import React, { useState } from "react";
+import { useDeleteFeedBackHook } from "./hooks/useDeleteFeedBackHook";
 
-// eslint-disable-next-line react/prop-types
-const DeleteCustomer = ({ customerId }) => {
-  const { deleteCustomer } = useDeleteCustomerHook();
+export const DeleteFeedBacks = ({ feedbackId }) => {
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => setIsModalVisible(true);
   const handleCancel = () => setIsModalVisible(false);
+  const { deletefeedback } = useDeleteFeedBackHook();
 
-    const handleOk = async () => {
-      setLoading(true);
-      await deleteCustomer(customerId);
-      setLoading(false);
-      setIsModalVisible(false);
-    };
+  const handleOk = async () => {
+    setLoading(true);
+    await deletefeedback(feedbackId);
+    setLoading(false);
+    setIsModalVisible(false);
+  };
 
   return (
     <div>
@@ -31,10 +30,8 @@ const DeleteCustomer = ({ customerId }) => {
         onCancel={handleCancel}
         confirmLoading={loading}
       >
-        <p>Are you sure you want to delete this customer?</p>
+        <p>Are you sure you want to delete this feed back?</p>
       </Modal>
     </div>
   );
 };
-
-export default DeleteCustomer;
