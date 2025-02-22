@@ -9,9 +9,13 @@ export const useEditPortfolioSectionHook = () => {
 
   const mutation = useMutation(
     async ({ frontPageSectionId, values }) => {
-      return await axiosInstance.put(
+      return await axiosInstance.post(
         `${i18n.language}/admin/front-page-sections/update?frontPageSectionId=${frontPageSectionId}`,
-        values
+        values, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
     },
     {

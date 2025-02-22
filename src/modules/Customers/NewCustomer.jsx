@@ -22,36 +22,42 @@ export const AddNewCustomer = () => {
     form.resetFields();
   };
 
-  const handleSubmit = () => {
-    setIsPending(true);
-    form
-      .validateFields()
-      .then((formData) => {
-        addNewCustomer(formData, {
-          onSuccess: () => {
-            setIsPending(false);
-            handleCancel();
-          },
-          onError: (error) => {
-            setIsPending(false);
-            const errorMessage = error.response?.data?.message;
-            if (typeof errorMessage === "object") {
-              for (const [messages] of Object.entries(errorMessage)) {
-                messages.forEach((msg) => {
-                  toast.error(msg);
-                });
-              }
-            } else {
-              toast.error(errorMessage || "Failed to add customer.");
-            }
-          },
-        });
-      })
-      .catch((errorInfo) => {
+const handleSubmit = () => {
+  setIsPending(true);
+  form.validateFields().then((formData) => {
+    const formDataObj = {
+      name: formData.name|| "",
+      phone: formData.phone || "",
+      email: formData.email || "",
+      address: formData.address || "",
+      description: formData.description || ""
+    };
+
+    addNewCustomer(formDataObj, {
+      onSuccess: () => {
         setIsPending(false);
-        console.log("Validate Failed:", errorInfo);
-      });
-  };
+        handleCancel();
+      },
+      onError: (error) => {
+        setIsPending(false);
+        const errorMessage = error.response?.data?.message;
+        if (typeof errorMessage === "object") {
+          for (const [messages] of Object.entries(errorMessage)) {
+            messages.forEach((msg) => {
+              toast.error(msg);
+            });
+          }
+        } else {
+          toast.error(errorMessage || "Failed to add customer.");
+        }
+      },
+    });
+  })
+  .catch((errorInfo) => {
+    setIsPending(false);
+    console.log("Validate Failed:", errorInfo);
+  });
+};
 
   return (
     <div>
@@ -119,19 +125,10 @@ export const AddNewCustomer = () => {
               allowClear
             />
           </Form.Item>
-          <Form.Item
-            label={t("customers.description")}
-            name="description"
-            rules={[
-              {
-                required: true,
-                message: "description is required",
-              },
-            ]}
-          >
-            <TextArea
+          <Form.Item label={t("customers.description")} name="description">
+            <Input
               placeholder={t("customers.placeholder.EnterDescriptoin")}
-              aria-label="description"
+              // aria-label="description"
               allowClear
             />
           </Form.Item>

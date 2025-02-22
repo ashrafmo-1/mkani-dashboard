@@ -4,7 +4,7 @@ import { Status } from "../../components/Status";
 import { Button, Image, Pagination } from "antd";
 import { useProductsHook } from "./hook/useProductsHook";
 import DeleteProduct from "./DeleteProduct";
-import {AppstoreOutlined,EditOutlined,PlusSquareFilled} from "@ant-design/icons";
+import { AppstoreOutlined, EditOutlined, PlusSquareFilled } from "@ant-design/icons";
 import { SearchFilter } from "../../components/SearchFilter";
 import { Link } from "react-router-dom";
 import { MAINPATH } from "../../constant/MAINPATH";
@@ -65,12 +65,21 @@ export const Products = () => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    <Image
-                      src={product.image}
-                      width={50}
-                      alt={product.name}
-                      loading="lazy"
-                    />
+                    {product.type === 0 ? (
+                      <Image
+                        src={product.image || ""}
+                        width={50}
+                        alt={product.name}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <video
+                        src={product.image || ""}
+                        className="w-10 cursor-pointer"
+                        onClick={(e) => e.target.play()}
+                        controls
+                      />
+                    )}
                   </th>
                   <th
                     scope="row"
@@ -89,10 +98,12 @@ export const Products = () => {
                     />
                   </th>
                   <td className="px-6 py-4 flex gap-3">
-                    
-                    <Link to={`/${MAINPATH}/${i18n.language}/products/edit/${product.productId}`}>
+                    <Link
+                      to={`/${MAINPATH}/${i18n.language}/products/edit/${product.productId}`}
+                    >
                       <Button className="edit">
-                        <EditOutlined />
+                        {" "}
+                        <EditOutlined />{" "}
                       </Button>
                     </Link>
                     <DeleteProduct productId={product.productId} />

@@ -1,22 +1,17 @@
-import { Button, Form, Row, Upload } from "antd";
+import { Button, Form, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { InputName } from "./components/create/InputName";
 import { SelectisActive } from "./components/create/SelectisActive";
 import { useTranslation } from "react-i18next";
 import { useEditProductHook } from "./hook/useEditProductHook";
 import { useGetSingleProduct } from "./hook/useGetSingleProduct";
-import {
-  MetaDataEn,
-  MetaDataAr,
-  Slug,
-  Description,
-  TextEditorInput,
-} from "../../common";
+import { MetaDataEn, MetaDataAr, Slug, Description, TextEditorInput } from "../../common";
 import { BackwardFilled } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 import { MAINPATH } from "../../constant/MAINPATH";
 import { toast } from "react-toastify";
 import { UploadImages } from "./components/create/UploadImages";
+import { SelectMediaType } from "./components/create/SelectMediaType";
 
 const EditProduct = () => {
   const { productId } = useParams();
@@ -79,6 +74,8 @@ const EditProduct = () => {
           formData.append("metaDataAr[keywords]", "");
         }
 
+        formData.append("type", values.type);
+
         editProduct(
           { productId, values: formData },
           {
@@ -125,6 +122,7 @@ const EditProduct = () => {
         metaDataEn: data.metaDataEn,
         metaDataAr: data.metaDataAr,
         isActive: data.isActive !== undefined ? String(data.isActive) : "",
+        // type: data.type === 'video' ? 1 : 0,
         images: data?.images?.map((image) => ({
           uid: image.imageId,
           name: image.path.split("/").pop(),
@@ -132,8 +130,9 @@ const EditProduct = () => {
           url: image.path,
           imageId: image.imageId,
           path: image.path,
+          type: image.type !== undefined ? String(image.type) : "",
         })),
-        
+        type: data.type,
       });
     }
   }, [data, form]);
@@ -164,7 +163,7 @@ const EditProduct = () => {
           />
           <MetaDataAr />
         </Row>
-
+        <SelectMediaType />
         <UploadImages isEdit={true} />
 
         <SelectisActive />

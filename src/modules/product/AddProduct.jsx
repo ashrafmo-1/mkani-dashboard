@@ -13,6 +13,7 @@ import { BackwardFilled } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { MAINPATH } from "../../constant/MAINPATH";
 import { toast } from "react-toastify";
+import { SelectMediaType } from "./components/create/SelectMediaType";
 
 const AddProduct = () => {
   const { t, i18n } = useTranslation();
@@ -63,6 +64,7 @@ const AddProduct = () => {
         }
         
         formData.append("isActive", form_data.isActive ? 1 : 0);
+        formData.append("type", form_data.type);
 
         addProduct(formData, {
           onSuccess: () => {
@@ -116,6 +118,7 @@ const AddProduct = () => {
           <MetaDataAr />
         </Row>
 
+        <SelectMediaType />
         <UploadImages isEdit={false} />
         <SelectisActive />
         <Button

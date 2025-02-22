@@ -1,51 +1,22 @@
 import { Form } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Editor from 'react-simple-wysiwyg';
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 
 export const TextEditorInput = () => {
   const form = Form.useFormInstance();
   const { t } = useTranslation();
-  
-  const handleContentChange = (content) => {
-    if (typeof content === 'string') {
-      form.setFieldValue("contentEn", content);
-    } else {
-      console.error("Content for English is not a string:", content);
-    }
-  };
-
-  const handleContentArChange = (content) => {
-    if (typeof content === 'string') {
-      form.setFieldValue("contentAr", content);
-    } else {
-      console.error("Content for Arabic is not a string:", content);
-    }
-  };
-
   return (
     <div>
-      <Form.Item
-        label={t("products.add.lables.ContentEN")}
-        name="contentEn"
-        className="mb-16"
-        rules={[{ required: true, message: t("value") + " is required." }]}
-      >
-        <Editor 
-          value={form.getFieldValue("contentEn") || ""} 
-          onChange={handleContentChange} 
-        />
+      <Form.Item label={t("products.add.lables.ContentEN")} name="contentEn" className="mb-16" rules={[{ required: true, message: t("value") + " is required." }]}>
+        <ReactQuill className="h-60" theme="snow" placeholder={t("products.add.placeholder.EnterContentEN")}
+          onChange={(value) => { form.setFieldValue("contentEn", value)}} />
       </Form.Item>
 
-      <Form.Item
-        label={t("products.add.lables.ContentAR")}
-        name="contentAr"
-        className="mb-16"
-        rules={[{ required: true, message: t("value") + " is required." }]}
-      >
-        <Editor 
-          value={form.getFieldValue("contentAr") || ""} 
-          onChange={handleContentArChange} 
+      <Form.Item label={t("products.add.lables.ContentAR")} name="contentAr" className="mb-16" rules={[{required: true, message: t("value") + " is required."}]}>
+        <ReactQuill className="h-60" theme="snow" placeholder={t("products.add.placeholder.EnterContentAR")}
+          onChange={(value) => { form.setFieldValue("contentAr", value) }}
         />
       </Form.Item>
     </div>

@@ -2,12 +2,41 @@ import React from "react";
 import { Button, Form, Input, Modal, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-// import { useGetSinglePortfolioSectionHook } from "../hooks/useGetSinglePortfolioSectionHook";
 import { useEditPortfolioSectionHook } from "../hooks/useEditPortfolioSectionHook";
+import { useState } from "react";
+import { useDeleteImageHook } from "../hooks/useDeleteImageHook";
 
 export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, setSectionData, isModalVisibleTow, setIsModalVisibleTow }) => {
   const { t } = useTranslation();
   const { editPortfolioSections } = useEditPortfolioSectionHook();
+  const {deletePortfolioImage} = useDeleteImageHook()
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState(null);
+
+  const handleRemove = (file) => {
+    const fileWithImageId = { ...file, imageId: file.uid};
+    setFileToDelete(fileWithImageId);
+    console.log('File to delete:', fileWithImageId);
+    setIsModalVisible(true);
+    return false;
+  };
+
+  const handleConfirmDelete = async () => {
+    if (fileToDelete) {
+      try {
+        await deletePortfolioImage(fileToDelete.uid);
+        setIsModalVisible(false);
+        setFileToDelete(null);
+      } catch (error) {
+        console.error("Failed to delete image", error);
+      }
+    }
+  };
+
+    const handleCancelDelete = () => {
+      setIsModalVisible(false);
+      setFileToDelete(null);
+    };
   
   const handleCancel = () => {
     setIsModalVisibleTow(false);
@@ -17,7 +46,17 @@ export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, se
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
-      await editPortfolioSections(frontPageSectionId, values);
+      const newValues = {
+        ...values,
+        _method: 'PUT',
+        images: values?.images?.fileList ? values?.images?.fileList?.filter((image) => image?.originFileObj)?.map((image) => {
+          return {
+            imageId: image?.uid,
+            path: image?.originFileObj || image?.path,
+          };
+        }) : []
+      }
+      await editPortfolioSections(frontPageSectionId, newValues);
       setIsModalVisibleTow(false);
     } catch (error) {
       console.error(error);
@@ -58,10 +97,37 @@ export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, se
           {renderDynamicTableInputs("contentAr", sectionData?.contentAr)}
 
           <Form.Item label={t("images")} name="images">
-            <Upload name="images" listType="picture" beforeUpload={() => false} multiple>
-              <Button icon={<UploadOutlined />}>{t("globals.upload")}</Button>
+            <Upload
+              name="images"
+              listType="picture"
+              beforeUpload={() => false}
+              multiple
+              onRemove={handleRemove}
+              defaultFileList={
+                sectionData?.images?.map((image, index) => ({
+                  uid: image.id || index,
+                  name: image.name,
+                  status: "done",
+                  url: image.path,
+                  key: image.id || index,
+                })) || []
+              }
+            >
+              <Button icon={<UploadOutlined />}>{t("upload")}</Button>
             </Upload>
           </Form.Item>
+
+                {/* Modal لتأكيد الحذف */}
+            <Modal
+              title={t("Confirm Delete")}
+              visible={isModalVisible}
+              onOk={handleConfirmDelete}
+              onCancel={handleCancelDelete}
+              okText={t("Delete")}
+              cancelText={t("Cancel")}
+            >
+              <p>{t("Are you sure you want to delete this image?")}</p>
+            </Modal>
 
           <Form.Item label={t("is active")} name="isActive" rules={[{ required: true, message: t("is active is required.") }]}>
             <Select placeholder={t("Select status")}>
