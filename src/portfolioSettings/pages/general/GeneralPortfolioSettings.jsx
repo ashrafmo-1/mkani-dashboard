@@ -87,9 +87,7 @@ export const GeneralPortfolioSettings = () => {
         socialMedia: {
           facebook: newData.socialMedia?.facebook || "",
           instagram: newData.socialMedia?.instagram || "",
-          linkedin: newData.socialMedia?.linkedin || "",
-          youtube: newData.socialMedia?.youtube || "",
-          x: newData.socialMedia?.x || "",
+          tikTok: newData.socialMedia?.tikTok || "",
         },
         logo: data?.data?.logo
           ? [
@@ -248,27 +246,11 @@ export const GeneralPortfolioSettings = () => {
         </Form.Item>
 
         <Form.Item
-          label="LinkedIn URL"
-          name={["socialMedia", "linkedin"]}
-          rules={[{ required: true, message: "Please enter LinkedIn URL" }]}
+          label="Tik Tok URL"
+          name={["socialMedia", "tikTok"]}
+          rules={[{ required: true, message: "Please enter tikTok URL" }]}
         >
-          <Input placeholder="LinkedIn URL" />
-        </Form.Item>
-
-        <Form.Item
-          label="YouTube URL"
-          name={["socialMedia", "youtube"]}
-          rules={[{ required: true, message: "Please enter YouTube URL" }]}
-        >
-          <Input placeholder="YouTube URL" />
-        </Form.Item>
-
-        <Form.Item
-          label="X URL"
-          name={["socialMedia", "x"]}
-          rules={[{ required: true, message: "Please enter x URL" }]}
-        >
-          <Input placeholder="X URL" />
+          <Input placeholder="tikTok URL" />
         </Form.Item>
 
         <div className="flex gap-8">

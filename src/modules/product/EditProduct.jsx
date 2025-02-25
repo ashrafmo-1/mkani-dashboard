@@ -1,4 +1,4 @@
-import { Button, Form, Row } from "antd";
+import { Button, Form, Row, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { InputName } from "./components/create/InputName";
 import { SelectisActive } from "./components/create/SelectisActive";
@@ -12,6 +12,7 @@ import { MAINPATH } from "../../constant/MAINPATH";
 import { toast } from "react-toastify";
 import { UploadImages } from "./components/create/UploadImages";
 import { SelectMediaType } from "./components/create/SelectMediaType";
+import { useProductsCategoryHook } from "../product-category/hooks/useProductsCategoryHook";
 
 const EditProduct = () => {
   const { productId } = useParams();
@@ -20,6 +21,7 @@ const EditProduct = () => {
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
   const { data } = useGetSingleProduct(productId);
+  const { productCategories } = useProductsCategoryHook();
 
   const handleSubmit = async () => {
     setIsPending(true);
@@ -122,6 +124,7 @@ const EditProduct = () => {
         metaDataEn: data.metaDataEn,
         metaDataAr: data.metaDataAr,
         isActive: data.isActive !== undefined ? String(data.isActive) : "",
+        productCategoryId: data.productCategoryId,
         // type: data.type === 'video' ? 1 : 0,
         images: data?.images?.map((image) => ({
           uid: image.imageId,
@@ -167,6 +170,19 @@ const EditProduct = () => {
         <UploadImages isEdit={true} />
 
         <SelectisActive />
+        <Form.Item
+          label="product category"
+          name="productCategoryId"
+          rules={[{ required: true, message: t("value") + " is required." }]}
+        >
+          <Select placeholder="Select status">
+            {productCategories.map((product, index) => (
+              <Select.Option value={product.productCategoryId} key={index}>
+                {product.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
         <Button
           type="primary"
           htmlType="submit"

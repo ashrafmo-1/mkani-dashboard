@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Input, Modal, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,24 @@ export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, se
   const {deletePortfolioImage} = useDeleteImageHook()
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [fileToDelete, setFileToDelete] = useState(null);
+  const [fileList, setFileList] = useState([]);
+
+useEffect(() => {
+  if (sectionData?.images) {
+    setFileList(
+      sectionData.images.map((image, index) => ({
+        uid: image.imageId || index.toString(),
+        name: image.name || `image-${index}`,
+        status: "done",
+        url: image.path,
+      }))
+    );
+  }
+}, [sectionData]);
+
+const handleUploadChange = ({ fileList: newFileList }) => {
+  setFileList(newFileList);
+};
 
   const handleRemove = (file) => {
     const fileWithImageId = { ...file, imageId: file.uid};
@@ -25,6 +43,7 @@ export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, se
     if (fileToDelete) {
       try {
         await deletePortfolioImage(fileToDelete.uid);
+        setFileList((prevFileList) => prevFileList.filter(file => file.uid !== fileToDelete.uid));
         setIsModalVisible(false);
         setFileToDelete(null);
       } catch (error) {
@@ -33,29 +52,35 @@ export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, se
     }
   };
 
-    const handleCancelDelete = () => {
-      setIsModalVisible(false);
-      setFileToDelete(null);
-    };
-  
+  const handleCancelDelete = () => {
+    setIsModalVisible(false);
+    setFileToDelete(null);
+  };
+
   const handleCancel = () => {
     setIsModalVisibleTow(false);
     form.resetFields();
   };
+
+
 
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
       const newValues = {
         ...values,
-        _method: 'PUT',
-        images: values?.images?.fileList ? values?.images?.fileList?.filter((image) => image?.originFileObj)?.map((image) => {
-          return {
-            imageId: image?.uid,
-            path: image?.originFileObj || image?.path,
-          };
-        }) : []
-      }
+        _method: "PUT",
+        images: values?.images?.fileList
+          ? values?.images?.fileList
+              ?.filter((image) => image?.originFileObj)
+              ?.map((image) => {
+                return {
+                  imageId: image?.uid,
+                  path: image?.originFileObj || image?.path,
+                };
+              })
+          : [],
+      };
       await editPortfolioSections(frontPageSectionId, newValues);
       setIsModalVisibleTow(false);
     } catch (error) {
@@ -84,7 +109,6 @@ export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, se
     );
   };
 
-
   return (
     <div>
       <Modal title={t("edit section")} visible={isModalVisibleTow} onCancel={handleCancel} footer={null}>
@@ -102,32 +126,24 @@ export const EditPortfolioSection = ({ frontPageSectionId, form, sectionData, se
               listType="picture"
               beforeUpload={() => false}
               multiple
+              onChange={handleUploadChange}
               onRemove={handleRemove}
-              defaultFileList={
-                sectionData?.images?.map((image, index) => ({
-                  uid: image.id || index,
-                  name: image.name,
-                  status: "done",
-                  url: image.path,
-                  key: image.id || index,
-                })) || []
-              }
+              fileList={fileList}
             >
               <Button icon={<UploadOutlined />}>{t("upload")}</Button>
             </Upload>
           </Form.Item>
 
-                {/* Modal لتأكيد الحذف */}
-            <Modal
-              title={t("Confirm Delete")}
-              visible={isModalVisible}
-              onOk={handleConfirmDelete}
-              onCancel={handleCancelDelete}
-              okText={t("Delete")}
-              cancelText={t("Cancel")}
-            >
-              <p>{t("Are you sure you want to delete this image?")}</p>
-            </Modal>
+          <Modal
+            title={t("Confirm Delete")}
+            visible={isModalVisible}
+            onOk={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+            okText={t("Delete")}
+            cancelText={t("Cancel")}
+          >
+            <p>{t("Are you sure you want to delete this image?")}</p>
+          </Modal>
 
           <Form.Item label={t("is active")} name="isActive" rules={[{ required: true, message: t("is active is required.") }]}>
             <Select placeholder={t("Select status")}>

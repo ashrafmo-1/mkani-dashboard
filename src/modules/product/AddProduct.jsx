@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Button, Form, Row } from "antd";
+import { Button, Form, Row, Select } from "antd";
 import { useAddProductHook } from "./hook/useAddProductHook";
 import { InputName } from "./components/create/InputName";
 import { UploadImages } from "./components/create/UploadImages";
@@ -14,12 +14,14 @@ import { Link } from "react-router-dom";
 import { MAINPATH } from "../../constant/MAINPATH";
 import { toast } from "react-toastify";
 import { SelectMediaType } from "./components/create/SelectMediaType";
+import { useProductsCategoryHook } from "../product-category/hooks/useProductsCategoryHook";
 
 const AddProduct = () => {
   const { t, i18n } = useTranslation();
   const { addProduct } = useAddProductHook();
   const [form] = Form.useForm();
   const [isPending, setIsPending] = useState(false);
+  const { productCategories } = useProductsCategoryHook();
 
   const handleSubmit = useCallback(() => {
     setIsPending(true);
@@ -33,8 +35,6 @@ const AddProduct = () => {
         } else {
           formData.append("images", "");
         }
-
-        
 
         formData.append("nameEn", form_data.nameEn || "");
         formData.append("nameAr", form_data.nameAr || "");
@@ -65,6 +65,8 @@ const AddProduct = () => {
         
         formData.append("isActive", form_data.isActive ? 1 : 0);
         formData.append("type", form_data.type);
+        formData.append("productCategoryId", form_data.productCategoryId || 0);
+
 
         addProduct(formData, {
           onSuccess: () => {
@@ -121,6 +123,16 @@ const AddProduct = () => {
         <SelectMediaType />
         <UploadImages isEdit={false} />
         <SelectisActive />
+        <Form.Item label="product category" name="productCategoryId" rules={[{ required: true, message: t("value") + " is required." }]}>
+          <Select placeholder="Select status">
+            {productCategories.map((product, index) => (
+              <Select.Option value={product.productCategoryId} key={index}>
+                {product.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+
         <Button
           type="primary"
           htmlType="submit"

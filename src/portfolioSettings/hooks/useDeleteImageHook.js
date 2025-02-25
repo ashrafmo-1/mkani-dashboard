@@ -10,7 +10,7 @@ export const useDeleteImageHook = () => {
   const deletePortfolioImage = async (imageId) => {
     try {
       await axiosInstance.delete(`/${i18n.language}/admin/section-images/delete?imageId=${imageId}`);
-      queryClient.invalidateQueries("PortfolioPages");
+      queryClient.invalidateQueries("singlePortfolioSection");
       toast.success("deleted successfully");
     } catch (error) {
       toast.error("Failed to delete image");

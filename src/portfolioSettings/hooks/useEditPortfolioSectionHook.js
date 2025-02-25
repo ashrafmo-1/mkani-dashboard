@@ -20,7 +20,7 @@ export const useEditPortfolioSectionHook = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("PortfolioPages");
+        queryClient.invalidateQueries("singlePortfolioSection");
         toast.success("Portfolio section updated successfully");
       },
       onError: (error) => {
